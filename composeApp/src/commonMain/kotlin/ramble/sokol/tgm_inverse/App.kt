@@ -87,7 +87,7 @@ internal fun App() = AppTheme {
         val uriHandler = LocalUriHandler.current
         TextButton(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp).widthIn(min = 200.dp),
-            onClick = { uriHandler.openUri("https://github.com/terrakok") },
+            onClick = { uriHandler.openUri("https://github.com/RambleTOT") },
         ) {
             Text(stringResource(Res.string.open_github))
         }
