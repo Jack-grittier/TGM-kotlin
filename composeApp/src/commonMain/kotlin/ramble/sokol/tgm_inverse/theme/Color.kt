@@ -69,3 +69,4 @@ internal val md_theme_dark_scrim = Color(0xFF000000)
 
 
 internal val seed = Color(0xFF2C3639)
+internal val background_splash = Color(0xFF232323)
