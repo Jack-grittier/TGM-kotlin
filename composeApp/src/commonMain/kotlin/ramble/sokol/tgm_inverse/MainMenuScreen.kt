@@ -84,6 +84,7 @@ class MainMenuScreen : Screen {
                 ){
 
                     NavigationBarItem(
+                        modifier = Modifier.padding(start = 30.dp),
                         selected = selectedItem == 0,
                         onClick = {
                             selectedItem = 0
@@ -149,6 +150,7 @@ class MainMenuScreen : Screen {
                     )
 
                     NavigationBarItem(
+                        modifier = Modifier.padding(end = 30.dp),
                         selected = selectedItem == 2,
                         onClick = {
                             selectedItem = 2
@@ -191,7 +193,6 @@ class MainMenuScreen : Screen {
             }
 
         }
-
 
     }
 

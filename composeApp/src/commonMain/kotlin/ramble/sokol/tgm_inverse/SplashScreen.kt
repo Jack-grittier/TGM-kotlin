@@ -48,7 +48,7 @@ class SplashScreen : Screen {
             targetValue = 1f,
             animationSpec = infiniteRepeatable(
                 animation = tween(
-                    durationMillis = 1500
+                    durationMillis = 3000
                 ),
                 repeatMode = RepeatMode.Reverse
             ), label = ""
