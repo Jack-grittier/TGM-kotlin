@@ -84,7 +84,6 @@ class MainMenuScreen : Screen {
                 ){
 
                     NavigationBarItem(
-                        modifier = Modifier.padding(start = 60.dp),
                         selected = selectedItem == 0,
                         onClick = {
                             selectedItem = 0
@@ -150,7 +149,6 @@ class MainMenuScreen : Screen {
                     )
 
                     NavigationBarItem(
-                        modifier = Modifier.padding(end = 60.dp),
                         selected = selectedItem == 2,
                         onClick = {
                             selectedItem = 2
@@ -193,20 +191,6 @@ class MainMenuScreen : Screen {
             }
 
         }
-
-
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .windowInsetsPadding(WindowInsets.safeDrawing),
-//            verticalArrangement = Arrangement.Bottom,
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//
-//
-//
-//        }
-
 
 
     }
