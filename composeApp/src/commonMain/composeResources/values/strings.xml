@@ -4,4 +4,7 @@
     <string name="run">Run</string>
     <string name="stop">Stop</string>
     <string name="theme">Theme</string>
+    <string name="musicality_navbar">Musicality</string>
+    <string name="mining_navbar">Mining</string>
+    <string name="tasks_navbar">Tasks</string>
 </resources>

@@ -70,3 +70,7 @@ internal val md_theme_dark_scrim = Color(0xFF000000)
 
 internal val seed = Color(0xFF2C3639)
 internal val background_splash = Color(0xFF232323)
+internal val text_navbar = Color(0xFF696869)
+internal val icon_navbar = Color(0xFF6F6F6F)
+internal val background_navbar = Color(0xFF303030)
+internal val background_screens = Color(0xFF232323)
