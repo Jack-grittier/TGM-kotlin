@@ -1,14 +1,20 @@
 package ramble.sokol.tgm_inverse
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -19,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,10 +39,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import org.jetbrains.compose.resources.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
@@ -48,17 +57,25 @@ import org.jetbrains.compose.resources.stringResource
 import ramble.sokol.tgm_inverse.theme.background_navbar
 import ramble.sokol.tgm_inverse.theme.background_screens
 import ramble.sokol.tgm_inverse.theme.background_splash
+import ramble.sokol.tgm_inverse.theme.background_wallet_item
 import ramble.sokol.tgm_inverse.theme.icon_navbar
 import ramble.sokol.tgm_inverse.theme.text_navbar
+import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
+import tgminverse.composeapp.generated.resources.icon_bb
+import tgminverse.composeapp.generated.resources.icon_line_wallet
 import tgminverse.composeapp.generated.resources.icon_logo_splash_screen
 import tgminverse.composeapp.generated.resources.icon_mining
 import tgminverse.composeapp.generated.resources.icon_musicality
 import tgminverse.composeapp.generated.resources.icon_tasks
+import tgminverse.composeapp.generated.resources.image_line
 import tgminverse.composeapp.generated.resources.mining_navbar
 import tgminverse.composeapp.generated.resources.mont_bold
+import tgminverse.composeapp.generated.resources.mont_regular
+import tgminverse.composeapp.generated.resources.mont_semibold
 import tgminverse.composeapp.generated.resources.musicality_navbar
 import tgminverse.composeapp.generated.resources.tasks_navbar
+import tgminverse.composeapp.generated.resources.test_photo
 
 
 class MainMenuScreen : Screen {
@@ -73,6 +90,9 @@ class MainMenuScreen : Screen {
 
         Scaffold(
             modifier = Modifier.background(background_screens),
+            topBar = {
+                topBar()
+            },
             bottomBar = {
                 NavigationBar(
                     modifier = Modifier
@@ -190,6 +210,102 @@ class MainMenuScreen : Screen {
                 0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding)))
                 1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding)))
                 2 -> Navigator(TasksScreen(modifier = Modifier.padding(innerPadding)))
+            }
+
+        }
+
+    }
+
+    @Composable
+    fun topBar(){
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(background_screens)
+                .padding(horizontal = 16.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Row (
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 2.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+
+                Surface(
+                    modifier = Modifier.size(36.dp),
+                    shape = CircleShape
+                ) {
+                    Image(
+                        painter = painterResource(Res.drawable.test_photo),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+
+                Spacer(modifier = Modifier.padding(start = 6.dp))
+
+                Text(
+                    text = "@azzvigayo",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+            }
+
+            Box (
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(18.dp))
+                    .background(background_wallet_item)
+                    .padding(start = 2.dp),
+                contentAlignment = Alignment.Center
+            ){
+
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 15.dp, vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ){
+
+                    Text(
+                        text = "30574",
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            lineHeight = 16.sp,
+                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                            fontWeight = FontWeight(400),
+                            color = Color.White,
+                        )
+                    )
+
+                    Image(
+                        modifier = Modifier
+                            .height(8.dp)
+                            .padding(horizontal = 8.dp),
+                        painter = painterResource(Res.drawable.icon_line_wallet),
+                        contentDescription = "imageLine"
+                    )
+
+                    Image(
+                        modifier = Modifier
+                            .width(48.dp)
+                            .padding(bottom = 2.dp),
+                        painter = painterResource(Res.drawable.icon_bb),
+                        contentDescription = "+bb"
+                    )
+
+                }
+
             }
 
         }
