@@ -32,6 +32,8 @@ kotlin {
             implementation(libs.multiplatformSettings)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.bottomsheet.material3)
+            implementation(libs.bottomsheet.material)
         }
 
         commonTest.dependencies {

@@ -2,6 +2,7 @@ package ramble.sokol.tgm_inverse
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,8 +19,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.onClick
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -28,9 +31,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,6 +57,11 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorContent
+import com.skydoves.flexible.bottomsheet.material.FlexibleBottomSheet
+import com.skydoves.flexible.core.FlexibleSheetSize
+import com.skydoves.flexible.core.FlexibleSheetValue
+import com.skydoves.flexible.core.rememberFlexibleBottomSheetState
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import ramble.sokol.tgm_inverse.theme.background_navbar
@@ -80,12 +90,18 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 class MainMenuScreen : Screen {
 
+    private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
+
     @OptIn(InternalVoyagerApi::class)
     @Composable
     override fun Content() {
 
         var selectedItem by rememberSaveable {
             mutableIntStateOf(1)
+        }
+
+        if (clickSheet.value == 1) {
+            bottomSheet()
         }
 
         Scaffold(
@@ -217,6 +233,42 @@ class MainMenuScreen : Screen {
     }
 
     @Composable
+    fun bottomSheet(){
+        val scope = rememberCoroutineScope()
+        val sheetState = rememberFlexibleBottomSheetState(
+            flexibleSheetSize = FlexibleSheetSize(fullyExpanded = 0.9f),
+            isModal = true,
+            skipSlightlyExpanded = false,
+        )
+
+        FlexibleBottomSheet(
+            sheetState = sheetState,
+            containerColor = Color.Black,
+            onDismissRequest = {
+                clickSheet.value = 0
+            }
+        ) {
+            Button(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = {
+                    scope.launch {
+                        when (sheetState.swipeableState.currentValue) {
+                            FlexibleSheetValue.SlightlyExpanded -> sheetState.intermediatelyExpand()
+                            FlexibleSheetValue.IntermediatelyExpanded -> sheetState.fullyExpand()
+                            else -> {
+                                clickSheet.value = 0
+                                sheetState.hide()
+                            }
+                        }
+                    }
+                },
+            ) {
+                Text(text = "Expand Or Hide")
+            }
+        }
+    }
+
+    @Composable
     fun topBar(){
 
         Row(
@@ -266,7 +318,10 @@ class MainMenuScreen : Screen {
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(18.dp))
                     .background(background_wallet_item)
-                    .padding(start = 2.dp),
+                    .padding(start = 2.dp)
+                    .clickable {
+                        clickSheet.value = 1
+                    },
                 contentAlignment = Alignment.Center
             ){
 
