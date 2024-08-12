@@ -12,6 +12,7 @@ kotlinx-datetime = "0.6.0"
 multiplatformSettings = "1.1.1"
 koin = "3.6.0-Beta4"
 koin-compose = "1.2.0-Beta4"
+sheet-bottom = "0.1.4"
 
 [libraries]
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
@@ -33,6 +34,9 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
+bottomsheet-material = { module = "com.github.skydoves:flexible-bottomsheet-material", version.ref = "sheet-bottom" }
+bottomsheet-material3 = { module = "com.github.skydoves:flexible-bottomsheet-material3", version.ref = "sheet-bottom" }
+
 
 [plugins]
 
