@@ -64,20 +64,29 @@ import com.skydoves.flexible.core.rememberFlexibleBottomSheetState
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import ramble.sokol.tgm_inverse.components.ButtonClose
+import ramble.sokol.tgm_inverse.components.ButtonDisconnect
+import ramble.sokol.tgm_inverse.theme.background_line_item
 import ramble.sokol.tgm_inverse.theme.background_navbar
 import ramble.sokol.tgm_inverse.theme.background_screens
 import ramble.sokol.tgm_inverse.theme.background_splash
 import ramble.sokol.tgm_inverse.theme.background_wallet_item
+import ramble.sokol.tgm_inverse.theme.color_active
 import ramble.sokol.tgm_inverse.theme.icon_navbar
 import ramble.sokol.tgm_inverse.theme.text_navbar
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
+import tgminverse.composeapp.generated.resources.active
+import tgminverse.composeapp.generated.resources.close
+import tgminverse.composeapp.generated.resources.disconnect
+import tgminverse.composeapp.generated.resources.icon_active
 import tgminverse.composeapp.generated.resources.icon_bb
 import tgminverse.composeapp.generated.resources.icon_line_wallet
 import tgminverse.composeapp.generated.resources.icon_logo_splash_screen
 import tgminverse.composeapp.generated.resources.icon_mining
 import tgminverse.composeapp.generated.resources.icon_musicality
 import tgminverse.composeapp.generated.resources.icon_tasks
+import tgminverse.composeapp.generated.resources.image_background_splash_screen
 import tgminverse.composeapp.generated.resources.image_line
 import tgminverse.composeapp.generated.resources.mining_navbar
 import tgminverse.composeapp.generated.resources.mont_bold
@@ -92,7 +101,6 @@ class MainMenuScreen : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
 
-    @OptIn(InternalVoyagerApi::class)
     @Composable
     override fun Content() {
 
@@ -243,28 +251,143 @@ class MainMenuScreen : Screen {
 
         FlexibleBottomSheet(
             sheetState = sheetState,
-            containerColor = Color.Black,
+            containerColor = background_wallet_item,
             onDismissRequest = {
                 clickSheet.value = 0
+            },
+            dragHandle = {
+
+                Box(
+                    modifier = Modifier.padding(top = 12.dp)
+                ){
+                    Box(
+                        modifier = Modifier
+                            .width(62.dp)
+                            .height(6.dp)
+                            .clip(RoundedCornerShape(27.dp))
+                            .background(background_line_item)
+                    )
+                }
+
             }
         ) {
-            Button(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = {
-                    scope.launch {
-                        when (sheetState.swipeableState.currentValue) {
-                            FlexibleSheetValue.SlightlyExpanded -> sheetState.intermediatelyExpand()
-                            FlexibleSheetValue.IntermediatelyExpanded -> sheetState.fullyExpand()
-                            else -> {
-                                clickSheet.value = 0
-                                sheetState.hide()
-                            }
-                        }
-                    }
-                },
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.5.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Expand Or Hide")
+
+                Spacer(modifier = Modifier.padding(top = 17.dp))
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(Res.string.tasks_navbar),
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        lineHeight = 16.sp,
+                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                        fontWeight = FontWeight(400),
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                    )
+                )
+
+                Spacer(modifier = Modifier.padding(top = 17.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .clip(RoundedCornerShape(27.dp))
+                        .background(background_line_item)
+                )
+
+                Spacer(modifier = Modifier.padding(top = 17.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(60.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(background_line_item)
+                ){
+
+                    Row (
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 20.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
+                    ){
+
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = "UQAd...dddddduzsW",
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                lineHeight = 21.sp,
+                                fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                fontWeight = FontWeight(700),
+                                color = Color.White,
+                            )
+                        )
+
+                        Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+
+                            Text(
+                                text = stringResource(Res.string.active),
+                                style = TextStyle(
+                                    fontSize = 16.sp,
+                                    lineHeight = 20.sp,
+                                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                    fontWeight = FontWeight(700),
+                                    color = color_active,
+                                )
+                            )
+
+                            Spacer(modifier = Modifier.padding(horizontal = 2.dp))
+
+                            Image(
+                                modifier = Modifier
+                                    .width(20.dp)
+                                    .height(20.dp),
+                                painter = painterResource(Res.drawable.icon_active),
+                                contentDescription = "iconActive"
+                            )
+
+                        }
+
+                    }
+
+                }
+
+                Spacer(modifier = Modifier.padding(top = 36.dp))
+
+                ButtonDisconnect(
+                    text = stringResource(Res.string.disconnect)
+                ){
+
+                }
+
+                Spacer(modifier = Modifier.padding(top = 8.dp))
+
+                ButtonClose(
+                    text = stringResource(Res.string.close)
+                ){
+                    scope.launch {
+                        clickSheet.value = 0
+                        sheetState.hide()
+                    }
+                }
+
             }
+
         }
     }
 
