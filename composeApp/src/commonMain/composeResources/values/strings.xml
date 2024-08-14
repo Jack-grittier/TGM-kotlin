@@ -7,4 +7,9 @@
     <string name="musicality_navbar">Musicality</string>
     <string name="mining_navbar">Mining</string>
     <string name="tasks_navbar">Tasks</string>
+    <string name="wallet">Wallet</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="close">Close</string>
+    <string name="active">Active</string>
+    <string name="perform">Perform</string>
 </resources>
