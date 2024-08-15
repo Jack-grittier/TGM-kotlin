@@ -67,6 +67,7 @@ import org.jetbrains.compose.resources.stringResource
 import ramble.sokol.tgm_inverse.components.ButtonClose
 import ramble.sokol.tgm_inverse.components.ButtonDisconnect
 import ramble.sokol.tgm_inverse.theme.background_line_item
+import ramble.sokol.tgm_inverse.theme.background_line_item_white
 import ramble.sokol.tgm_inverse.theme.background_navbar
 import ramble.sokol.tgm_inverse.theme.background_screens
 import ramble.sokol.tgm_inverse.theme.background_splash
@@ -121,9 +122,10 @@ class MainMenuScreen : Screen {
                 NavigationBar(
                     modifier = Modifier
                         .background(background_screens)
+                        .clip(RoundedCornerShape(topStart = 60.dp, topEnd = 60.dp))
                         .fillMaxWidth()
                         .height(87.dp)
-                        .clip(RoundedCornerShape(topStart = 60.dp, topEnd = 60.dp)),
+                        ,
                     containerColor = background_navbar
                 ){
 
@@ -302,7 +304,7 @@ class MainMenuScreen : Screen {
                         .fillMaxWidth()
                         .height(1.dp)
                         .clip(RoundedCornerShape(27.dp))
-                        .background(background_line_item)
+                        .background(background_line_item_white)
                 )
 
                 Spacer(modifier = Modifier.padding(top = 17.dp))
@@ -311,7 +313,7 @@ class MainMenuScreen : Screen {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(RoundedCornerShape(12.dp))
                         .background(background_line_item)
                 ){
 
@@ -441,7 +443,6 @@ class MainMenuScreen : Screen {
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(18.dp))
                     .background(background_wallet_item)
-                    .padding(start = 2.dp)
                     .clickable {
                         clickSheet.value = 1
                     },

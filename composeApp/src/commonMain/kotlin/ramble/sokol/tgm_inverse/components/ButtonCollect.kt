@@ -19,13 +19,14 @@ import org.jetbrains.compose.resources.Font
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ramble.sokol.tgm_inverse.theme.background_color_close
+import ramble.sokol.tgm_inverse.theme.background_color_collect
 import ramble.sokol.tgm_inverse.theme.background_color_disconnect
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.mont_black
 import tgminverse.composeapp.generated.resources.mont_bold
 
 @Composable
-fun ButtonClose(
+fun ButtonCollect(
     text: String,
     onClick: () -> Unit
 )
@@ -33,25 +34,24 @@ fun ButtonClose(
     Button(
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(40.dp)
             .background(
-                shape = RoundedCornerShape(size = 12.dp),
-                color = background_color_close
+                shape = RoundedCornerShape(size = 8.dp),
+                color = background_color_collect
             ),
         colors = ButtonDefaults.buttonColors(
-            containerColor = background_color_close
+            containerColor = background_color_collect
         ),
         onClick = onClick
 
     ){
         Text(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .fillMaxWidth(),
             text = text,
             style = TextStyle(
-                fontSize = 20.sp,
-                lineHeight = 25.sp,
+                fontSize = 16.sp,
+                lineHeight = 16.sp,
                 fontWeight = FontWeight(800),
                 color = Color.White,
                 fontFamily = FontFamily(Font(Res.font.mont_bold)),
