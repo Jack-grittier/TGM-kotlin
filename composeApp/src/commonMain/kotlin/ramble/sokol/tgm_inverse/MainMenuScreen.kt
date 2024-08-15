@@ -82,6 +82,7 @@ import tgminverse.composeapp.generated.resources.close
 import tgminverse.composeapp.generated.resources.disconnect
 import tgminverse.composeapp.generated.resources.icon_active
 import tgminverse.composeapp.generated.resources.icon_bb
+import tgminverse.composeapp.generated.resources.icon_liderboard
 import tgminverse.composeapp.generated.resources.icon_line_wallet
 import tgminverse.composeapp.generated.resources.icon_logo_splash_screen
 import tgminverse.composeapp.generated.resources.icon_mining
@@ -89,6 +90,7 @@ import tgminverse.composeapp.generated.resources.icon_musicality
 import tgminverse.composeapp.generated.resources.icon_tasks
 import tgminverse.composeapp.generated.resources.image_background_splash_screen
 import tgminverse.composeapp.generated.resources.image_line
+import tgminverse.composeapp.generated.resources.liderboard
 import tgminverse.composeapp.generated.resources.mining_navbar
 import tgminverse.composeapp.generated.resources.mont_bold
 import tgminverse.composeapp.generated.resources.mont_regular
@@ -124,13 +126,12 @@ class MainMenuScreen : Screen {
                         .background(background_screens)
                         .clip(RoundedCornerShape(topStart = 60.dp, topEnd = 60.dp))
                         .fillMaxWidth()
-                        .height(87.dp)
-                        ,
+                        .height(87.dp),
                     containerColor = background_navbar
                 ){
 
                     NavigationBarItem(
-                        modifier = Modifier.padding(start = 30.dp),
+                        modifier = Modifier.padding(start = 20.dp),
                         selected = selectedItem == 0,
                         onClick = {
                             selectedItem = 0
@@ -171,7 +172,7 @@ class MainMenuScreen : Screen {
                         icon = {
                             Icon(
                                 modifier = Modifier
-                                    .width(44.dp),
+                                    .width(33.dp),
                                 painter = painterResource(Res.drawable.icon_mining),
                                 contentDescription = "Mining",
                                 tint = if (selectedItem == 1) Color.White else icon_navbar
@@ -196,7 +197,6 @@ class MainMenuScreen : Screen {
                     )
 
                     NavigationBarItem(
-                        modifier = Modifier.padding(end = 30.dp),
                         selected = selectedItem == 2,
                         onClick = {
                             selectedItem = 2
@@ -229,6 +229,39 @@ class MainMenuScreen : Screen {
                             )
                     )
 
+                    NavigationBarItem(
+                        modifier = Modifier.padding(end = 20.dp),
+                        selected = selectedItem == 3,
+                        onClick = {
+                            selectedItem = 3
+                        },
+                        icon = {
+                            Icon(
+                                modifier = Modifier
+                                    .height(20.dp),
+                                painter = painterResource(Res.drawable.icon_liderboard),
+                                contentDescription = "Liderboard",
+                                tint = if (selectedItem == 3) Color.White else icon_navbar
+                            )
+                        },
+                        label = {
+                            Text(
+                                text = stringResource(Res.string.liderboard),
+                                color = if (selectedItem == 3) Color.White else text_navbar,
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    lineHeight = 16.sp,
+                                    fontFamily = FontFamily(Font(Res.font.mont_bold)),
+                                    fontWeight = FontWeight(700)
+                                )
+                            )
+                        },
+                        colors = androidx.compose.material3.NavigationBarItemDefaults
+                            .colors(
+                                indicatorColor = Color.Transparent
+                            )
+                    )
+
                 }
             }
         ) { innerPadding ->
@@ -236,6 +269,7 @@ class MainMenuScreen : Screen {
                 0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding)))
                 1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding)))
                 2 -> Navigator(TasksScreen(modifier = Modifier.padding(innerPadding)))
+                3 -> Navigator(LiderboardScreen(modifier = Modifier.padding(innerPadding)))
             }
 
         }
