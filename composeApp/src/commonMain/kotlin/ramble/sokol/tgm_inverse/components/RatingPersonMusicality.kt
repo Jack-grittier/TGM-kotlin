@@ -30,7 +30,6 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.web.dom.Col
 import ramble.sokol.tgm_inverse.theme.color_text_price_rating
-import ramble.sokol.tgm_inverse.theme.color_text_price_rating_bb
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.icon_arrow_to_game

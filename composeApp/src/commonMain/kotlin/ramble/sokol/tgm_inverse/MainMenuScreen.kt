@@ -131,7 +131,7 @@ class MainMenuScreen : Screen {
                 ){
 
                     NavigationBarItem(
-                        modifier = Modifier.padding(start = 20.dp),
+                        //modifier = Modifier.padding(start = 20.dp),
                         selected = selectedItem == 0,
                         onClick = {
                             selectedItem = 0
@@ -153,7 +153,7 @@ class MainMenuScreen : Screen {
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                     lineHeight = 16.sp,
-                                    fontFamily = FontFamily(Font(Res.font.mont_bold)),
+                                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
                                     fontWeight = FontWeight(700)
                                 )
                             )
@@ -183,10 +183,10 @@ class MainMenuScreen : Screen {
                                 text = stringResource(Res.string.mining_navbar),
                                 color = if (selectedItem == 1) Color.White else text_navbar,
                                 style = TextStyle(
-                                    fontSize = 13.sp,
+                                    fontSize = 12.sp,
                                     lineHeight = 16.sp,
-                                    fontFamily = FontFamily(Font(Res.font.mont_bold)),
-                                    fontWeight = FontWeight(800)
+                                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                    fontWeight = FontWeight(700)
                                 )
                             )
                         },
@@ -218,7 +218,7 @@ class MainMenuScreen : Screen {
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                     lineHeight = 16.sp,
-                                    fontFamily = FontFamily(Font(Res.font.mont_bold)),
+                                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
                                     fontWeight = FontWeight(700)
                                 )
                             )
@@ -230,7 +230,7 @@ class MainMenuScreen : Screen {
                     )
 
                     NavigationBarItem(
-                        modifier = Modifier.padding(end = 20.dp),
+                        //modifier = Modifier.padding(end = 20.dp),
                         selected = selectedItem == 3,
                         onClick = {
                             selectedItem = 3
@@ -251,7 +251,7 @@ class MainMenuScreen : Screen {
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                     lineHeight = 16.sp,
-                                    fontFamily = FontFamily(Font(Res.font.mont_bold)),
+                                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
                                     fontWeight = FontWeight(700)
                                 )
                             )
