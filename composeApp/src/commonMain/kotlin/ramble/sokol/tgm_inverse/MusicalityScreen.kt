@@ -27,14 +27,20 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import ramble.sokol.tgm_inverse.components.PhotoFirstRating
+import ramble.sokol.tgm_inverse.components.PhotoOtherRating
 import ramble.sokol.tgm_inverse.components.RatingPersonMusicality
+import ramble.sokol.tgm_inverse.theme.background_copy_link
 import ramble.sokol.tgm_inverse.theme.background_screens
+import ramble.sokol.tgm_inverse.theme.background_text_link
+import ramble.sokol.tgm_inverse.theme.background_text_link_2
 import ramble.sokol.tgm_inverse.theme.background_wallet_item
 import ramble.sokol.tgm_inverse.theme.color_background_referal
 import ramble.sokol.tgm_inverse.theme.color_hello_peterburg
@@ -43,6 +49,7 @@ import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.icon_active
 import tgminverse.composeapp.generated.resources.icon_arrow_to_game
+import tgminverse.composeapp.generated.resources.icon_copy_link
 import tgminverse.composeapp.generated.resources.image_line
 import tgminverse.composeapp.generated.resources.image_play_game
 import tgminverse.composeapp.generated.resources.mont_regular
@@ -142,6 +149,63 @@ class MusicalityScreen(
 
                         }
 
+                        Spacer(modifier = Modifier.padding(vertical = 3.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(55.dp)
+                                    .clip(RoundedCornerShape(15.dp))
+                                    .background(background_text_link),
+                                contentAlignment = Alignment.Center
+                            ) {
+
+                                Text(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 16.dp, bottom = 16.dp, start = 17.dp, end = 8.dp),
+                                    text = "tme/fgr34tthttgh",
+                                    style = TextStyle(
+                                        fontSize = 16.sp,
+                                        lineHeight = 24.sp,
+                                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                        fontWeight = FontWeight(700),
+                                        color = background_text_link_2,
+                                        textDecoration = TextDecoration.Underline,
+                                        textAlign = TextAlign.Start
+                                    )
+                                )
+
+                            }
+
+                            Spacer(modifier = Modifier.padding(4.5.dp))
+
+                            Box(
+                                modifier = Modifier
+                                    .width(55.dp)
+                                    .height(55.dp)
+                                    .clip(RoundedCornerShape(18.dp))
+                                    .background(background_copy_link),
+                                contentAlignment = Alignment.Center
+                            ) {
+
+                                Image(
+                                    modifier = Modifier.height(25.dp).width(25.dp),
+                                    painter = painterResource(Res.drawable.icon_copy_link),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop
+                                )
+
+                            }
+
+                        }
+
                     }
 
                     Spacer(modifier = Modifier.padding(vertical = 3.dp))
@@ -224,6 +288,23 @@ class MusicalityScreen(
                         textAlign = TextAlign.Start,
                     )
                 )
+
+                Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
+                Row (
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically ,
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    PhotoOtherRating(2, "Mahji", "5640")
+
+                    PhotoFirstRating("Alexa12", "5076")
+
+                    PhotoOtherRating(3, "Mahji", "5640")
+
+                }
+
+
 
                 Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
