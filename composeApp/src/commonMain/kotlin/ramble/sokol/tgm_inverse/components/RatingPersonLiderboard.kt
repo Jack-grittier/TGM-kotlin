@@ -28,17 +28,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.web.dom.Col
 import ramble.sokol.tgm_inverse.theme.color_text_price_rating
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.icon_arrow_to_game
 import tgminverse.composeapp.generated.resources.icon_bb_rating
+import tgminverse.composeapp.generated.resources.liderboard
 import tgminverse.composeapp.generated.resources.mont_regular
 import tgminverse.composeapp.generated.resources.test_photo
 
 @Composable
-fun RatingPersonMusicality(
+fun RatingPersonLiderboard(
+    number: String,
     price: String,
     name: String
 ){
@@ -48,6 +51,20 @@ fun RatingPersonMusicality(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
+
+        Text(
+            text = number,
+            style = TextStyle(
+                fontSize = 16.sp,
+                lineHeight = 16.sp,
+                fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                fontWeight = FontWeight(400),
+                color = Color.White,
+                textAlign = TextAlign.Start,
+            )
+        )
+
+        Spacer(modifier = Modifier.padding(horizontal = 11.dp))
 
         Surface(
             modifier = Modifier.size(55.dp),
@@ -103,6 +120,7 @@ fun RatingPersonMusicality(
 
                 Image(
                     modifier = Modifier
+                        .height(8.5.dp)
                         .width(18.dp),
                     painter = painterResource(Res.drawable.icon_bb_rating),
                     contentDescription = "icon_bb_rating"

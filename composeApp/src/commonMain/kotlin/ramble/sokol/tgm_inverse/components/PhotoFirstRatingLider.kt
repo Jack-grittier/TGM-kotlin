@@ -31,32 +31,30 @@ import ramble.sokol.tgm_inverse.theme.color_text_price_rating
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.icon_bb_rating
 import tgminverse.composeapp.generated.resources.icon_first
-import tgminverse.composeapp.generated.resources.icon_second
-import tgminverse.composeapp.generated.resources.icon_third
+import tgminverse.composeapp.generated.resources.icon_first_liderboard
 import tgminverse.composeapp.generated.resources.mont_bold
 import tgminverse.composeapp.generated.resources.mont_regular
 import tgminverse.composeapp.generated.resources.test_photo
 
 @Composable
-fun PhotoOtherRating(
-    grade: Int,
+fun PhotoFirstRatingLider(
     name: String,
     price: String
 ){
 
     Column(
-        modifier = Modifier.width(120.dp),
+        modifier = Modifier.width(130.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Box(
-            modifier = Modifier.height(70.dp).width(70.dp),
+            modifier = Modifier.height(100.dp).width(100.dp),
             contentAlignment = Alignment.TopEnd
         ) {
 
             Surface(
-                modifier = Modifier.size(70.dp),
+                modifier = Modifier.size(100.dp),
                 shape = CircleShape
             ) {
                 Image(
@@ -68,20 +66,20 @@ fun PhotoOtherRating(
             }
 
             Image(
-                modifier = Modifier.height(23.dp).width(23.dp),
-                painter = if (grade == 2) painterResource(Res.drawable.icon_second) else painterResource(Res.drawable.icon_third),
+                modifier = Modifier.padding(start = 35.dp, bottom = 10.dp),
+                painter = painterResource(Res.drawable.icon_first_liderboard),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
 
         }
 
-        Spacer(modifier = Modifier.padding(top = 7.dp))
+        Spacer(modifier = Modifier.padding(top = 8.5.dp))
 
         Text(
             text = name,
             style = TextStyle(
-                fontSize = 12.sp,
+                fontSize = 16.sp,
                 fontFamily = FontFamily(Font(Res.font.mont_regular)),
                 fontWeight = FontWeight(700),
                 color = Color.White,

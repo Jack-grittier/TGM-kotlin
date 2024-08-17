@@ -94,6 +94,7 @@ fun PhotoFirstRating(
         ){
 
             Text(
+                modifier = Modifier.padding(top = 2.dp),
                 text = price,
                 style = TextStyle(
                     fontSize = 12.sp,

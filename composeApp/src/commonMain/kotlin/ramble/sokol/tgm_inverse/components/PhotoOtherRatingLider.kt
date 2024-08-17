@@ -38,7 +38,7 @@ import tgminverse.composeapp.generated.resources.mont_regular
 import tgminverse.composeapp.generated.resources.test_photo
 
 @Composable
-fun PhotoOtherRating(
+fun PhotoOtherRatingLider(
     grade: Int,
     name: String,
     price: String
