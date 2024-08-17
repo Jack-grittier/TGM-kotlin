@@ -137,7 +137,7 @@ class MiningScreen (
                             contentDescription = "imageLine"
                         )
 
-                        AnimatedArcProgressBar(0.2f)
+                        ProgressBarDemo()
 
                     }
 

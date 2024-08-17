@@ -15,7 +15,7 @@ import kotlinx.coroutines.delay
 @OptIn(InternalFlexibleApi::class)
 @Composable
 fun AnimatedArcProgressBar(progress: Float) {
-    val arcThickness = 15.dp.toPx() // Толщина прогресс-бара
+    val arcThickness = 20.dp.toPx() // Толщина прогресс-бара
     val innerColor = Color.Gray // Внутренний цвет
     val progressColor = Color.White // Цвет заполнения
 
