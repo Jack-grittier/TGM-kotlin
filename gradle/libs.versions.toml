@@ -7,6 +7,7 @@ coil = "3.0.0-alpha08"
 kotlinx-coroutines = "1.9.0-RC"
 moko-mvvm = "0.16.1"
 ktor = "3.0.0-beta-2"
+tg = "15.0.0"
 kotlinx-serialization = "1.7.1"
 kotlinx-datetime = "0.6.0"
 multiplatformSettings = "1.1.1"
@@ -27,6 +28,7 @@ ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+tg-api = { module = "dev.inmo:tgbotapi.webapps", version.ref = "tg" }
 ktor-client-curl = { module = "io.ktor:ktor-client-curl", version.ref = "ktor" }
 ktor-client-winhttp = { module = "io.ktor:ktor-client-winhttp", version.ref = "ktor" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }

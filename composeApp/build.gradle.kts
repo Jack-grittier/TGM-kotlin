@@ -46,6 +46,7 @@ kotlin {
         jsMain.dependencies {
             implementation(compose.html.core)
             implementation(libs.ktor.client.js)
+            implementation(libs.tg.api)
         }
 
     }
