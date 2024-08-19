@@ -27,6 +27,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -189,13 +193,17 @@ class MiningScreen (
 
             val dg = webApp.initData
 
+            var phone by remember {
+                mutableStateOf(dg)
+            }
+
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)
                     .border(width = 5.dp, color = Color.White, shape = RoundedCornerShape(15.dp)),
                 shape = RoundedCornerShape(15.dp),
-                value = dg,
+                value = phone,
                 textStyle = TextStyle(
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
@@ -204,11 +212,11 @@ class MiningScreen (
                     color = Color.Black,
                 ),
                 onValueChange = {
-
+                    phone = it
                 },
                 label = {
                     Text(
-                        dg,
+                        "",
                         style = TextStyle(
                             color = Color.Green,
                             fontFamily = FontFamily(Font(Res.font.mont_regular)),
