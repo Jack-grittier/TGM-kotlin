@@ -65,10 +65,6 @@ class SplashScreen : Screen {
 
     @Composable
     override fun Content() {
-        val scope  = rememberCoroutineScope()
-        val token = "7181082387:AAFTQy6Vz8jbRr_-xHcEN1jjt9sz88kdsEY"
-        val chatId = "1132709306" // ID пользователя или группы
-        val message = "Hello from Kotlin Compose Multiplatform!"
         val navigator = LocalNavigator.current
         val transition = rememberInfiniteTransition(label = "")
         val alpha by transition.animateFloat(
@@ -85,9 +81,6 @@ class SplashScreen : Screen {
         LaunchedEffect(
             key1 = true
         ) {
-            scope.launch {
-                sendMessage(token, chatId, message)
-            }
             delay(3000L)
             navigator?.push(MainMenuScreen())
 //            if (settings.loadToken() != null){
@@ -132,39 +125,6 @@ class SplashScreen : Screen {
 
         }
 
-    }
-
-    @OptIn(InternalAPI::class)
-    suspend fun sendMessage(token: String, chatId: String, message: String) {
-        val client = HttpClient {
-
-            install(HttpTimeout) {
-                requestTimeoutMillis = 5000L
-                connectTimeoutMillis = 15000L
-                socketTimeoutMillis = 15000L
-            }
-
-            install(DefaultRequest) {
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-                //add this accept() for accept Json Body or Raw Json as Request Body
-                accept(ContentType.Application.Json)
-            }
-        }
-
-        try {
-            val response: String = client.post("https://api.telegram.org/bot$token/sendMessage") {
-                contentType(ContentType.Application.Json)
-                body = mapOf(
-                    "chat_id" to chatId,
-                    "text" to message
-                )
-            }.toString()
-            println("Response: $response")
-        } catch (e: Exception) {
-            println("Error sending message: ${e.message}")
-        } finally {
-            client.close()
-        }
     }
 
 }
