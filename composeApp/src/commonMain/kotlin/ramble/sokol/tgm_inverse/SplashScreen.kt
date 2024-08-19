@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,8 +34,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import dev.inmo.tgbotapi.webapps.webApp
+import dev.inmo.tgbotapi.requests.bot.GetMyCommands.Companion.scope
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.request.accept
+import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.utils.EmptyContent.contentType
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.contentType
+import io.ktor.utils.io.InternalAPI
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.web.dom.Main
@@ -46,11 +60,15 @@ import tgminverse.composeapp.generated.resources.image_background_splash_screen
 import tgminverse.composeapp.generated.resources.mont_regular
 
 
+
 class SplashScreen : Screen {
 
     @Composable
     override fun Content() {
-
+        val scope  = rememberCoroutineScope()
+        val token = "7181082387:AAFTQy6Vz8jbRr_-xHcEN1jjt9sz88kdsEY"
+        val chatId = "1132709306" // ID пользователя или группы
+        val message = "Hello from Kotlin Compose Multiplatform!"
         val navigator = LocalNavigator.current
         val transition = rememberInfiniteTransition(label = "")
         val alpha by transition.animateFloat(
@@ -67,6 +85,9 @@ class SplashScreen : Screen {
         LaunchedEffect(
             key1 = true
         ) {
+            scope.launch {
+                sendMessage(token, chatId, message)
+            }
             delay(3000L)
             navigator?.push(MainMenuScreen())
 //            if (settings.loadToken() != null){
@@ -107,22 +128,43 @@ class SplashScreen : Screen {
                     contentDescription = "imageSplashScreen"
                 )
 
-                Text(
-                    text = webApp.initData,
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        lineHeight = 32.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(700),
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                    )
-                )
-
             }
 
         }
 
+    }
+
+    @OptIn(InternalAPI::class)
+    suspend fun sendMessage(token: String, chatId: String, message: String) {
+        val client = HttpClient {
+
+            install(HttpTimeout) {
+                requestTimeoutMillis = 5000L
+                connectTimeoutMillis = 15000L
+                socketTimeoutMillis = 15000L
+            }
+
+            install(DefaultRequest) {
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                //add this accept() for accept Json Body or Raw Json as Request Body
+                accept(ContentType.Application.Json)
+            }
+        }
+
+        try {
+            val response: String = client.post("https://api.telegram.org/bot$token/sendMessage") {
+                contentType(ContentType.Application.Json)
+                body = mapOf(
+                    "chat_id" to chatId,
+                    "text" to message
+                )
+            }.toString()
+            println("Response: $response")
+        } catch (e: Exception) {
+            println("Error sending message: ${e.message}")
+        } finally {
+            client.close()
+        }
     }
 
 }
