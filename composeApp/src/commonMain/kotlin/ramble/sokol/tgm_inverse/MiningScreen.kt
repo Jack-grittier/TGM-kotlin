@@ -5,8 +5,11 @@ import ProgressBarDemo
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +25,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -48,6 +52,7 @@ import dev.inmo.tgbotapi.webapps.webApp
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import ramble.sokol.tgm_inverse.components.PlaylistItem
 import ramble.sokol.tgm_inverse.theme.background_screens
 import ramble.sokol.tgm_inverse.theme.center_circle_playlist
 import ramble.sokol.tgm_inverse.theme.center_circle_playlist_shadow
@@ -191,42 +196,50 @@ class MiningScreen (
                 )
             )
 
-            val dg = webApp.initData
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-            var phone by remember {
-                mutableStateOf(dg)
-            }
-
-            TextField(
+            Row (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(60.dp)
-                    .border(width = 5.dp, color = Color.White, shape = RoundedCornerShape(15.dp)),
-                shape = RoundedCornerShape(15.dp),
-                value = phone,
-                textStyle = TextStyle(
-                    fontSize = 16.sp,
-                    lineHeight = 24.sp,
-                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                    fontWeight = FontWeight(600),
-                    color = Color.Black,
-                ),
-                onValueChange = {
-                    phone = it
-                },
-                label = {
-                    Text(
-                        "",
-                        style = TextStyle(
-                            color = Color.Green,
-                            fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                            lineHeight = 24.sp,
-                            fontWeight = FontWeight(500)
-                        )
-                    ) },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
-            )
+                    .horizontalScroll(rememberScrollState()),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+            ){
+
+                Spacer(modifier = Modifier.padding(start = 16.dp))
+
+                PlaylistItem(
+                    "Кис Кис Кис",
+                    "Монеточка",
+                    "200"
+                )
+
+                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                PlaylistItem(
+                    "Последнее лето детства kdgkj gkljg kljgdf",
+                    "Мега пачка чипсов с крабом",
+                    "200"
+                )
+                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                PlaylistItem(
+                    "Кис Кис Кис",
+                    "Монеточка",
+                    "200"
+                )
+
+                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                PlaylistItem(
+                    "Кис Кис Кис",
+                    "Монеточка",
+                    "200"
+                )
+
+
+            }
+
         }
 
     }

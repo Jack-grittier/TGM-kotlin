@@ -57,10 +57,14 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorContent
+import coil3.ImageLoader
+import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
 import com.skydoves.flexible.bottomsheet.material.FlexibleBottomSheet
 import com.skydoves.flexible.core.FlexibleSheetSize
 import com.skydoves.flexible.core.FlexibleSheetValue
 import com.skydoves.flexible.core.rememberFlexibleBottomSheetState
+import dev.inmo.tgbotapi.webapps.webApp
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -103,6 +107,9 @@ import tgminverse.composeapp.generated.resources.test_photo
 class MainMenuScreen : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
+    private val name = webApp.initDataUnsafe.user!!.username
+    private val photoUrl = webApp.initDataUnsafe.user!!.photoUrl
+
 
     @Composable
     override fun Content() {
@@ -114,6 +121,7 @@ class MainMenuScreen : Screen {
         if (clickSheet.value == 1) {
             bottomSheet()
         }
+
 
         Scaffold(
             modifier = Modifier.background(background_screens),
@@ -455,12 +463,21 @@ class MainMenuScreen : Screen {
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
                     )
+
+//                    AsyncImage(
+//                        model = photoUrl,
+//                        contentDescription = null,
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentScale = ContentScale.Crop,
+//                        imageLoader = ImageLoader(null)
+//                    )
+
                 }
 
                 Spacer(modifier = Modifier.padding(start = 6.dp))
 
                 Text(
-                    text = "@azzvigayo",
+                    text = name.toString(),
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,

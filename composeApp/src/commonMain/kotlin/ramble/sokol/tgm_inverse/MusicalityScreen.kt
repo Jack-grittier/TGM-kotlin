@@ -2,6 +2,7 @@ package ramble.sokol.tgm_inverse
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -63,6 +65,8 @@ class MusicalityScreen(
 
     @Composable
     override fun Content() {
+
+        val navigator = LocalNavigator.current
 
         Column(
             modifier = modifier
@@ -222,7 +226,10 @@ class MusicalityScreen(
                         .fillMaxWidth()
                         .height(88.dp)
                         .clip(RoundedCornerShape(26.dp))
-                        .background(color_background_referal),
+                        .background(color_background_referal)
+                        .clickable {
+                            navigator?.push(GameScreen())
+                        },
                     contentAlignment = Alignment.Center
                 ) {
 
