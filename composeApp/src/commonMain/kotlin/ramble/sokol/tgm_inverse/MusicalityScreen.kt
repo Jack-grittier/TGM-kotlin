@@ -38,6 +38,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.skiko.ClipboardManager
 import ramble.sokol.tgm_inverse.components.PhotoFirstRating
 import ramble.sokol.tgm_inverse.components.PhotoOtherRating
 import ramble.sokol.tgm_inverse.components.RatingPersonMusicality
@@ -67,6 +68,8 @@ class MusicalityScreen(
     override fun Content() {
 
         val navigator = LocalNavigator.current
+//        val context = LocalContext.current
+//        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
         Column(
             modifier = modifier
@@ -198,7 +201,11 @@ class MusicalityScreen(
                                     .width(55.dp)
                                     .height(55.dp)
                                     .clip(RoundedCornerShape(18.dp))
-                                    .background(background_copy_link),
+                                    .background(background_copy_link)
+                                    .clickable {
+//                                        val clip = ClipData.newPlainText("Copied Text", textToCopy)
+//                                        clipboard.setPrimaryClip(clip)
+                                    },
                                 contentAlignment = Alignment.Center
                             ) {
 

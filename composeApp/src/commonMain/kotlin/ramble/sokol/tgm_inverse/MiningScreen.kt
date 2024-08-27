@@ -217,8 +217,8 @@ class MiningScreen (
                 Spacer(modifier = Modifier.padding(horizontal = 4.dp))
 
                 PlaylistItem(
-                    "Последнее лето детства kdgkj gkljg kljgdf",
-                    "Мега пачка чипсов с крабом",
+                    "Последнее лето детства",
+                    "Мега пачка",
                     "200"
                 )
                 Spacer(modifier = Modifier.padding(horizontal = 4.dp))
