@@ -64,9 +64,13 @@ import tgminverse.composeapp.generated.resources.icon_logo_splash_screen
 import tgminverse.composeapp.generated.resources.image_background_splash_screen
 import tgminverse.composeapp.generated.resources.mont_regular
 import androidx.compose.runtime.remember
+import cafe.adriel.voyager.navigator.Navigator
 import dev.inmo.tgbotapi.webapps.webApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreateResponse
+import ramble.sokol.tgm_inverse.model.util.ApiRepository
 
 
 class SplashScreen : Screen {
@@ -74,11 +78,14 @@ class SplashScreen : Screen {
     private lateinit var initData: MutableState<String>
     private lateinit var loading: MutableState<Boolean>
     private lateinit var userData: MutableState<WebAppUser?>
+    private lateinit var apiRepo: ApiRepository
+    private lateinit var navigator: Navigator
 
     @Composable
     override fun Content() {
 
         val scope  = rememberCoroutineScope()
+        apiRepo = ApiRepository()
 
         initData = remember {
             mutableStateOf("")
@@ -92,33 +99,36 @@ class SplashScreen : Screen {
             mutableStateOf(null)
         }
 
-        val navigator = LocalNavigator.current
-//        val transition = rememberInfiniteTransition(label = "")
-//        val alpha by transition.animateFloat(
-//            initialValue = 0f,
-//            targetValue = 1f,
-//            animationSpec = infiniteRepeatable(
-//                animation = tween(
-//                    durationMillis = 3000
-//                ),
-//                repeatMode = RepeatMode.Reverse
-//            ), label = ""
-//        )
+        navigator = LocalNavigator.current!!
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(background_splash)
-                .windowInsetsPadding(WindowInsets.safeDrawing),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        if (loading.value == true){
 
-            Box(
+            val transition = rememberInfiniteTransition(label = "")
+            val alpha by transition.animateFloat(
+                initialValue = 0f,
+                targetValue = 1f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(
+                        durationMillis = 3000
+                    ),
+                    repeatMode = RepeatMode.Reverse
+                ), label = ""
+            )
+
+            Column(
                 modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
+                    .fillMaxSize()
+                    .background(background_splash)
+                    .windowInsetsPadding(WindowInsets.safeDrawing),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ){
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
 
 //                Image(
 //                    modifier = Modifier
@@ -127,39 +137,68 @@ class SplashScreen : Screen {
 //                    contentDescription = "imageSplashScreen"
 //                )
 
-                Image(
-                    modifier = Modifier
-                        .height(51.dp)
-                        .fillMaxWidth()
-                        //.alpha(alpha = alpha)
-                            ,
-                    painter = painterResource(Res.drawable.icon_logo_splash_screen),
-                    contentDescription = "imageSplashScreen"
-                )
+                    Image(
+                        modifier = Modifier
+                            .height(51.dp)
+                            .fillMaxWidth()
+                        .alpha(alpha = alpha)
+                        ,
+                        painter = painterResource(Res.drawable.icon_logo_splash_screen),
+                        contentDescription = "imageSplashScreen"
+                    )
+
+                }
 
             }
+
+                    LaunchedEffect(
+            key1 = true
+        ) {
+            delay(3000L)
+//            if (settings.loadToken() != null){
+//                navigator?.push(AreasScreen())
+//            }else{
+//                navigator?.push(LoginScreen())
+//            }
+                        navigator?.push(MainMenuScreen(userData.value!!))
+        }
 
         }
             scope.launch {
                 userData.value = webApp.initDataUnsafe.user
-                navigator?.push(MainMenuScreen(userData.value!!))
             }
 //            withContext(Dispatchers.Default) {
 //                initData.value = webApp.initData
 //            }
 
 
-//        LaunchedEffect(
-//            key1 = true
-//        ) {
-//            delay(3000L)
-////            if (settings.loadToken() != null){
-////                navigator?.push(AreasScreen())
-////            }else{
-////                navigator?.push(LoginScreen())
-////            }
-//        }
+    }
 
+    private suspend fun getInitData(){
+        initData.value = webApp.initData
+        getUserInfo()
+    }
+
+    private suspend fun getUserInfo(){
+        userData.value = webApp.initDataUnsafe.user
+        val userEntityCreate = UserEntityCreate(
+            initData = initData.value,
+            id = userData.value!!.id.toString().toLong(),
+            username = userData.value!!.username.toString(),
+            description = "",
+            firstName = userData.value!!.firstName.toString(),
+            lastName = userData.value!!.lastName.toString(),
+            birthDate = "",
+            languageCode = userData.value!!.languageCode.toString(),
+            isPremium = userData.value!!.is_premium!!,
+            photoURL = userData.value!!.photoUrl.toString(),
+        )
+        createUser(userEntityCreate)
+    }
+
+    private suspend fun createUser(userEntityCreate: UserEntityCreate){
+        val body = apiRepo.createUser(userEntityCreate)
+        loading.value = true
     }
 
 }

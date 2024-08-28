@@ -14,3 +14,4 @@ xcuserdata/
 Pods/
 *.jks
 *yarn.lock
+composeApp/src/commonMain/kotlin/ramble/sokol/tgm_inverse/model/util/ApiRoutes.kt

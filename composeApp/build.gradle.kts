@@ -29,11 +29,15 @@ kotlin {
             implementation(libs.ktor.core)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.serialization)
+            implementation(libs.ktor.logging)
             implementation(libs.multiplatformSettings)
+            implementation(libs.ktor.client.content.negotiation)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.bottomsheet.material3)
             implementation(libs.bottomsheet.material)
+            implementation(libs.kamel)
         }
 
         commonTest.dependencies {

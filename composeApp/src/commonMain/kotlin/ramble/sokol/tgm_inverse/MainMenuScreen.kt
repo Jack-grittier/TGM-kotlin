@@ -66,6 +66,8 @@ import com.skydoves.flexible.core.FlexibleSheetValue
 import com.skydoves.flexible.core.rememberFlexibleBottomSheetState
 import dev.inmo.tgbotapi.webapps.WebAppUser
 import dev.inmo.tgbotapi.webapps.webApp
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -468,12 +470,17 @@ class MainMenuScreen(
                     )
 
 //                    AsyncImage(
-//                        model = photoUrl,
+//                        model = webAppUser.photoUrl,
 //                        contentDescription = null,
 //                        modifier = Modifier.fillMaxSize(),
 //                        contentScale = ContentScale.Crop,
 //                        imageLoader = ImageLoader(null)
 //                    )
+
+                    KamelImage(
+                        resource = asyncPainterResource(data = webAppUser.photoUrl!!),
+                        contentDescription = "description"
+                    )
 
                 }
 
