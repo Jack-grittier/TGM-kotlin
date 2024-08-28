@@ -142,9 +142,9 @@ class SplashScreen : Screen {
 
         LaunchedEffect(Unit) {
             loading.value = true
-            scope.launch {
-                userData.value = webApp.initDataUnsafe.user
-            }
+//            scope.launch {
+//                userData.value = webApp.initDataUnsafe.user
+//            }
             loading.value = false
 
 //            withContext(Dispatchers.Default) {
