@@ -93,17 +93,17 @@ class SplashScreen : Screen {
         }
 
         val navigator = LocalNavigator.current
-        val transition = rememberInfiniteTransition(label = "")
-        val alpha by transition.animateFloat(
-            initialValue = 0f,
-            targetValue = 1f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(
-                    durationMillis = 3000
-                ),
-                repeatMode = RepeatMode.Reverse
-            ), label = ""
-        )
+//        val transition = rememberInfiniteTransition(label = "")
+//        val alpha by transition.animateFloat(
+//            initialValue = 0f,
+//            targetValue = 1f,
+//            animationSpec = infiniteRepeatable(
+//                animation = tween(
+//                    durationMillis = 3000
+//                ),
+//                repeatMode = RepeatMode.Reverse
+//            ), label = ""
+//        )
 
         Column(
             modifier = Modifier
@@ -131,7 +131,8 @@ class SplashScreen : Screen {
                     modifier = Modifier
                         .height(51.dp)
                         .fillMaxWidth()
-                        .alpha(alpha = alpha),
+                        //.alpha(alpha = alpha)
+                            ,
                     painter = painterResource(Res.drawable.icon_logo_splash_screen),
                     contentDescription = "imageSplashScreen"
                 )
