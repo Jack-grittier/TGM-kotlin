@@ -364,7 +364,7 @@ class MusicalityScreen(
     fun copyToClipboard(text: String) {
         // Используем API для работы с буфером обмена
         window.navigator.clipboard.writeText(text).then(
-            { window.alert("Текст скопирован в буфер обмена!") },
+            { },
             { window.alert("Не удалось скопировать текст.") }
         )
     }

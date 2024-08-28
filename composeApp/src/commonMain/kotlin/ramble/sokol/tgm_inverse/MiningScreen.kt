@@ -159,7 +159,7 @@ class MiningScreen (
                 }
 
                 Text(
-                    modifier = Modifier.fillMaxWidth().padding(top = 15.dp),
+                    modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
                     text = "30646",
                     style = TextStyle(
                         fontSize = 32.sp,

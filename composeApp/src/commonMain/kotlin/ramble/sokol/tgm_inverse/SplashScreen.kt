@@ -20,8 +20,12 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -35,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import dev.inmo.tgbotapi.requests.bot.GetMyCommands.Companion.scope
+import dev.inmo.tgbotapi.webapps.WebAppUser
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
@@ -58,13 +63,31 @@ import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.icon_logo_splash_screen
 import tgminverse.composeapp.generated.resources.image_background_splash_screen
 import tgminverse.composeapp.generated.resources.mont_regular
-
+import androidx.compose.runtime.remember
+import dev.inmo.tgbotapi.webapps.webApp
 
 
 class SplashScreen : Screen {
 
+    private lateinit var initData: MutableState<String>
+    private lateinit var loading: MutableState<Boolean>
+    private lateinit var userData: MutableState<WebAppUser?>
+
     @Composable
     override fun Content() {
+
+        initData = remember {
+            mutableStateOf("")
+        }
+
+        loading = remember {
+            mutableStateOf(false)
+        }
+
+        userData = remember {
+            mutableStateOf(null)
+        }
+
         val navigator = LocalNavigator.current
         val transition = rememberInfiniteTransition(label = "")
         val alpha by transition.animateFloat(
@@ -78,17 +101,27 @@ class SplashScreen : Screen {
             ), label = ""
         )
 
-        LaunchedEffect(
-            key1 = true
-        ) {
-            delay(3000L)
-            navigator?.push(MainMenuScreen())
-//            if (settings.loadToken() != null){
-//                navigator?.push(AreasScreen())
-//            }else{
-//                navigator?.push(LoginScreen())
-//            }
+        LaunchedEffect(Unit) {
+            loading.value = true
+            initData.value = webApp.initData
+            userData.value = webApp.initDataUnsafe.user
+            loading.value = false
         }
+
+        if (loading.value == false){
+            navigator?.push(MainMenuScreen(userData.value!!))
+        }
+
+//        LaunchedEffect(
+//            key1 = true
+//        ) {
+//            delay(3000L)
+////            if (settings.loadToken() != null){
+////                navigator?.push(AreasScreen())
+////            }else{
+////                navigator?.push(LoginScreen())
+////            }
+//        }
 
         Column(
             modifier = Modifier

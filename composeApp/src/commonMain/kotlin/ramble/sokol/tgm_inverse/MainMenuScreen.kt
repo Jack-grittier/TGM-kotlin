@@ -64,6 +64,7 @@ import com.skydoves.flexible.bottomsheet.material.FlexibleBottomSheet
 import com.skydoves.flexible.core.FlexibleSheetSize
 import com.skydoves.flexible.core.FlexibleSheetValue
 import com.skydoves.flexible.core.rememberFlexibleBottomSheetState
+import dev.inmo.tgbotapi.webapps.WebAppUser
 import dev.inmo.tgbotapi.webapps.webApp
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
@@ -104,7 +105,9 @@ import tgminverse.composeapp.generated.resources.tasks_navbar
 import tgminverse.composeapp.generated.resources.test_photo
 
 
-class MainMenuScreen : Screen {
+class MainMenuScreen(
+    val webAppUser: WebAppUser
+) : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
     //private val name = webApp.initDataUnsafe.user!!.username
@@ -476,16 +479,16 @@ class MainMenuScreen : Screen {
 
                 Spacer(modifier = Modifier.padding(start = 6.dp))
 
-//                Text(
-//                    text = name.toString(),
-//                    style = TextStyle(
-//                        fontSize = 16.sp,
-//                        lineHeight = 21.sp,
-//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-//                        fontWeight = FontWeight(600),
-//                        color = Color.White,
-//                    )
-//                )
+                Text(
+                    text = webAppUser.username.toString(),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
             }
 
             Box (
