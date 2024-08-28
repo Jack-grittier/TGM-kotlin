@@ -78,6 +78,8 @@ class SplashScreen : Screen {
     @Composable
     override fun Content() {
 
+        val scope  = rememberCoroutineScope()
+
         initData = remember {
             mutableStateOf("")
         }
@@ -140,13 +142,15 @@ class SplashScreen : Screen {
 
         LaunchedEffect(Unit) {
             loading.value = true
-            withContext(Dispatchers.Main) {
-                initData.value = webApp.initData
-            }
-            withContext(Dispatchers.Main) {
+            scope.launch {
                 userData.value = webApp.initDataUnsafe.user
             }
             loading.value = false
+
+//            withContext(Dispatchers.Default) {
+//                initData.value = webApp.initData
+//            }
+
         }
 
         if (!loading.value){
