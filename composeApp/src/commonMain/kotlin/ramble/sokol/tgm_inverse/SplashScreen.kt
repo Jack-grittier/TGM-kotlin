@@ -139,23 +139,14 @@ class SplashScreen : Screen {
             }
 
         }
-
-        LaunchedEffect(Unit) {
-            loading.value = true
-//            scope.launch {
-//                userData.value = webApp.initDataUnsafe.user
-//            }
-            loading.value = false
-
+            scope.launch {
+                userData.value = webApp.initDataUnsafe.user
+                navigator?.push(MainMenuScreen(userData.value!!))
+            }
 //            withContext(Dispatchers.Default) {
 //                initData.value = webApp.initData
 //            }
 
-        }
-
-        if (!loading.value){
-            navigator?.push(MainMenuScreen(userData.value!!))
-        }
 
 //        LaunchedEffect(
 //            key1 = true
