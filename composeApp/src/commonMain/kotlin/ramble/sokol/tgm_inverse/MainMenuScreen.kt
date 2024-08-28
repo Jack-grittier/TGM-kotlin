@@ -107,8 +107,8 @@ import tgminverse.composeapp.generated.resources.test_photo
 class MainMenuScreen : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
-    private val name = webApp.initDataUnsafe.user!!.username
-    private val photoUrl = webApp.initDataUnsafe.user!!.photoUrl
+    //private val name = webApp.initDataUnsafe.user!!.username
+    //private val photoUrl = webApp.initDataUnsafe.user!!.photoUrl
 
 
     @Composable
@@ -425,8 +425,8 @@ class MainMenuScreen : Screen {
                     text = stringResource(Res.string.close)
                 ){
                     scope.launch {
-                        clickSheet.value = 0
                         sheetState.hide()
+                        clickSheet.value = 0
                     }
                 }
 
@@ -476,16 +476,16 @@ class MainMenuScreen : Screen {
 
                 Spacer(modifier = Modifier.padding(start = 6.dp))
 
-                Text(
-                    text = name.toString(),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
+//                Text(
+//                    text = name.toString(),
+//                    style = TextStyle(
+//                        fontSize = 16.sp,
+//                        lineHeight = 21.sp,
+//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+//                        fontWeight = FontWeight(600),
+//                        color = Color.White,
+//                    )
+//                )
             }
 
             Box (
@@ -521,7 +521,10 @@ class MainMenuScreen : Screen {
                     Image(
                         modifier = Modifier
                             .height(8.dp)
-                            .padding(horizontal = 8.dp),
+                            .padding(horizontal = 8.dp)
+                            .clickable {
+                                clickSheet.value = 1
+                            },
                         painter = painterResource(Res.drawable.icon_line_wallet),
                         contentDescription = "imageLine"
                     )
@@ -529,7 +532,10 @@ class MainMenuScreen : Screen {
                     Image(
                         modifier = Modifier
                             .width(48.dp)
-                            .padding(bottom = 2.dp),
+                            .padding(bottom = 2.dp)
+                            .clickable {
+                                clickSheet.value = 1
+                            },
                         painter = painterResource(Res.drawable.icon_bb),
                         contentDescription = "+bb"
                     )

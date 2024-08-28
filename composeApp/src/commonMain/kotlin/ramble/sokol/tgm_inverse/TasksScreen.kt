@@ -120,7 +120,7 @@ class TasksScreen(
                 price = "199"
             )
 
-            Spacer(modifier = Modifier.padding(top = 8.dp))
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
         }
 

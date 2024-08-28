@@ -159,7 +159,7 @@ class MiningScreen (
                 }
 
                 Text(
-                    modifier = Modifier.fillMaxWidth().padding(),
+                    modifier = Modifier.fillMaxWidth().padding(top = 15.dp),
                     text = "30646",
                     style = TextStyle(
                         fontSize = 32.sp,
@@ -217,8 +217,8 @@ class MiningScreen (
                 Spacer(modifier = Modifier.padding(horizontal = 4.dp))
 
                 PlaylistItem(
-                    "Последнее лето детства",
-                    "Мега пачка",
+                    "Спасти 10 детей, необязательно черных",
+                    "Мега пачка чипсов с крабом лееееейс",
                     "200"
                 )
                 Spacer(modifier = Modifier.padding(horizontal = 4.dp))
@@ -239,6 +239,8 @@ class MiningScreen (
 
 
             }
+
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
         }
 

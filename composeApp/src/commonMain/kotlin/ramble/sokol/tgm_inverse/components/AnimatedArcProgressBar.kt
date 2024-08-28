@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import com.skydoves.flexible.core.InternalFlexibleApi
@@ -26,7 +27,7 @@ fun AnimatedArcProgressBar(progress: Float) {
             startAngle = 0f, // Начинаем с 0 градусов
             sweepAngle = 180f, // Заполняем 180 градусов
             useCenter = false,
-            style = Stroke(width = arcThickness)
+            style = Stroke(width = arcThickness, cap = StrokeCap.Round) // Круглые углы
         )
 
         // Рисуем заполненную дугу
@@ -35,10 +36,11 @@ fun AnimatedArcProgressBar(progress: Float) {
             startAngle = 0f, // Начинаем с 0 градусов
             sweepAngle = 180f * progress, // Заполняем в зависимости от прогресса
             useCenter = false,
-            style = Stroke(width = arcThickness)
+            style = Stroke(width = arcThickness, cap = StrokeCap.Round) // Круглые углы
         )
     }
 }
+
 
 @Composable
 fun ProgressBarDemo() {

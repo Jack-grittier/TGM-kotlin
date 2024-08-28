@@ -26,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import kotlinx.browser.window
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -203,8 +206,7 @@ class MusicalityScreen(
                                     .clip(RoundedCornerShape(18.dp))
                                     .background(background_copy_link)
                                     .clickable {
-//                                        val clip = ClipData.newPlainText("Copied Text", textToCopy)
-//                                        clipboard.setPrimaryClip(clip)
+                                        copyToClipboard("Ссылка")
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
@@ -353,7 +355,18 @@ class MusicalityScreen(
 
             }
 
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
         }
 
     }
+
+    fun copyToClipboard(text: String) {
+        // Используем API для работы с буфером обмена
+        window.navigator.clipboard.writeText(text).then(
+            { window.alert("Текст скопирован в буфер обмена!") },
+            { window.alert("Не удалось скопировать текст.") }
+        )
+    }
+
 }

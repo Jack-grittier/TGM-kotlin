@@ -23,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
@@ -121,7 +122,8 @@ fun PlaylistItem(
                     color = Color.White,
                 ),
                 textAlign = TextAlign.Start,
-                maxLines = 2
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
         }
 
@@ -137,6 +139,7 @@ fun PlaylistItem(
                 color = background_text_author,
             ),
             maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
 
     }

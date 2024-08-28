@@ -101,11 +101,12 @@ class LiderboardScreen(
                 RatingPersonLiderboard(
                     i.toString(), "1000", "Baby"
                 )
-
-                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                if (i != 10) {
+                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                }
             }
 
-            Spacer(modifier = Modifier.padding(top = 8.dp))
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
         }
 

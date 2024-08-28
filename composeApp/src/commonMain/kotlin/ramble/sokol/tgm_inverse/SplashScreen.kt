@@ -105,12 +105,12 @@ class SplashScreen : Screen {
                 contentAlignment = Alignment.Center
             ){
 
-                Image(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    painter = painterResource(Res.drawable.image_background_splash_screen),
-                    contentDescription = "imageSplashScreen"
-                )
+//                Image(
+//                    modifier = Modifier
+//                        .fillMaxWidth(),
+//                    painter = painterResource(Res.drawable.image_background_splash_screen),
+//                    contentDescription = "imageSplashScreen"
+//                )
 
                 Image(
                     modifier = Modifier
