@@ -53,6 +53,7 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import ramble.sokol.tgm_inverse.components.PlaylistItem
+import ramble.sokol.tgm_inverse.theme.background_airdrop
 import ramble.sokol.tgm_inverse.theme.background_screens
 import ramble.sokol.tgm_inverse.theme.center_circle_playlist
 import ramble.sokol.tgm_inverse.theme.center_circle_playlist_shadow
@@ -169,6 +170,50 @@ class MiningScreen (
                         color = Color.White,
                         textAlign = TextAlign.Center,
                     )
+                )
+            }
+
+            Spacer(modifier = Modifier.padding(top = 17.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(12.dp))
+                    .padding(horizontal = 16.dp)
+                    .background(background_airdrop),
+                contentAlignment = Alignment.Center
+            ) {
+
+                Text(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 10.dp),
+                    text = "Airdrop: 52:12:56",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 16.sp,
+                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                        fontWeight = FontWeight(400),
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                    )
+                )
+
+            }
+
+            Spacer(modifier = Modifier.padding(top = 17.dp))
+
+            Box(
+                modifier = Modifier
+                    .height(228.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(22.dp))
+            ) {
+
+                Image(
+                    painter = painterResource(Res.drawable.test_photo),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
                 )
             }
 

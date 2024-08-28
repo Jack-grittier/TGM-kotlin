@@ -187,7 +187,8 @@ class SplashScreen : Screen {
 
     private suspend fun getInitData(){
         initData.value = webApp.initData
-        getUserInfo()
+        navigator?.push(MainMenuScreen(userData.value!!))
+        //getUserInfo()
     }
 
     private suspend fun getUserInfo(){
@@ -210,7 +211,7 @@ class SplashScreen : Screen {
     private suspend fun createUser(userEntityCreate: UserEntityCreate){
         val body = apiRepo.createUser(userEntityCreate)
         loading.value = true
-        navigator?.push(MainMenuScreen(userData.value!!))
+        //
     }
 
 }
