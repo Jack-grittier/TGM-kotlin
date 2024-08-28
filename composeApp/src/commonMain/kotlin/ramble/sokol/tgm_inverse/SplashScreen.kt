@@ -1,5 +1,6 @@
 package ramble.sokol.tgm_inverse
 
+import ProgressBarDemo
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -89,17 +90,17 @@ class SplashScreen : Screen {
         }
 
         val navigator = LocalNavigator.current
-        val transition = rememberInfiniteTransition(label = "")
-        val alpha by transition.animateFloat(
-            initialValue = 0f,
-            targetValue = 1f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(
-                    durationMillis = 3000
-                ),
-                repeatMode = RepeatMode.Reverse
-            ), label = ""
-        )
+//        val transition = rememberInfiniteTransition(label = "")
+//        val alpha by transition.animateFloat(
+//            initialValue = 0f,
+//            targetValue = 1f,
+//            animationSpec = infiniteRepeatable(
+//                animation = tween(
+//                    durationMillis = 3000
+//                ),
+//                repeatMode = RepeatMode.Reverse
+//            ), label = ""
+//        )
 
         LaunchedEffect(Unit) {
             loading.value = true
@@ -108,8 +109,10 @@ class SplashScreen : Screen {
             loading.value = false
         }
 
-        if (loading.value == false){
+        if (!loading.value){
             navigator?.push(MainMenuScreen(userData.value!!))
+        }else{
+            ProgressBarDemo()
         }
 
 //        LaunchedEffect(
@@ -123,20 +126,20 @@ class SplashScreen : Screen {
 ////            }
 //        }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(background_splash)
-                .windowInsetsPadding(WindowInsets.safeDrawing),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ){
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .background(background_splash)
+//                .windowInsetsPadding(WindowInsets.safeDrawing),
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ){
+//
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxSize(),
+//                contentAlignment = Alignment.Center
+//            ){
 
 //                Image(
 //                    modifier = Modifier
@@ -145,18 +148,18 @@ class SplashScreen : Screen {
 //                    contentDescription = "imageSplashScreen"
 //                )
 
-                Image(
-                    modifier = Modifier
-                        .height(51.dp)
-                        .fillMaxWidth()
-                        .alpha(alpha = alpha),
-                    painter = painterResource(Res.drawable.icon_logo_splash_screen),
-                    contentDescription = "imageSplashScreen"
-                )
-
-            }
-
-        }
+//                Image(
+//                    modifier = Modifier
+//                        .height(51.dp)
+//                        .fillMaxWidth()
+//                        .alpha(alpha = alpha),
+//                    painter = painterResource(Res.drawable.icon_logo_splash_screen),
+//                    contentDescription = "imageSplashScreen"
+//                )
+//
+//            }
+//
+//        }
 
     }
 
