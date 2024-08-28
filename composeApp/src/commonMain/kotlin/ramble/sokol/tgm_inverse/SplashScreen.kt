@@ -101,69 +101,69 @@ class SplashScreen : Screen {
 
         navigator = LocalNavigator.current!!
 
-        if (loading.value == true){
-
-            val transition = rememberInfiniteTransition(label = "")
-            val alpha by transition.animateFloat(
-                initialValue = 0f,
-                targetValue = 1f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(
-                        durationMillis = 3000
-                    ),
-                    repeatMode = RepeatMode.Reverse
-                ), label = ""
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(background_splash)
-                    .windowInsetsPadding(WindowInsets.safeDrawing),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ){
-
-//                Image(
+//        if (loading.value == true){
+//
+//            val transition = rememberInfiniteTransition(label = "")
+//            val alpha by transition.animateFloat(
+//                initialValue = 0f,
+//                targetValue = 1f,
+//                animationSpec = infiniteRepeatable(
+//                    animation = tween(
+//                        durationMillis = 3000
+//                    ),
+//                    repeatMode = RepeatMode.Reverse
+//                ), label = ""
+//            )
+//
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .background(background_splash)
+//                    .windowInsetsPadding(WindowInsets.safeDrawing),
+//                verticalArrangement = Arrangement.Center,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ){
+//
+//                Box(
 //                    modifier = Modifier
-//                        .fillMaxWidth(),
-//                    painter = painterResource(Res.drawable.image_background_splash_screen),
-//                    contentDescription = "imageSplashScreen"
-//                )
-
-                    Image(
-                        modifier = Modifier
-                            .height(51.dp)
-                            .fillMaxWidth()
-                        .alpha(alpha = alpha)
-                        ,
-                        painter = painterResource(Res.drawable.icon_logo_splash_screen),
-                        contentDescription = "imageSplashScreen"
-                    )
-
-                }
-
-            }
-
-                    LaunchedEffect(
-            key1 = true
-        ) {
-            delay(3000L)
-//            if (settings.loadToken() != null){
-//                navigator?.push(AreasScreen())
-//            }else{
-//                navigator?.push(LoginScreen())
+//                        .fillMaxSize(),
+//                    contentAlignment = Alignment.Center
+//                ){
+//
+////                Image(
+////                    modifier = Modifier
+////                        .fillMaxWidth(),
+////                    painter = painterResource(Res.drawable.image_background_splash_screen),
+////                    contentDescription = "imageSplashScreen"
+////                )
+//
+//                    Image(
+//                        modifier = Modifier
+//                            .height(51.dp)
+//                            .fillMaxWidth()
+//                        .alpha(alpha = alpha)
+//                        ,
+//                        painter = painterResource(Res.drawable.icon_logo_splash_screen),
+//                        contentDescription = "imageSplashScreen"
+//                    )
+//
+//                }
+//
 //            }
-                        navigator?.push(MainMenuScreen(userData.value!!))
-        }
-
-        }
+//
+//                    LaunchedEffect(
+//            key1 = true
+//        ) {
+//            delay(3000L)
+////            if (settings.loadToken() != null){
+////                navigator?.push(AreasScreen())
+////            }else{
+////                navigator?.push(LoginScreen())
+////            }
+//
+//        }
+//
+//        }
             scope.launch {
                 userData.value = webApp.initDataUnsafe.user
             }
@@ -198,7 +198,8 @@ class SplashScreen : Screen {
 
     private suspend fun createUser(userEntityCreate: UserEntityCreate){
         val body = apiRepo.createUser(userEntityCreate)
-        loading.value = true
+        //loading.value = true
+        navigator?.push(MainMenuScreen(userData.value!!))
     }
 
 }
