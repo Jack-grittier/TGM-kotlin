@@ -68,6 +68,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import dev.inmo.tgbotapi.webapps.webApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.internal.JSJoda.use
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreateResponse
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
@@ -100,6 +101,16 @@ class SplashScreen : Screen {
         }
 
         navigator = LocalNavigator.current!!
+
+        Text(
+            text = "initData: ${initData.value}"
+        )
+
+        Text(
+            text = "userData: ${userData.value.toString()}"
+        )
+
+        Text(text = "loading: ${loading.value.toString()}")
 
 //        if (loading.value == true){
 //
@@ -198,7 +209,7 @@ class SplashScreen : Screen {
 
     private suspend fun createUser(userEntityCreate: UserEntityCreate){
         val body = apiRepo.createUser(userEntityCreate)
-        //loading.value = true
+        loading.value = true
         navigator?.push(MainMenuScreen(userData.value!!))
     }
 
