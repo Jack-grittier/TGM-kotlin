@@ -83,6 +83,8 @@ class SplashScreen : Screen {
     private lateinit var navigator: Navigator
     private lateinit var body: MutableState<UserEntityCreateResponse?>
     private lateinit var user: MutableState<UserEntityCreate?>
+    private lateinit var userName: MutableState<String?>
+    private lateinit var userUrl: MutableState<String?>
 
     @Composable
     override fun Content() {
@@ -109,6 +111,16 @@ class SplashScreen : Screen {
         user = remember {
             mutableStateOf(null)
         }
+
+        userName = remember {
+            mutableStateOf(null)
+        }
+
+
+        userUrl = remember {
+            mutableStateOf(null)
+        }
+
 
         navigator = LocalNavigator.current!!
 
@@ -155,27 +167,27 @@ class SplashScreen : Screen {
                     )
                 )
 
-//                Text(
-//                    text = "userData: ${userData.value!!.username.toString() }",
-//                    style = TextStyle(
-//                        fontSize = 16.sp,
-//                        lineHeight = 21.sp,
-//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-//                        fontWeight = FontWeight(600),
-//                        color = Color.White,
-//                    )
-//                )
-//
-//                Text(
-//                    text = "userData: ${userData.value!!.photoUrl.toString() }",
-//                    style = TextStyle(
-//                        fontSize = 16.sp,
-//                        lineHeight = 21.sp,
-//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-//                        fontWeight = FontWeight(600),
-//                        color = Color.White,
-//                    )
-//                )
+                Text(
+                    text = "userName: ${userName}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+
+                Text(
+                    text = "userUrl: ${userUrl}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
 //
 //                Text(
 //                    text = "userData: ${userData.value!!.firstName.toString() }",
@@ -256,6 +268,8 @@ class SplashScreen : Screen {
             scope.launch {
                 initData.value = webApp.initData
                 userData.value = webApp.initDataUnsafe.user
+                userUrl.value = userData.value!!.photoUrl
+                userName.value = userData.value!!.username
 //                val userEntityCreate = UserEntityCreate(
 //                    initData = initData.value,
 //                    id = userData.value!!.id.toString().toLong(),
