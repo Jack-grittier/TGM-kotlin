@@ -255,7 +255,7 @@ class SplashScreen : Screen {
             delay(3000L)
             scope.launch {
                 initData.value = webApp.initData
-                //userData.value = webApp.initDataUnsafe.user
+                userData.value = webApp.initDataUnsafe.user
 //                val userEntityCreate = UserEntityCreate(
 //                    initData = initData.value,
 //                    id = userData.value!!.id.toString().toLong(),
