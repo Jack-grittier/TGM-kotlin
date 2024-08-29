@@ -168,7 +168,7 @@ class SplashScreen : Screen {
                 )
 
                 Text(
-                    text = "userName: ${userName}",
+                    text = "userName: ${userName.value}",
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,
@@ -179,7 +179,7 @@ class SplashScreen : Screen {
                 )
 
                 Text(
-                    text = "userUrl: ${userUrl}",
+                    text = "userUrl: ${userUrl.value}",
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,
@@ -268,8 +268,8 @@ class SplashScreen : Screen {
             scope.launch {
                 initData.value = webApp.initData
                 userData.value = webApp.initDataUnsafe.user
-                userUrl.value = userData.value!!.photoUrl
-                userName.value = userData.value!!.username
+                userUrl.value = webApp.initDataUnsafe.user!!.photoUrl
+                userName.value = webApp.initDataUnsafe.user!!.username
 //                val userEntityCreate = UserEntityCreate(
 //                    initData = initData.value,
 //                    id = userData.value!!.id.toString().toLong(),
