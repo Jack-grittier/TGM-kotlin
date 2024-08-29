@@ -34,16 +34,15 @@ fun ButtonDisconnect(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .clip(RoundedCornerShape(size = 12.dp))
             .background(
-                color = background_color_disconnect,
-                shape = RoundedCornerShape(size = 12.dp)
+                shape = RoundedCornerShape(size = 12.dp),
+                color = background_color_disconnect
             ),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent,
-            disabledContentColor = Color.Transparent
+            containerColor = background_color_disconnect,
         ),
-        onClick = onClick
+        onClick = onClick,
+        shape = RoundedCornerShape(size = 12.dp)
 
     ){
         Text(

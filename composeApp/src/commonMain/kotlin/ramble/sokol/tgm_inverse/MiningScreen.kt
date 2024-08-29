@@ -53,6 +53,7 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import ramble.sokol.tgm_inverse.components.PlaylistItem
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.theme.background_airdrop
 import ramble.sokol.tgm_inverse.theme.background_screens
 import ramble.sokol.tgm_inverse.theme.center_circle_playlist
@@ -71,7 +72,8 @@ import tgminverse.composeapp.generated.resources.tasks_navbar
 import tgminverse.composeapp.generated.resources.test_photo
 
 class MiningScreen (
-    val modifier: Modifier
+    val modifier: Modifier,
+    //val userEntityCreate: UserEntityCreate
 ) : Screen {
 
     @Composable
@@ -90,73 +92,80 @@ class MiningScreen (
                 contentAlignment = Alignment.BottomCenter
             ) {
 
-                Box(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    Image(
-                        modifier = Modifier.fillMaxWidth(),
-                        painter = painterResource(Res.drawable.image_back_mining),
-                        contentDescription = "image_play_game",
-                        contentScale = ContentScale.Crop
-                    )
-
                     Box(
-                        modifier = Modifier.width(300.dp).height(300.dp),
-                        contentAlignment = Alignment.BottomEnd
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
                     ) {
 
+                        Image(
+                            modifier = Modifier.fillMaxWidth(),
+                            painter = painterResource(Res.drawable.image_back_mining),
+                            contentDescription = "image_play_game",
+                            contentScale = ContentScale.Crop
+                        )
+
                         Box(
-                            modifier = Modifier.fillMaxWidth().padding(25.dp),
-                            contentAlignment = Alignment.Center
+                            modifier = Modifier.width(300.dp).height(300.dp),
+                            contentAlignment = Alignment.BottomEnd
                         ) {
 
-                            Surface(
-                                modifier = Modifier.size(250.dp),
-                                shape = CircleShape
+                            Box(
+                                modifier = Modifier.fillMaxWidth().padding(25.dp),
+                                contentAlignment = Alignment.Center
                             ) {
+
+                                Surface(
+                                    modifier = Modifier.size(250.dp),
+                                    shape = CircleShape
+                                ) {
+                                    Image(
+                                        painter = painterResource(Res.drawable.test_photo),
+                                        contentDescription = null,
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
+
                                 Image(
-                                    painter = painterResource(Res.drawable.test_photo),
+                                    modifier = Modifier.width(109.dp).height(109.dp),
+                                    painter = painterResource(Res.drawable.image_back_circle_playlist),
                                     contentDescription = null,
-                                    modifier = Modifier.fillMaxSize(),
                                     contentScale = ContentScale.Crop
                                 )
+
+
+                                Surface(
+                                    modifier = Modifier.size(68.dp),
+                                    shape = CircleShape
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .height(68.dp)
+                                            .background(center_circle_playlist)
+                                    )
+                                }
                             }
 
                             Image(
-                                modifier = Modifier.width(109.dp).height(109.dp),
-                                painter = painterResource(Res.drawable.image_back_circle_playlist),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop
+                                modifier = Modifier
+                                    .height(86.dp)
+                                    .width(86.dp)
+                                    .padding(bottom = 14.dp, end = 14.dp),
+                                painter = painterResource(Res.drawable.icon_play_music),
+                                contentDescription = "imageLine"
                             )
 
+                            ProgressBarDemo()
 
-                            Surface(
-                                modifier = Modifier.size(68.dp),
-                                shape = CircleShape
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .height(68.dp)
-                                        .background(center_circle_playlist)
-                                )
-                            }
                         }
 
-                        Image(
-                            modifier = Modifier
-                                .height(86.dp)
-                                .width(86.dp)
-                                .padding(bottom = 14.dp, end = 14.dp),
-                            painter = painterResource(Res.drawable.icon_play_music),
-                            contentDescription = "imageLine"
-                        )
-
-                        ProgressBarDemo()
-
                     }
-
                 }
 
                 Text(
@@ -171,6 +180,7 @@ class MiningScreen (
                         textAlign = TextAlign.Center,
                     )
                 )
+
             }
 
             Spacer(modifier = Modifier.padding(top = 17.dp))

@@ -42,7 +42,8 @@ fun ButtonCollect(
         colors = ButtonDefaults.buttonColors(
             containerColor = background_color_collect
         ),
-        onClick = onClick
+        onClick = onClick,
+        shape = RoundedCornerShape(size = 8.dp)
 
     ){
         Text(

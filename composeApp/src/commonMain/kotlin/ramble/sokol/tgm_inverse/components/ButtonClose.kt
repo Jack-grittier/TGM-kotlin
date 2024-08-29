@@ -41,8 +41,8 @@ fun ButtonClose(
         colors = ButtonDefaults.buttonColors(
             containerColor = background_color_close
         ),
-        onClick = onClick
-
+        onClick = onClick,
+        shape = RoundedCornerShape(size = 12.dp)
     ){
         Text(
             modifier = Modifier

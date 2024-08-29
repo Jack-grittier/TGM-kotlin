@@ -73,6 +73,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import ramble.sokol.tgm_inverse.components.ButtonClose
 import ramble.sokol.tgm_inverse.components.ButtonDisconnect
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.theme.background_line_item
 import ramble.sokol.tgm_inverse.theme.background_line_item_white
 import ramble.sokol.tgm_inverse.theme.background_navbar
@@ -108,6 +109,7 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 
 class MainMenuScreen(
+    //val userEntityCreate: UserEntityCreate
 ) : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
@@ -278,6 +280,10 @@ class MainMenuScreen(
             }
         ) { innerPadding ->
             when (selectedItem){
+//                0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
+//                1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
+//                2 -> Navigator(TasksScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
+//                3 -> Navigator(LiderboardScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
                 0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding)))
                 1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding)))
                 2 -> Navigator(TasksScreen(modifier = Modifier.padding(innerPadding)))

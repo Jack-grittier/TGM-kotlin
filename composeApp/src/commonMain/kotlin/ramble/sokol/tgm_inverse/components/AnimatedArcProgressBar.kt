@@ -33,8 +33,8 @@ fun AnimatedArcProgressBar(progress: Float) {
         // Рисуем заполненную дугу
         drawArc(
             color = progressColor,
-            startAngle = 0f, // Начинаем с 0 градусов
-            sweepAngle = 180f * progress, // Заполняем в зависимости от прогресса
+            startAngle = -180f, // Начинаем с 190 градусов
+            sweepAngle = -180f * progress, // Заполняем в зависимости от прогресса
             useCenter = false,
             style = Stroke(width = arcThickness, cap = StrokeCap.Round) // Круглые углы
         )

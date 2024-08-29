@@ -33,6 +33,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -45,6 +46,7 @@ import org.jetbrains.skiko.ClipboardManager
 import ramble.sokol.tgm_inverse.components.PhotoFirstRating
 import ramble.sokol.tgm_inverse.components.PhotoOtherRating
 import ramble.sokol.tgm_inverse.components.RatingPersonMusicality
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.theme.background_copy_link
 import ramble.sokol.tgm_inverse.theme.background_screens
 import ramble.sokol.tgm_inverse.theme.background_text_link
@@ -64,7 +66,8 @@ import tgminverse.composeapp.generated.resources.mont_regular
 import tgminverse.composeapp.generated.resources.tasks_navbar
 
 class MusicalityScreen(
-    val modifier: Modifier
+    val modifier: Modifier,
+    //val userEntityCreate: UserEntityCreate
 ) : Screen {
 
     @Composable
@@ -183,16 +186,19 @@ class MusicalityScreen(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(top = 16.dp, bottom = 16.dp, start = 17.dp, end = 8.dp),
-                                    text = "tme/fgr34tthttgh",
+                                    text = "t.me/INVOKE_POSTIDEAS_BOT/tgmapp/statrap=",
+                                    //text = "t.me/INVOKE_POSTIDEAS_BOT/tgmapp/statrap=${userEntityCreate.id}",
                                     style = TextStyle(
                                         fontSize = 16.sp,
-                                        lineHeight = 24.sp,
+                                        lineHeight = 16.sp,
                                         fontFamily = FontFamily(Font(Res.font.mont_regular)),
                                         fontWeight = FontWeight(700),
                                         color = background_text_link_2,
                                         textDecoration = TextDecoration.Underline,
                                         textAlign = TextAlign.Start
-                                    )
+                                    ),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
 
                             }
@@ -206,7 +212,8 @@ class MusicalityScreen(
                                     .clip(RoundedCornerShape(18.dp))
                                     .background(background_copy_link)
                                     .clickable {
-                                        copyToClipboard("Ссылка")
+                                        //copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?statrapp=${userEntityCreate.id}")
+                                        copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?statrapp=")
                                     },
                                 contentAlignment = Alignment.Center
                             ) {

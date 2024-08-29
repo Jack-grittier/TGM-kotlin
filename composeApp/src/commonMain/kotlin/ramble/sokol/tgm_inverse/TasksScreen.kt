@@ -30,13 +30,15 @@ import ramble.sokol.tgm_inverse.components.TasksDone
 import ramble.sokol.tgm_inverse.components.TasksGetPayment
 import ramble.sokol.tgm_inverse.components.TasksPerform
 import ramble.sokol.tgm_inverse.components.TasksPerformProgress
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.theme.background_screens
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.tasks_navbar
 
 class TasksScreen(
-    val modifier: Modifier
+    val modifier: Modifier,
+    //val userEntityCreate: UserEntityCreate
 ) : Screen {
 
     @Composable

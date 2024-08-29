@@ -33,6 +33,7 @@ import ramble.sokol.tgm_inverse.components.PhotoFirstRating
 import ramble.sokol.tgm_inverse.components.PhotoFirstRatingLider
 import ramble.sokol.tgm_inverse.components.PhotoOtherRating
 import ramble.sokol.tgm_inverse.components.RatingPersonLiderboard
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.theme.background_screens
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
@@ -41,7 +42,8 @@ import tgminverse.composeapp.generated.resources.liderboard
 import tgminverse.composeapp.generated.resources.tasks_navbar
 
 class LiderboardScreen(
-    val modifier: Modifier
+    val modifier: Modifier,
+    //val userEntityCreate: UserEntityCreate
 ) : Screen {
 
     @Composable
