@@ -102,16 +102,6 @@ class SplashScreen : Screen {
 
         navigator = LocalNavigator.current!!
 
-        Text(
-            text = "initData: ${initData.value}"
-        )
-
-        Text(
-            text = "userData: ${userData.value.toString()}"
-        )
-
-        Text(text = "loading: ${loading.value.toString()}")
-
             val transition = rememberInfiniteTransition(label = "")
             val alpha by transition.animateFloat(
                 initialValue = 0f,
@@ -132,6 +122,40 @@ class SplashScreen : Screen {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
+
+                Text(
+                    text = "initData: ${initData.value}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+
+                Text(
+                    text = "userData: ${userData.value.toString()}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+
+                Text(
+                    text = "loading: ${loading.value.toString()}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+
 
                 Box(
                     modifier = Modifier
@@ -164,7 +188,7 @@ class SplashScreen : Screen {
             key1 = true
         ) {
             delay(3000L)
-            navigator?.push(MainMenuScreen(userData.value!!))
+            navigator?.push(MainMenuScreen())
 //            if (settings.loadToken() != null){
 //                navigator?.push(AreasScreen())
 //            }else{
@@ -190,7 +214,7 @@ class SplashScreen : Screen {
 
     private suspend fun getInitData(){
         initData.value = webApp.initData
-        navigator?.push(MainMenuScreen(userData.value!!))
+        navigator?.push(MainMenuScreen())
         //getUserInfo()
     }
 

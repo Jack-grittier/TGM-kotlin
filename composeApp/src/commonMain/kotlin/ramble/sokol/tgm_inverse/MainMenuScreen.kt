@@ -108,7 +108,6 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 
 class MainMenuScreen(
-    val webAppUser: WebAppUser
 ) : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
@@ -477,25 +476,25 @@ class MainMenuScreen(
 //                        imageLoader = ImageLoader(null)
 //                    )
 
-                    KamelImage(
-                        resource = asyncPainterResource(data = webAppUser.photoUrl!!),
-                        contentDescription = "description"
-                    )
+//                    KamelImage(
+//                        resource = asyncPainterResource(data = webAppUser.photoUrl!!),
+//                        contentDescription = "description"
+//                    )
 
                 }
 
                 Spacer(modifier = Modifier.padding(start = 6.dp))
 
-                Text(
-                    text = webAppUser.username.toString(),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
+//                Text(
+//                    text = webAppUser.username.toString(),
+//                    style = TextStyle(
+//                        fontSize = 16.sp,
+//                        lineHeight = 21.sp,
+//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+//                        fontWeight = FontWeight(600),
+//                        color = Color.White,
+//                    )
+//                )
             }
 
             Box (
