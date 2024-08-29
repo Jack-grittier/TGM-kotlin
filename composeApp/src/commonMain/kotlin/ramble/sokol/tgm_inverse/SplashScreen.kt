@@ -112,76 +112,74 @@ class SplashScreen : Screen {
 
         Text(text = "loading: ${loading.value.toString()}")
 
-//        if (loading.value == true){
-//
-//            val transition = rememberInfiniteTransition(label = "")
-//            val alpha by transition.animateFloat(
-//                initialValue = 0f,
-//                targetValue = 1f,
-//                animationSpec = infiniteRepeatable(
-//                    animation = tween(
-//                        durationMillis = 3000
-//                    ),
-//                    repeatMode = RepeatMode.Reverse
-//                ), label = ""
-//            )
-//
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .background(background_splash)
-//                    .windowInsetsPadding(WindowInsets.safeDrawing),
-//                verticalArrangement = Arrangement.Center,
-//                horizontalAlignment = Alignment.CenterHorizontally
-//            ){
-//
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxSize(),
-//                    contentAlignment = Alignment.Center
-//                ){
-//
-////                Image(
-////                    modifier = Modifier
-////                        .fillMaxWidth(),
-////                    painter = painterResource(Res.drawable.image_background_splash_screen),
-////                    contentDescription = "imageSplashScreen"
-////                )
-//
-//                    Image(
-//                        modifier = Modifier
-//                            .height(51.dp)
-//                            .fillMaxWidth()
-//                        .alpha(alpha = alpha)
-//                        ,
-//                        painter = painterResource(Res.drawable.icon_logo_splash_screen),
-//                        contentDescription = "imageSplashScreen"
-//                    )
-//
-//                }
-//
-//            }
-//
-//                    LaunchedEffect(
-//            key1 = true
-//        ) {
-//            delay(3000L)
-////            if (settings.loadToken() != null){
-////                navigator?.push(AreasScreen())
-////            }else{
-////                navigator?.push(LoginScreen())
-////            }
-//
-//        }
-//
-//        }
-        scope.launch {
-                initData.value = webApp.initData
-                userData.value = webApp.initDataUnsafe.user
-                //getInitData()
-        }
+            val transition = rememberInfiniteTransition(label = "")
+            val alpha by transition.animateFloat(
+                initialValue = 0f,
+                targetValue = 1f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(
+                        durationMillis = 3000
+                    ),
+                    repeatMode = RepeatMode.Reverse
+                ), label = ""
+            )
 
-        navigator?.push(MainMenuScreen(userData.value!!))
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(background_splash)
+                    .windowInsetsPadding(WindowInsets.safeDrawing),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
+
+//                Image(
+//                    modifier = Modifier
+//                        .fillMaxWidth(),
+//                    painter = painterResource(Res.drawable.image_background_splash_screen),
+//                    contentDescription = "imageSplashScreen"
+//                )
+
+                    Image(
+                        modifier = Modifier
+                            .height(51.dp)
+                            .fillMaxWidth()
+                        .alpha(alpha = alpha)
+                        ,
+                        painter = painterResource(Res.drawable.icon_logo_splash_screen),
+                        contentDescription = "imageSplashScreen"
+                    )
+
+                }
+
+            }
+
+        LaunchedEffect(
+            key1 = true
+        ) {
+            delay(3000L)
+            navigator?.push(MainMenuScreen(userData.value!!))
+//            if (settings.loadToken() != null){
+//                navigator?.push(AreasScreen())
+//            }else{
+//                navigator?.push(LoginScreen())
+//            }
+
+
+        }
+//        scope.launch {
+//                initData.value = webApp.initData
+//                userData.value = webApp.initDataUnsafe.user
+//                //getInitData()
+//        }
+
+
 
 //            withContext(Dispatchers.Default) {
 //                initData.value = webApp.initData
