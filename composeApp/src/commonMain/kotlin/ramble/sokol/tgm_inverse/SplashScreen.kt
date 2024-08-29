@@ -346,8 +346,8 @@ class SplashScreen : Screen {
             delay(3000L)
             scope.launch {
                 initData.value = webApp.initData
-                //userUrl.value = webApp.initDataUnsafe.chat.photoUrl
-                userUrl.value = webApp.initDataUnsafe.user!!.photoUrl
+                userUrl.value = webApp.initDataUnsafe.chat.photoUrl
+                //userUrl.value = webApp.initDataUnsafe.user!!.photoUrl
                 userName.value = webApp.initDataUnsafe.user!!.username
                 id.value = webApp.initDataUnsafe.user!!.id.toString()
                 firstname.value = webApp.initDataUnsafe.user!!.firstName
@@ -356,13 +356,13 @@ class SplashScreen : Screen {
                 isPremium.value = webApp.initDataUnsafe.user!!.is_premium.toString()
 //                val userEntityCreate = UserEntityCreate(
 //                    initData = initData.value,
-//                    id = userData.value!!.id.toString().toLong(),
-//                    username = userData.value!!.username.toString(),
+//                    id = id.value.toString().toLong(),
+//                    username = userName.value.toString(),
 //                    description = "",
-//                    firstName = userData.value!!.firstName.toString(),
-//                    lastName = userData.value!!.lastName.toString(),
+//                    firstName = firstname.value.toString(),
+//                    lastName = lastname.value.toString(),
 //                    birthDate = "",
-//                    languageCode = userData.value!!.languageCode.toString(),
+//                    languageCode = languageCode.value.toString(),
 //                    isPremium = userData.value!!.is_premium!!,
 //                    photoURL = userData.value!!.photoUrl.toString(),
 //                )
