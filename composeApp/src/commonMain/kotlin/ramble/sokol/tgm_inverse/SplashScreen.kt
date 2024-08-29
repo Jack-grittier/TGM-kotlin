@@ -81,7 +81,8 @@ class SplashScreen : Screen {
     private lateinit var userData: MutableState<WebAppUser?>
     private lateinit var apiRepo: ApiRepository
     private lateinit var navigator: Navigator
-    private lateinit var body: UserEntityCreateResponse
+    private lateinit var body: MutableState<UserEntityCreateResponse>
+    private lateinit var user: MutableState<UserEntityCreate>
 
     @Composable
     override fun Content() {
@@ -147,7 +148,18 @@ class SplashScreen : Screen {
                 )
 
                 Text(
-                    text = "body: ${userData.value.toString()}",
+                    text = "user: ${user.value.toString()}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+
+                Text(
+                    text = "body: ${body.value.toString()}",
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,
@@ -203,6 +215,19 @@ class SplashScreen : Screen {
             scope.launch {
                 initData.value = webApp.initData
                 userData.value = webApp.initDataUnsafe.user
+                val userEntityCreate = UserEntityCreate(
+                    initData = initData.value,
+                    id = userData.value!!.id.toString().toLong(),
+                    username = userData.value!!.username.toString(),
+                    description = "",
+                    firstName = userData.value!!.firstName.toString(),
+                    lastName = userData.value!!.lastName.toString(),
+                    birthDate = "",
+                    languageCode = userData.value!!.languageCode.toString(),
+                    isPremium = userData.value!!.is_premium!!,
+                    photoURL = userData.value!!.photoUrl.toString(),
+                )
+                user.value = userEntityCreate
                 delay(5000L)
                 navigator?.push(MainMenuScreen())
             }
@@ -249,7 +274,7 @@ class SplashScreen : Screen {
     }
 
     private suspend fun createUser(userEntityCreate: UserEntityCreate){
-        body = apiRepo.createUser(userEntityCreate)
+        body.value = apiRepo.createUser(userEntityCreate)
         loading.value = true
         //
     }
