@@ -155,17 +155,17 @@ class SplashScreen : Screen {
                         color = Color.White,
                     )
                 )
-
-                Text(
-                    text = "userData: ${userData.value.toString()}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
+//
+//                Text(
+//                    text = "userData: ${userData.value.toString()}",
+//                    style = TextStyle(
+//                        fontSize = 16.sp,
+//                        lineHeight = 21.sp,
+//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+//                        fontWeight = FontWeight(600),
+//                        color = Color.White,
+//                    )
+//                )
 
                 Text(
                     text = "userName: ${userName.value}",
@@ -267,7 +267,6 @@ class SplashScreen : Screen {
             delay(3000L)
             scope.launch {
                 initData.value = webApp.initData
-                userData.value = webApp.initDataUnsafe.user
                 userUrl.value = webApp.initDataUnsafe.user!!.photoUrl
                 userName.value = webApp.initDataUnsafe.user!!.username
 //                val userEntityCreate = UserEntityCreate(
