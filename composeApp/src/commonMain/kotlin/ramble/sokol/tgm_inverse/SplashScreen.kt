@@ -342,6 +342,9 @@ class SplashScreen : Screen {
                 lastname.value = webApp.initDataUnsafe.user!!.lastName
                 languageCode.value = webApp.initDataUnsafe.user!!.languageCode.toString()
                 isPremium.value = webApp.initDataUnsafe.user!!.is_premium
+                if (isPremium.value == null){
+                    isPremium.value = false
+                }
                 val userEntityCreate = UserEntityCreate(
                     initData = initData.value,
                     id = id.value.toString().toLong(),
