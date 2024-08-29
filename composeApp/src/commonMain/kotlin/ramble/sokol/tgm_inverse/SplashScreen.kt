@@ -188,7 +188,9 @@ class SplashScreen : Screen {
             key1 = true
         ) {
             delay(3000L)
-            navigator?.push(MainMenuScreen())
+            scope.launch {
+                getInitData()
+            }
 //            if (settings.loadToken() != null){
 //                navigator?.push(AreasScreen())
 //            }else{
