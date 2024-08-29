@@ -203,11 +203,6 @@ class SplashScreen : Screen {
             scope.launch {
                 getInitData()
             }
-//            if (settings.loadToken() != null){
-//                navigator?.push(AreasScreen())
-//            }else{
-//                navigator?.push(LoginScreen())
-//            }
 
 
         }
@@ -228,7 +223,9 @@ class SplashScreen : Screen {
 
     private suspend fun getInitData(){
         initData.value = webApp.initData
-        getUserInfo()
+        delay(1000)
+        navigator?.push(MainMenuScreen())
+        //getUserInfo()
     }
 
     private suspend fun getUserInfo(){
@@ -245,8 +242,6 @@ class SplashScreen : Screen {
             isPremium = userData.value!!.is_premium!!,
             photoURL = userData.value!!.photoUrl.toString(),
         )
-        delay(1000)
-        navigator?.push(MainMenuScreen())
         //createUser(userEntityCreate)
     }
 
