@@ -280,17 +280,6 @@ class SplashScreen : Screen {
 //                )
 
                 Text(
-                    text = "user: ${user.value.toString()}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
                     text = "body: ${body.value.toString()}",
                     style = TextStyle(
                         fontSize = 16.sp,
@@ -366,6 +355,8 @@ class SplashScreen : Screen {
                     photoURL = userUrl.value.toString(),
                 )
                 user.value = userEntityCreate
+                body.value = apiRepo.createUser(userEntityCreate)
+                loading.value = true
                 delay(5000L)
                 navigator?.push(MainMenuScreen())
             }
