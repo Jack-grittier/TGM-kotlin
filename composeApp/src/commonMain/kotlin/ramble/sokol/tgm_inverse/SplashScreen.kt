@@ -155,38 +155,38 @@ class SplashScreen : Screen {
                     )
                 )
 
-                Text(
-                    text = "userData: ${userData.value!!.username.toString() }",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
-                    text = "userData: ${userData.value!!.photoUrl.toString() }",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
-                    text = "userData: ${userData.value!!.firstName.toString() }",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
+//                Text(
+//                    text = "userData: ${userData.value!!.username.toString() }",
+//                    style = TextStyle(
+//                        fontSize = 16.sp,
+//                        lineHeight = 21.sp,
+//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+//                        fontWeight = FontWeight(600),
+//                        color = Color.White,
+//                    )
+//                )
+//
+//                Text(
+//                    text = "userData: ${userData.value!!.photoUrl.toString() }",
+//                    style = TextStyle(
+//                        fontSize = 16.sp,
+//                        lineHeight = 21.sp,
+//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+//                        fontWeight = FontWeight(600),
+//                        color = Color.White,
+//                    )
+//                )
+//
+//                Text(
+//                    text = "userData: ${userData.value!!.firstName.toString() }",
+//                    style = TextStyle(
+//                        fontSize = 16.sp,
+//                        lineHeight = 21.sp,
+//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+//                        fontWeight = FontWeight(600),
+//                        color = Color.White,
+//                    )
+//                )
 
                 Text(
                     text = "user: ${user.value.toString()}",
