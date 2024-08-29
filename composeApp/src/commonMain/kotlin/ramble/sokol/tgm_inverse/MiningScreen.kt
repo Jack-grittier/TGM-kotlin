@@ -159,8 +159,6 @@ class MiningScreen (
 
                 }
 
-                Spacer(modifier = Modifier.padding(top = 15.dp))
-
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = "30646",
@@ -180,9 +178,9 @@ class MiningScreen (
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(background_airdrop)
                     .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(12.dp)),
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(background_airdrop),
                 contentAlignment = Alignment.Center
             ) {
 

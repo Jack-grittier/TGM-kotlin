@@ -81,6 +81,7 @@ class SplashScreen : Screen {
     private lateinit var userData: MutableState<WebAppUser?>
     private lateinit var apiRepo: ApiRepository
     private lateinit var navigator: Navigator
+    private lateinit var body: UserEntityCreateResponse
 
     @Composable
     override fun Content() {
@@ -136,6 +137,17 @@ class SplashScreen : Screen {
 
                 Text(
                     text = "userData: ${userData.value.toString()}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+
+                Text(
+                    text = "body: ${userData.value.toString()}",
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,
@@ -216,8 +228,7 @@ class SplashScreen : Screen {
 
     private suspend fun getInitData(){
         initData.value = webApp.initData
-        navigator?.push(MainMenuScreen())
-        //getUserInfo()
+        getUserInfo()
     }
 
     private suspend fun getUserInfo(){
@@ -234,11 +245,13 @@ class SplashScreen : Screen {
             isPremium = userData.value!!.is_premium!!,
             photoURL = userData.value!!.photoUrl.toString(),
         )
-        createUser(userEntityCreate)
+        delay(1000)
+        navigator?.push(MainMenuScreen())
+        //createUser(userEntityCreate)
     }
 
     private suspend fun createUser(userEntityCreate: UserEntityCreate){
-        val body = apiRepo.createUser(userEntityCreate)
+        body = apiRepo.createUser(userEntityCreate)
         loading.value = true
         //
     }
