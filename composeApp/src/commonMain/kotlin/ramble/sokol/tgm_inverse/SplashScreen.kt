@@ -202,6 +202,7 @@ class SplashScreen : Screen {
             delay(3000L)
             scope.launch {
                 initData.value = webApp.initData
+                userData.value = webApp.initDataUnsafe.user
                 delay(1000)
                 navigator?.push(MainMenuScreen())
             }
