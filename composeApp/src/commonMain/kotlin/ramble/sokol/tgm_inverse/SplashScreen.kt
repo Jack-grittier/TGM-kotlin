@@ -176,7 +176,10 @@ class SplashScreen : Screen {
 //
 //        }
             scope.launch {
-                getInitData()
+                initData.value = webApp.initData
+                userData.value = webApp.initDataUnsafe.user
+                navigator?.push(MainMenuScreen(userData.value!!))
+                //getInitData()
             }
 //            withContext(Dispatchers.Default) {
 //                initData.value = webApp.initData
