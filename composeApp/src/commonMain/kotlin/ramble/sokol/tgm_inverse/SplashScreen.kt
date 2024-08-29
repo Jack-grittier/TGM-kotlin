@@ -223,19 +223,19 @@ class SplashScreen : Screen {
             scope.launch {
                 initData.value = webApp.initData
                 userData.value = webApp.initDataUnsafe.user
-                val userEntityCreate = UserEntityCreate(
-                    initData = initData.value,
-                    id = userData.value!!.id.toString().toLong(),
-                    username = userData.value!!.username.toString(),
-                    description = "",
-                    firstName = userData.value!!.firstName.toString(),
-                    lastName = userData.value!!.lastName.toString(),
-                    birthDate = "",
-                    languageCode = userData.value!!.languageCode.toString(),
-                    isPremium = userData.value!!.is_premium!!,
-                    photoURL = userData.value!!.photoUrl.toString(),
-                )
-                user.value = userEntityCreate
+//                val userEntityCreate = UserEntityCreate(
+//                    initData = initData.value,
+//                    id = userData.value!!.id.toString().toLong(),
+//                    username = userData.value!!.username.toString(),
+//                    description = "",
+//                    firstName = userData.value!!.firstName.toString(),
+//                    lastName = userData.value!!.lastName.toString(),
+//                    birthDate = "",
+//                    languageCode = userData.value!!.languageCode.toString(),
+//                    isPremium = userData.value!!.is_premium!!,
+//                    photoURL = userData.value!!.photoUrl.toString(),
+//                )
+//                user.value = userEntityCreate
                 delay(5000L)
                 navigator?.push(MainMenuScreen())
             }
