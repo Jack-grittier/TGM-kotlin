@@ -85,6 +85,11 @@ class SplashScreen : Screen {
     private lateinit var user: MutableState<UserEntityCreate?>
     private lateinit var userName: MutableState<String?>
     private lateinit var userUrl: MutableState<String?>
+    private lateinit var id: MutableState<String?>
+    private lateinit var firstname: MutableState<String?>
+    private lateinit var lastname: MutableState<String?>
+    private lateinit var languageCode: MutableState<String?>
+    private lateinit var isPremium: MutableState<String?>
 
     @Composable
     override fun Content() {
@@ -116,8 +121,27 @@ class SplashScreen : Screen {
             mutableStateOf(null)
         }
 
-
         userUrl = remember {
+            mutableStateOf(null)
+        }
+
+        id = remember {
+            mutableStateOf(null)
+        }
+
+        firstname = remember {
+            mutableStateOf(null)
+        }
+
+        lastname = remember {
+            mutableStateOf(null)
+        }
+
+        languageCode = remember {
+            mutableStateOf(null)
+        }
+
+        isPremium = remember {
             mutableStateOf(null)
         }
 
@@ -180,6 +204,61 @@ class SplashScreen : Screen {
 
                 Text(
                     text = "userUrl: ${userUrl.value}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+
+                Text(
+                    text = "id: ${id.value}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+
+                Text(
+                    text = "fisrstname: ${firstname.value}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+
+                Text(
+                    text = "lastname: ${lastname.value}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+
+                Text(
+                    text = "lan: ${languageCode.value}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+
+                Text(
+                    text = "prem: ${isPremium.value}",
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,
@@ -270,6 +349,11 @@ class SplashScreen : Screen {
                 //userUrl.value = webApp.initDataUnsafe.chat.photoUrl
                 userUrl.value = webApp.initDataUnsafe.user!!.photoUrl
                 userName.value = webApp.initDataUnsafe.user!!.username
+                id.value = webApp.initDataUnsafe.user!!.id.toString()
+                firstname.value = webApp.initDataUnsafe.user!!.firstName
+                lastname.value = webApp.initDataUnsafe.user!!.lastName
+                languageCode.value = webApp.initDataUnsafe.user!!.languageCode.toString()
+                isPremium.value = webApp.initDataUnsafe.user!!.is_premium.toString()
 //                val userEntityCreate = UserEntityCreate(
 //                    initData = initData.value,
 //                    id = userData.value!!.id.toString().toLong(),
