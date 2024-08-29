@@ -89,7 +89,7 @@ class SplashScreen : Screen {
     private lateinit var firstname: MutableState<String?>
     private lateinit var lastname: MutableState<String?>
     private lateinit var languageCode: MutableState<String?>
-    private lateinit var isPremium: MutableState<String?>
+    private lateinit var isPremium: MutableState<Boolean?>
 
     @Composable
     override fun Content() {
@@ -346,27 +346,26 @@ class SplashScreen : Screen {
             delay(3000L)
             scope.launch {
                 initData.value = webApp.initData
-                userUrl.value = webApp.initDataUnsafe.chat.photoUrl
-                //userUrl.value = webApp.initDataUnsafe.user!!.photoUrl
+                userUrl.value = webApp.initDataUnsafe.user!!.photoUrl
                 userName.value = webApp.initDataUnsafe.user!!.username
                 id.value = webApp.initDataUnsafe.user!!.id.toString()
                 firstname.value = webApp.initDataUnsafe.user!!.firstName
                 lastname.value = webApp.initDataUnsafe.user!!.lastName
                 languageCode.value = webApp.initDataUnsafe.user!!.languageCode.toString()
-                isPremium.value = webApp.initDataUnsafe.user!!.is_premium.toString()
-//                val userEntityCreate = UserEntityCreate(
-//                    initData = initData.value,
-//                    id = id.value.toString().toLong(),
-//                    username = userName.value.toString(),
-//                    description = "",
-//                    firstName = firstname.value.toString(),
-//                    lastName = lastname.value.toString(),
-//                    birthDate = "",
-//                    languageCode = languageCode.value.toString(),
-//                    isPremium = userData.value!!.is_premium!!,
-//                    photoURL = userData.value!!.photoUrl.toString(),
-//                )
-//                user.value = userEntityCreate
+                isPremium.value = webApp.initDataUnsafe.user!!.is_premium
+                val userEntityCreate = UserEntityCreate(
+                    initData = initData.value,
+                    id = id.value.toString().toLong(),
+                    username = userName.value.toString(),
+                    description = "",
+                    firstName = firstname.value.toString(),
+                    lastName = lastname.value.toString(),
+                    birthDate = "",
+                    languageCode = languageCode.value.toString(),
+                    isPremium = isPremium.value!!,
+                    photoURL = userUrl.value.toString(),
+                )
+                user.value = userEntityCreate
                 delay(5000L)
                 navigator?.push(MainMenuScreen())
             }
