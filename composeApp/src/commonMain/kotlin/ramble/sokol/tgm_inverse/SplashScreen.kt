@@ -357,7 +357,7 @@ class SplashScreen : Screen {
                     isPremium = isPremium.value!!,
                     photoURL = userUrl.value.toString(),
                 )
-                //body.value = apiRepo.createUser(userEntityCreate)
+                body.value = apiRepo.createUser(userEntityCreate)
                 loading.value = true
                 delay(5000L)
                 navigator?.push(MainMenuScreen(userEntityCreate))
