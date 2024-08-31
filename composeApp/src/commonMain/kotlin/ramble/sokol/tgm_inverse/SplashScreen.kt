@@ -349,13 +349,12 @@ class SplashScreen : Screen {
                     initData = initData.value,
                     id = id.value.toString().toLong(),
                     username = userName.value.toString(),
-                    description = "",
                     firstName = firstname.value.toString(),
                     lastName = lastname.value.toString(),
-                    birthDate = "",
                     languageCode = languageCode.value.toString(),
                     isPremium = isPremium.value!!,
                     photoURL = userUrl.value.toString(),
+                    referralCode = 0
                 )
                 body.value = apiRepo.createUser(userEntityCreate)
                 loading.value = true
