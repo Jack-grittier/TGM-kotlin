@@ -109,12 +109,10 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 
 class MainMenuScreen(
-    //val userEntityCreate: UserEntityCreate
+    val userEntityCreate: UserEntityCreate
 ) : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
-    //private val name = webApp.initDataUnsafe.user!!.username
-    //private val photoUrl = webApp.initDataUnsafe.user!!.photoUrl
 
 
     @Composable
@@ -280,14 +278,14 @@ class MainMenuScreen(
             }
         ) { innerPadding ->
             when (selectedItem){
-//                0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
-//                1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
-//                2 -> Navigator(TasksScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
-//                3 -> Navigator(LiderboardScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
-                0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding)))
-                1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding)))
-                2 -> Navigator(TasksScreen(modifier = Modifier.padding(innerPadding)))
-                3 -> Navigator(LiderboardScreen(modifier = Modifier.padding(innerPadding)))
+                0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
+                1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
+                2 -> Navigator(TasksScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
+                3 -> Navigator(LiderboardScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
+//                0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding)))
+//                1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding)))
+//                2 -> Navigator(TasksScreen(modifier = Modifier.padding(innerPadding)))
+//                3 -> Navigator(LiderboardScreen(modifier = Modifier.padding(innerPadding)))
             }
 
         }
@@ -491,16 +489,16 @@ class MainMenuScreen(
 
                 Spacer(modifier = Modifier.padding(start = 6.dp))
 
-//                Text(
-//                    text = webAppUser.username.toString(),
-//                    style = TextStyle(
-//                        fontSize = 16.sp,
-//                        lineHeight = 21.sp,
-//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-//                        fontWeight = FontWeight(600),
-//                        color = Color.White,
-//                    )
-//                )
+                Text(
+                    text = "@${userEntityCreate.username.toString()}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
             }
 
             Box (

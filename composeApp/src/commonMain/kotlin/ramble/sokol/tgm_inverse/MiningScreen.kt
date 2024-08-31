@@ -73,7 +73,7 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 class MiningScreen (
     val modifier: Modifier,
-    //val userEntityCreate: UserEntityCreate
+    val userEntityCreate: UserEntityCreate
 ) : Screen {
 
     @Composable

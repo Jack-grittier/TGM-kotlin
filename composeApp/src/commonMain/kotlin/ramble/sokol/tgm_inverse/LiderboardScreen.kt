@@ -43,7 +43,7 @@ import tgminverse.composeapp.generated.resources.tasks_navbar
 
 class LiderboardScreen(
     val modifier: Modifier,
-    //val userEntityCreate: UserEntityCreate
+    val userEntityCreate: UserEntityCreate
 ) : Screen {
 
     @Composable

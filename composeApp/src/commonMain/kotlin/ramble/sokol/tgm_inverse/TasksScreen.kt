@@ -38,7 +38,7 @@ import tgminverse.composeapp.generated.resources.tasks_navbar
 
 class TasksScreen(
     val modifier: Modifier,
-    //val userEntityCreate: UserEntityCreate
+    val userEntityCreate: UserEntityCreate
 ) : Screen {
 
     @Composable
