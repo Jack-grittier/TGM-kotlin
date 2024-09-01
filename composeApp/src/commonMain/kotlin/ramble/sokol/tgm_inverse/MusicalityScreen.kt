@@ -38,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.dokar.sonner.Toaster
+import com.dokar.sonner.rememberToasterState
 import kotlinx.browser.window
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
@@ -76,6 +78,7 @@ class MusicalityScreen(
         val navigator = LocalNavigator.current
 //        val context = LocalContext.current
 //        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val toaster = rememberToasterState()
 
         Column(
             modifier = modifier
@@ -214,6 +217,7 @@ class MusicalityScreen(
                                     .clickable {
                                         copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=${userEntityCreate.id}")
                                         //copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=")
+                                        toaster.show("Hello world!")
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
@@ -365,6 +369,8 @@ class MusicalityScreen(
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
         }
+
+        Toaster(state = toaster)
 
     }
 

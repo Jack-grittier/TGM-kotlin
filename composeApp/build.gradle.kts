@@ -38,6 +38,7 @@ kotlin {
             implementation(libs.bottomsheet.material3)
             implementation(libs.bottomsheet.material)
             implementation(libs.kamel)
+            implementation(libs.sonner)
         }
 
         commonTest.dependencies {

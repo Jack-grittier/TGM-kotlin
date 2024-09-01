@@ -358,6 +358,9 @@ class SplashScreen : Screen {
                 languageCode.value = webApp.initDataUnsafe.user!!.languageCode.toString()
                 isPremium.value = webApp.initDataUnsafe.user!!.is_premium
                 val ref = webApp.initDataUnsafe.startParam
+                if (lastname.value == ""){
+                    lastname.value = null
+                }
                 if (ref != null){
                     referalCode.value = ref.toString().toLong()
                 }

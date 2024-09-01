@@ -13,7 +13,7 @@ data class UserEntityCreate(
     val username: String,
     //@SerialName("password")
     val firstName: String,
-    val lastName: String,
+    val lastName: String?,
     val languageCode: String,
     val isPremium: Boolean,
     val photoURL: String?,
