@@ -19,12 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import org.jetbrains.compose.resources.Font
@@ -84,6 +86,16 @@ fun TasksPerformProgress(
 //                KamelImage(
 //                    resource = asyncPainterResource(data = tasks.task.iconURL),
 //                    contentDescription = "description"
+//                )
+
+//                AsyncImage(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(150.dp)
+//                        .clip(RoundedCornerShape(16.dp)),
+//                    model = area.image,
+//                    contentDescription = "image events",
+//                    contentScale = ContentScale.Crop
 //                )
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
