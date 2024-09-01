@@ -90,7 +90,7 @@ class SplashScreen : Screen {
     private lateinit var lastname: MutableState<String?>
     private lateinit var languageCode: MutableState<String?>
     private lateinit var isPremium: MutableState<Boolean?>
-    private lateinit var referalCode: MutableState<String?>
+    private lateinit var referalCode: MutableState<Long?>
 
     @Composable
     override fun Content() {
@@ -357,7 +357,10 @@ class SplashScreen : Screen {
                 lastname.value = webApp.initDataUnsafe.user!!.lastName
                 languageCode.value = webApp.initDataUnsafe.user!!.languageCode.toString()
                 isPremium.value = webApp.initDataUnsafe.user!!.is_premium
-                referalCode.value = webApp.initDataUnsafe.startParam
+                val ref = webApp.initDataUnsafe.startParam
+                if (ref != null){
+                    referalCode.value = ref.toString().toLong()
+                }
                 if (isPremium.value == null){
                     isPremium.value = false
                 }
