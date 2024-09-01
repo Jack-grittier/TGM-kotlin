@@ -44,6 +44,7 @@ import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_screens
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
+import tgminverse.composeapp.generated.resources.mont_regular
 import tgminverse.composeapp.generated.resources.tasks_navbar
 
 class TasksScreen(
@@ -94,25 +95,38 @@ class TasksScreen(
             if (listTasks.value.size == 0) {
                 ProgressBarTasks()
             } else {
-                LazyColumn() {
-                    items(listTasks.value) { tasks: TasksMeEntity ->
 
-                        when (tasks.status) {
-                            "NotCompleted" -> {
-                                TasksPerform(tasks)
-                            }
-                            "Pending" -> {
-                                TasksPerformProgress(tasks)
-                            }
-                            "CompletedWithoutReceivingReward" -> {
-                                TasksGetPayment(tasks)
-                            }
-                            "Completed" -> {
-                                TasksDone(tasks)
-                            }
-                        }
-                    }
-                }
+                Text(
+                    text = "tasks: ${listTasks.value}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
+//
+
+//                LazyColumn() {
+//                    items(listTasks.value) { tasks: TasksMeEntity ->
+//
+//                        when (tasks.status) {
+//                            "NotCompleted" -> {
+//                                TasksPerform(tasks)
+//                            }
+//                            "Pending" -> {
+//                                TasksPerformProgress(tasks)
+//                            }
+//                            "CompletedWithoutReceivingReward" -> {
+//                                TasksGetPayment(tasks)
+//                            }
+//                            "Completed" -> {
+//                                TasksDone(tasks)
+//                            }
+//                        }
+//                    }
+//                }
             }
 
             Spacer(modifier = Modifier.padding(vertical = 8.dp))

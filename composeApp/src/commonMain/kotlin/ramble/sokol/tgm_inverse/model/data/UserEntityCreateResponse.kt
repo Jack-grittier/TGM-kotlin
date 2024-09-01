@@ -14,4 +14,5 @@ data class UserEntityCreateResponse(
     val photoURL: String? = null,
     val updatedAt: String? = null,
     val createdAt: String? = null,
+    val statusCode: Long? = null
 )
