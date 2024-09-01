@@ -47,7 +47,9 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 @Composable
 fun TasksPerformProgress(
-    tasks: TasksMeEntity,
+    name: String,
+    photoUrl: String,
+    reward: String,
     ) {
 
     Box (
@@ -78,7 +80,7 @@ fun TasksPerformProgress(
                     painter = painterResource(Res.drawable.test_photo),
                     contentDescription = "iconActive"
                 )
-//
+
 //                KamelImage(
 //                    resource = asyncPainterResource(data = tasks.task.iconURL),
 //                    contentDescription = "description"
@@ -87,7 +89,7 @@ fun TasksPerformProgress(
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
 
                 Text(
-                    text = tasks.task.description,
+                    text = name,
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 16.sp,
@@ -118,7 +120,7 @@ fun TasksPerformProgress(
 
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = "+${tasks.task.reward} BB",
+                    text = "+${reward} BB",
                     style = TextStyle(
                         fontSize = 14.sp,
                         lineHeight = 14.sp,

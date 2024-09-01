@@ -110,7 +110,11 @@ class TasksScreen(
 
                 LazyColumn() {
                     items(listTasks.value) { tasks: TasksMeEntity ->
-                        TasksPerformProgress(tasks)
+                        TasksPerformProgress(
+                            name = tasks.task.description,
+                            photoUrl = tasks.task.iconURL,
+                            reward = tasks.task.reward.toString()
+                        )
 //                        when (tasks.status) {
 //                            "NotCompleted" -> {
 //                                TasksPerform(tasks)

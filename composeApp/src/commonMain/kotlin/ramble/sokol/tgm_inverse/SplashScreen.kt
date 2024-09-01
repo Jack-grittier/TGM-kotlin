@@ -361,6 +361,9 @@ class SplashScreen : Screen {
                 if (lastname.value == ""){
                     lastname.value = null
                 }
+                if (userUrl.value == "null"){
+                    userUrl.value == null
+                }
                 if (ref != null){
                     referalCode.value = ref.toString().toLong()
                 }
