@@ -71,18 +71,18 @@ fun TasksPerformProgress(
                 verticalAlignment = Alignment.CenterVertically
             ){
 
-//                Image(
-//                    modifier = Modifier
-//                        .width(36.dp)
-//                        .height(36.dp),
-//                    painter = painterResource(Res.drawable.test_photo),
-//                    contentDescription = "iconActive"
-//                )
-
-                KamelImage(
-                    resource = asyncPainterResource(data = tasks.task.iconURL),
-                    contentDescription = "description"
+                Image(
+                    modifier = Modifier
+                        .width(36.dp)
+                        .height(36.dp),
+                    painter = painterResource(Res.drawable.test_photo),
+                    contentDescription = "iconActive"
                 )
+//
+//                KamelImage(
+//                    resource = asyncPainterResource(data = tasks.task.iconURL),
+//                    contentDescription = "description"
+//                )
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
 
