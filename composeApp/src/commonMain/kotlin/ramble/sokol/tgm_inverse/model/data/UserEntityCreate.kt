@@ -16,6 +16,6 @@ data class UserEntityCreate(
     val lastName: String,
     val languageCode: String,
     val isPremium: Boolean,
-    val photoURL: String,
-    val referralCode: Long? = null,
+    val photoURL: String?,
+    val referralCode: Long?,
 )

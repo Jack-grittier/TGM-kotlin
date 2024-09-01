@@ -90,6 +90,7 @@ class SplashScreen : Screen {
     private lateinit var lastname: MutableState<String?>
     private lateinit var languageCode: MutableState<String?>
     private lateinit var isPremium: MutableState<Boolean?>
+    private lateinit var referalCode: MutableState<String?>
 
     @Composable
     override fun Content() {
@@ -145,6 +146,9 @@ class SplashScreen : Screen {
             mutableStateOf(null)
         }
 
+        referalCode = remember {
+            mutableStateOf(null)
+        }
 
         navigator = LocalNavigator.current!!
 
@@ -267,6 +271,17 @@ class SplashScreen : Screen {
                         color = Color.White,
                     )
                 )
+
+                Text(
+                    text = "ref: ${referalCode.value}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
 //
 //                Text(
 //                    text = "userData: ${userData.value!!.firstName.toString() }",
@@ -342,6 +357,7 @@ class SplashScreen : Screen {
                 lastname.value = webApp.initDataUnsafe.user!!.lastName
                 languageCode.value = webApp.initDataUnsafe.user!!.languageCode.toString()
                 isPremium.value = webApp.initDataUnsafe.user!!.is_premium
+                referalCode.value = webApp.initDataUnsafe.startParam
                 if (isPremium.value == null){
                     isPremium.value = false
                 }
@@ -353,7 +369,7 @@ class SplashScreen : Screen {
                     lastName = lastname.value.toString(),
                     languageCode = languageCode.value.toString(),
                     isPremium = isPremium.value!!,
-                    photoURL = userUrl.value.toString(),
+                    photoURL = userUrl.value,
                     referralCode = 0
                 )
                 body.value = apiRepo.createUser(userEntityCreate)
