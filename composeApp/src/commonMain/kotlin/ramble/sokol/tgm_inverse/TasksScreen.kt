@@ -11,10 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -24,13 +30,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
+import ramble.sokol.tgm_inverse.components.ProgressBarTasks
 import ramble.sokol.tgm_inverse.components.TasksDone
 import ramble.sokol.tgm_inverse.components.TasksGetPayment
 import ramble.sokol.tgm_inverse.components.TasksPerform
 import ramble.sokol.tgm_inverse.components.TasksPerformProgress
+import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
+import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_screens
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
@@ -41,8 +51,21 @@ class TasksScreen(
     val userEntityCreate: UserEntityCreate
 ) : Screen {
 
+    private lateinit var apiRepo: ApiRepository
+    private lateinit var listTasks: MutableState<List<TasksMeEntity>>
+
     @Composable
     override fun Content() {
+
+        apiRepo = ApiRepository()
+        val scope  = rememberCoroutineScope()
+        listTasks = remember {
+            mutableStateOf(listOf())
+        }
+
+        scope.launch {
+            getTasks()
+        }
 
         Column(
             modifier = modifier
@@ -68,63 +91,41 @@ class TasksScreen(
 
             Spacer(modifier = Modifier.padding(top = 24.dp))
 
-            TasksGetPayment(
-                title = "Like the post X",
-                price = "199"
-            )
+            if (listTasks.value.size == 0) {
+                ProgressBarTasks()
+            } else {
+                LazyColumn() {
+                    items(listTasks.value) { tasks: TasksMeEntity ->
 
-            Spacer(modifier = Modifier.padding(top = 8.dp))
-
-            TasksGetPayment(
-                title = "Like the post X",
-                price = "199"
-            )
-
-            Spacer(modifier = Modifier.padding(top = 8.dp))
-
-            TasksPerform(
-                title = "Subscribe to our YouTube channel",
-                price = "199"
-            )
-
-            Spacer(modifier = Modifier.padding(top = 8.dp))
-
-            TasksPerform(
-                title = "Subscribe to our YouTube channel",
-                price = "199"
-            )
-
-            Spacer(modifier = Modifier.padding(top = 8.dp))
-
-            TasksPerformProgress(
-                title = "Join our telegram channel",
-                price = "199"
-            )
-
-            Spacer(modifier = Modifier.padding(top = 8.dp))
-
-            TasksPerformProgress(
-                title = "Join our telegram channel",
-                price = "199"
-            )
-
-            Spacer(modifier = Modifier.padding(top = 8.dp))
-
-            TasksDone(
-                title = "Like the post X",
-                price = "199"
-            )
-
-            Spacer(modifier = Modifier.padding(top = 8.dp))
-
-            TasksDone(
-                title = "Like the post X",
-                price = "199"
-            )
+                        when (tasks.status) {
+                            "NotCompleted" -> {
+                                TasksPerform(tasks)
+                            }
+                            "Pending" -> {
+                                TasksPerformProgress(tasks)
+                            }
+                            "CompletedWithoutReceivingReward" -> {
+                                TasksGetPayment(tasks)
+                            }
+                            "Completed" -> {
+                                TasksDone(tasks)
+                            }
+                        }
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
         }
 
     }
+
+    private suspend fun getTasks() {
+
+        val body = apiRepo.getTasksMe(userEntityCreate.initData)
+        listTasks.value = body
+
+    }
+
 }

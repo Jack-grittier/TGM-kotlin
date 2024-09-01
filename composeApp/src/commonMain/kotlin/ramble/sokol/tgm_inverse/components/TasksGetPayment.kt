@@ -24,8 +24,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
+import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.theme.background_line_item
 import ramble.sokol.tgm_inverse.theme.background_line_item_white
 import tgminverse.composeapp.generated.resources.Res
@@ -35,8 +38,7 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 @Composable
 fun TasksGetPayment(
-    title: String,
-    price: String,
+    tasks: TasksMeEntity
 ) {
 
     Box (
@@ -60,18 +62,23 @@ fun TasksGetPayment(
                 verticalAlignment = Alignment.CenterVertically
             ){
 
-                Image(
-                    modifier = Modifier
-                        .width(36.dp)
-                        .height(36.dp),
-                    painter = painterResource(Res.drawable.test_photo),
-                    contentDescription = "iconActive"
+//                Image(
+//                    modifier = Modifier
+//                        .width(36.dp)
+//                        .height(36.dp),
+//                    painter = painterResource(Res.drawable.test_photo),
+//                    contentDescription = "iconActive"
+//                )
+
+                KamelImage(
+                    resource = asyncPainterResource(data = tasks.task.iconURL),
+                    contentDescription = "description"
                 )
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
 
                 Text(
-                    text = title,
+                    text = tasks.task.description,
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 16.sp,
@@ -96,7 +103,7 @@ fun TasksGetPayment(
             Spacer(modifier = Modifier.padding(top = 14.dp))
 
             ButtonCollect(
-                text = "Collect +${price} BB"
+                text = "Collect +${tasks.task.reward} BB"
             ){
 
             }

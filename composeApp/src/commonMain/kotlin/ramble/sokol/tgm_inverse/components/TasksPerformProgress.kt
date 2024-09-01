@@ -25,9 +25,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.theme.background_line_item
 import ramble.sokol.tgm_inverse.theme.background_line_item_white
 import ramble.sokol.tgm_inverse.theme.background_wallet_item
@@ -44,9 +47,8 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 @Composable
 fun TasksPerformProgress(
-    title: String,
-    price: String,
-) {
+    tasks: TasksMeEntity,
+    ) {
 
     Box (
         modifier = Modifier
@@ -69,18 +71,23 @@ fun TasksPerformProgress(
                 verticalAlignment = Alignment.CenterVertically
             ){
 
-                Image(
-                    modifier = Modifier
-                        .width(36.dp)
-                        .height(36.dp),
-                    painter = painterResource(Res.drawable.test_photo),
-                    contentDescription = "iconActive"
+//                Image(
+//                    modifier = Modifier
+//                        .width(36.dp)
+//                        .height(36.dp),
+//                    painter = painterResource(Res.drawable.test_photo),
+//                    contentDescription = "iconActive"
+//                )
+
+                KamelImage(
+                    resource = asyncPainterResource(data = tasks.task.iconURL),
+                    contentDescription = "description"
                 )
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
 
                 Text(
-                    text = title,
+                    text = tasks.task.description,
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 16.sp,
@@ -111,7 +118,7 @@ fun TasksPerformProgress(
 
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = "+${price} BB",
+                    text = "+${tasks.task.reward} BB",
                     style = TextStyle(
                         fontSize = 14.sp,
                         lineHeight = 14.sp,
