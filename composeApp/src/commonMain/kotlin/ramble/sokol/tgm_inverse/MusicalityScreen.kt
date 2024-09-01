@@ -19,8 +19,12 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -76,9 +80,6 @@ class MusicalityScreen(
     override fun Content() {
 
         val navigator = LocalNavigator.current
-//        val context = LocalContext.current
-//        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val toaster = rememberToasterState()
 
         Column(
             modifier = modifier
@@ -217,7 +218,6 @@ class MusicalityScreen(
                                     .clickable {
                                         copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=${userEntityCreate.id}")
                                         //copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=")
-                                        toaster.show("Hello world!")
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
@@ -369,8 +369,6 @@ class MusicalityScreen(
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
         }
-
-        Toaster(state = toaster)
 
     }
 

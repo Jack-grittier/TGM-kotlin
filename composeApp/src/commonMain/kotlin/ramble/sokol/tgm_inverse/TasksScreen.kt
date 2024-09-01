@@ -97,7 +97,8 @@ class TasksScreen(
             } else {
 
                 Text(
-                    text = "tasks: ${listTasks.value}",
+                    text = "tasks: ${listTasks.value}" +
+                            "name ${listTasks.value.get(0).task.description}",
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,
@@ -108,13 +109,13 @@ class TasksScreen(
                 )
 //
 
-                LazyColumn() {
-                    items(listTasks.value) { tasks: TasksMeEntity ->
-                        TasksPerformProgress(
-                            name = tasks.task.description,
-                            photoUrl = tasks.task.iconURL,
-                            reward = tasks.task.reward.toString()
-                        )
+//                LazyColumn() {
+//                    items(listTasks.value) { tasks: TasksMeEntity ->
+//                        TasksPerformProgress(
+//                            name = tasks.task.description,
+//                            photoUrl = tasks.task.iconURL,
+//                            reward = tasks.task.reward.toString()
+//                        )
 //                        when (tasks.status) {
 //                            "NotCompleted" -> {
 //                                TasksPerform(tasks)
@@ -129,9 +130,9 @@ class TasksScreen(
 //                                TasksDone(tasks)
 //                            }
 //                        }
-                    }
-                }
-            }
+//                    }
+//                }
+           }
 
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
