@@ -186,8 +186,8 @@ class MusicalityScreen(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(top = 16.dp, bottom = 16.dp, start = 17.dp, end = 8.dp),
-                                    //text = "t.me/INVOKE_POSTIDEAS_BOT/tgmapp/statrap=",
-                                    text = "t.me/INVOKE_POSTIDEAS_BOT/tgmapp/statrap=${userEntityCreate.id}",
+                                    //text = "t.me/INVOKE_POSTIDEAS_BOT/tgmapp/startapp=",
+                                    text = "t.me/INVOKE_POSTIDEAS_BOT/tgmapp/startapp=${userEntityCreate.id}",
                                     style = TextStyle(
                                         fontSize = 16.sp,
                                         lineHeight = 16.sp,
@@ -212,8 +212,8 @@ class MusicalityScreen(
                                     .clip(RoundedCornerShape(18.dp))
                                     .background(background_copy_link)
                                     .clickable {
-                                        copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?statrapp=${userEntityCreate.id}")
-                                        //copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?statrapp=")
+                                        copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=${userEntityCreate.id}")
+                                        //copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=")
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
