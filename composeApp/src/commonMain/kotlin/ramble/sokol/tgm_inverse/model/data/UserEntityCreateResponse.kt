@@ -14,5 +14,20 @@ data class UserEntityCreateResponse(
     val photoURL: String? = null,
     val updatedAt: String? = null,
     val createdAt: String? = null,
-    val statusCode: Long? = null
+    val statusCode: Long? = null,
+    val error: Error? = null,
+)
+
+@Serializable
+data class Error(
+    val kind: String? = null,
+    val code: String? = null,
+    val validationError: ValidationError? = null,
+)
+
+@Serializable
+data class ValidationError(
+    val path: String? = null,
+    val expected: String? = null,
+    val value: String? = null
 )

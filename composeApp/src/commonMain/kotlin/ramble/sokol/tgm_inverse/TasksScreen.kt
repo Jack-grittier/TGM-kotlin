@@ -110,21 +110,21 @@ class TasksScreen(
 
                 LazyColumn() {
                     items(listTasks.value) { tasks: TasksMeEntity ->
-
-                        when (tasks.status) {
-                            "NotCompleted" -> {
-                                TasksPerform(tasks)
-                            }
-                            "Pending" -> {
-                                TasksPerformProgress(tasks)
-                            }
-                            "CompletedWithoutReceivingReward" -> {
-                                TasksGetPayment(tasks)
-                            }
-                            "Completed" -> {
-                                TasksDone(tasks)
-                            }
-                        }
+                        TasksPerformProgress(tasks)
+//                        when (tasks.status) {
+//                            "NotCompleted" -> {
+//                                TasksPerform(tasks)
+//                            }
+//                            "Pending" -> {
+//                                TasksPerformProgress(tasks)
+//                            }
+//                            "CompletedWithoutReceivingReward" -> {
+//                                TasksGetPayment(tasks)
+//                            }
+//                            "Completed" -> {
+//                                TasksDone(tasks)
+//                            }
+//                        }
                     }
                 }
             }
