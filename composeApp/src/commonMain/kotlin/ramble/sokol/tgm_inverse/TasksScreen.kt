@@ -71,7 +71,7 @@ class TasksScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                //.verticalScroll(rememberScrollState())
                 .background(background_screens)
                 .padding(top = 24.dp, start = 16.dp, end = 16.dp)
                 .windowInsetsPadding(WindowInsets.safeDrawing)
@@ -110,21 +110,21 @@ class TasksScreen(
 
                 LazyColumn() {
                     items(listTasks.value) { tasks: TasksMeEntity ->
-//                        TasksPerformProgress(
-//                            name = tasks.task.description,
-//                            photoUrl = tasks.task.iconURL,
-//                            reward = tasks.task.reward.toString()
-//                        )
-                        Text(
-                            text = "task: ${tasks}",
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                lineHeight = 21.sp,
-                                fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                                fontWeight = FontWeight(600),
-                                color = Color.White,
-                            )
+                        TasksPerformProgress(
+                            name = tasks.task.description,
+                            photoUrl = tasks.task.iconURL,
+                            reward = tasks.task.reward.toString()
                         )
+//                        Text(
+//                            text = "task: ${tasks}",
+//                            style = TextStyle(
+//                                fontSize = 16.sp,
+//                                lineHeight = 21.sp,
+//                                fontFamily = FontFamily(Font(Res.font.mont_regular)),
+//                                fontWeight = FontWeight(600),
+//                                color = Color.White,
+//                            )
+//                        )
 
 //                        when (tasks.status) {
 //                            "NotCompleted" -> {
