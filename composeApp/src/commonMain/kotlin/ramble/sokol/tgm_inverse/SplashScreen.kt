@@ -378,7 +378,7 @@ class SplashScreen : Screen {
                     lastName = lastname.value.toString(),
                     languageCode = languageCode.value.toString(),
                     isPremium = isPremium.value!!,
-                    photoURL = null,
+                    photoURL = "",
                     referralCode = referalCode.value
                 )
                 body.value = apiRepo.createUser(userEntityCreate)

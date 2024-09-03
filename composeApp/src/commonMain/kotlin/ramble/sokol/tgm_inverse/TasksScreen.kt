@@ -110,11 +110,22 @@ class TasksScreen(
 
                 LazyColumn() {
                     items(listTasks.value) { tasks: TasksMeEntity ->
-                        TasksPerformProgress(
-                            name = tasks.task.description,
-                            photoUrl = tasks.task.iconURL,
-                            reward = tasks.task.reward.toString()
+//                        TasksPerformProgress(
+//                            name = tasks.task.description,
+//                            photoUrl = tasks.task.iconURL,
+//                            reward = tasks.task.reward.toString()
+//                        )
+                        Text(
+                            text = "task: ${tasks}",
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                lineHeight = 21.sp,
+                                fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                fontWeight = FontWeight(600),
+                                color = Color.White,
+                            )
                         )
+
 //                        when (tasks.status) {
 //                            "NotCompleted" -> {
 //                                TasksPerform(tasks)
