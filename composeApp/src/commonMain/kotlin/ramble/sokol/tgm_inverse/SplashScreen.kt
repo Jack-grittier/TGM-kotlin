@@ -174,95 +174,7 @@ class SplashScreen : Screen {
             ){
 
                 Text(
-                    text = "initData: ${initData.value}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-//
-//                Text(
-//                    text = "userData: ${userData.value.toString()}",
-//                    style = TextStyle(
-//                        fontSize = 16.sp,
-//                        lineHeight = 21.sp,
-//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-//                        fontWeight = FontWeight(600),
-//                        color = Color.White,
-//                    )
-//                )
-
-                Text(
-                    text = "userName: ${userName.value}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
                     text = "userUrl: ${userUrl.value}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
-                    text = "id: ${id.value}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
-                    text = "fisrstname: ${firstname.value}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
-                    text = "lastname: ${lastname.value}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
-                    text = "lan: ${languageCode.value}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
-                    text = "prem: ${isPremium.value}",
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,
@@ -282,17 +194,6 @@ class SplashScreen : Screen {
                         color = Color.White,
                     )
                 )
-//
-//                Text(
-//                    text = "userData: ${userData.value!!.firstName.toString() }",
-//                    style = TextStyle(
-//                        fontSize = 16.sp,
-//                        lineHeight = 21.sp,
-//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-//                        fontWeight = FontWeight(600),
-//                        color = Color.White,
-//                    )
-//                )
 
                 Text(
                     text = "body: ${body.value.toString()}",
@@ -378,7 +279,7 @@ class SplashScreen : Screen {
                     lastName = lastname.value.toString(),
                     languageCode = languageCode.value.toString(),
                     isPremium = isPremium.value!!,
-                    photoURL = "",
+                    photoURL = userUrl.value,
                     referralCode = referalCode.value
                 )
                 body.value = apiRepo.createUser(userEntityCreate)
