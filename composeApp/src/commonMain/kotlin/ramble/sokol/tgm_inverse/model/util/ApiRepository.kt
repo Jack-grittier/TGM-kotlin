@@ -13,10 +13,14 @@ import ramble.sokol.tgm_inverse.model.util.ApiClient.client
 
 class ApiRepository {
 
-    suspend fun createUser(userEntityCreate: UserEntityCreate) : UserEntityCreateResponse =
-        client.post(ApiRoutes.CREATE_USER){
-            setBody(userEntityCreate)
-        }.body()
+    suspend fun createUser(userEntityCreate: UserEntityCreate) : UserEntityCreateResponse {
+        if (userEntityCreate.photoURL == "null"){
+            userEntityCreate.photoURL = null
+        }
+        return client.post(ApiRoutes.CREATE_USER){
+                setBody(userEntityCreate)
+            }.body()
+        }
 
     suspend fun getTasksMe(
         initData: String
