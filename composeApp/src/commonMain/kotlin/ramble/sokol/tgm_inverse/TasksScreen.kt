@@ -67,7 +67,6 @@ class TasksScreen(
 
         scope.launch {
             getTasks()
-            delay(2000)
         }
 
         Column(

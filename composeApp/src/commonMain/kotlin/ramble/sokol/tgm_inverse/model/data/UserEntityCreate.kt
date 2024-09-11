@@ -17,5 +17,5 @@ data class UserEntityCreate(
     val languageCode: String,
     val isPremium: Boolean,
     var photoURL: String?,
-    val referralCode: Long?,
+    var referralCode: String?,
 )

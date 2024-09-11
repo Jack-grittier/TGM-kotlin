@@ -17,6 +17,9 @@ class ApiRepository {
         if (userEntityCreate.photoURL == "null"){
             userEntityCreate.photoURL = null
         }
+        if (userEntityCreate.referralCode == "null"){
+            userEntityCreate.referralCode = null
+        }
         return client.post(ApiRoutes.CREATE_USER){
                 setBody(userEntityCreate)
             }.body()
