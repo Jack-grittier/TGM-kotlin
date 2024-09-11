@@ -33,7 +33,7 @@ object ApiClient {
                     ignoreUnknownKeys = true
                     prettyPrint = true
                     isLenient = true
-                    explicitNulls = false
+                    explicitNulls = true
                 }
             )
         }
