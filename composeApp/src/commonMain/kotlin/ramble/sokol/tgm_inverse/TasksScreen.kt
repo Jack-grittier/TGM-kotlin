@@ -72,7 +72,6 @@ class TasksScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
                 .background(background_screens)
                 .padding(top = 24.dp, start = 16.dp, end = 16.dp)
                 .windowInsetsPadding(WindowInsets.safeDrawing)
