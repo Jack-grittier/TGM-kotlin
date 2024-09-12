@@ -173,51 +173,6 @@ class SplashScreen : Screen {
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
 
-                Text(
-                    text = "userUrl: ${userUrl.value}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
-                    text = "ref: ${referalCode.value}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
-                    text = "body: ${body.value.toString()}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-                Text(
-                    text = "loading: ${loading.value.toString()}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
-
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -278,8 +233,11 @@ class SplashScreen : Screen {
                 )
                 body.value = apiRepo.createUser(userEntityCreate)
                 loading.value = true
-                delay(5000L)
-                navigator?.push(MainMenuScreen(userEntityCreate))
+                if (body.value!!.error == null) {
+                    navigator?.push(MainMenuScreen(userEntityCreate))
+                }else {
+
+                }
                 //navigator?.push(MainMenuScreen())
             }
 
