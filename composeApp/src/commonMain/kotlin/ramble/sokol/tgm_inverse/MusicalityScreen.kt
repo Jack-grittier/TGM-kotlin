@@ -80,6 +80,7 @@ class MusicalityScreen(
     override fun Content() {
 
         val navigator = LocalNavigator.current
+        val toaster = rememberToasterState()
 
         Column(
             modifier = modifier
@@ -218,9 +219,12 @@ class MusicalityScreen(
                                     .clickable {
                                         copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=${userEntityCreate.id}")
                                         //copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=")
+                                        toaster.show("Hello world!")
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
+
+                                Toaster(state = toaster)
 
                                 Image(
                                     modifier = Modifier.height(25.dp).width(25.dp),

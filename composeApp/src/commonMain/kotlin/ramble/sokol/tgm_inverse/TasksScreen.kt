@@ -122,6 +122,7 @@ class TasksScreen(
                             "NotCompleted" -> {
                                 TasksPerform(tasks)
                             }
+
                             "Pending" -> {
                                 TasksPerformProgress(
                                     name = tasks.task.description,
