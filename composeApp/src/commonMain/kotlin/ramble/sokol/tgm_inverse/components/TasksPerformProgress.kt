@@ -178,6 +178,8 @@ fun TasksPerformProgress(
 
         }
 
+        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+
     }
 
 }

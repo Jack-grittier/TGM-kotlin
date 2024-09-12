@@ -97,9 +97,7 @@ class TasksScreen(
                 ProgressBarTasks()
             } else {
 
-                LazyColumn(
-                    userScrollEnabled = false
-                ) {
+                LazyColumn() {
                     items(listTasks.value) { tasks: TasksMeEntity ->
 //                        TasksPerformProgress(
 //                            name = tasks.task.description,
@@ -118,6 +116,10 @@ class TasksScreen(
 ////                        )
 
                         when (tasks.status) {
+                            "CompletedWithoutReceivingReward" -> {
+                                TasksGetPayment(tasks)
+                            }
+
                             "NotCompleted" -> {
                                 TasksPerform(tasks)
                             }
@@ -128,9 +130,6 @@ class TasksScreen(
                                     reward = tasks.task.reward.toString()
                                 )
                             }
-                            "CompletedWithoutReceivingReward" -> {
-                                TasksGetPayment(tasks)
-                            }
                             "Completed" -> {
                                 TasksDone(tasks)
                             }
@@ -139,7 +138,7 @@ class TasksScreen(
                 }
            }
 
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+            Spacer(modifier = Modifier.padding(vertical = 4.dp))
 
         }
 
