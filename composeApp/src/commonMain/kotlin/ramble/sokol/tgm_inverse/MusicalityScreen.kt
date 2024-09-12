@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.dokar.sonner.ToastType
 import com.dokar.sonner.Toaster
 import com.dokar.sonner.rememberToasterState
 import kotlinx.browser.window
@@ -70,6 +71,7 @@ import tgminverse.composeapp.generated.resources.image_line
 import tgminverse.composeapp.generated.resources.image_play_game
 import tgminverse.composeapp.generated.resources.mont_regular
 import tgminverse.composeapp.generated.resources.tasks_navbar
+import kotlin.time.Duration.Companion.milliseconds
 
 class MusicalityScreen(
     val modifier: Modifier,
@@ -81,6 +83,8 @@ class MusicalityScreen(
 
         val navigator = LocalNavigator.current
         val toaster = rememberToasterState()
+
+        Toaster(state = toaster, alignment = Alignment.BottomCenter)
 
         Column(
             modifier = modifier
@@ -219,12 +223,14 @@ class MusicalityScreen(
                                     .clickable {
                                         copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=${userEntityCreate.id}")
                                         //copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=")
-                                        toaster.show("Hello world!")
+                                        toaster.show(
+                                            message = "Hello world!",
+                                            type = ToastType.Normal,
+                                            duration = 3000.milliseconds)
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
 
-                                Toaster(state = toaster)
 
                                 Image(
                                     modifier = Modifier.height(25.dp).width(25.dp),

@@ -117,10 +117,12 @@ class TasksScreen(
                         when (tasks.status) {
                             "CompletedWithoutReceivingReward" -> {
                                 TasksGetPayment(tasks)
+                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
                             }
 
                             "NotCompleted" -> {
                                 TasksPerform(tasks)
+                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
                             }
 
                             "Pending" -> {
@@ -129,9 +131,11 @@ class TasksScreen(
                                     photoUrl = tasks.task.iconURL,
                                     reward = tasks.task.reward.toString()
                                 )
+                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
                             }
                             "Completed" -> {
                                 TasksDone(tasks)
+                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
                             }
                         }
                     }

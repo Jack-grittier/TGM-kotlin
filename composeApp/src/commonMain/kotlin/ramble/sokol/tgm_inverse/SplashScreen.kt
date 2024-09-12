@@ -69,6 +69,8 @@ import dev.inmo.tgbotapi.webapps.webApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.internal.JSJoda.use
+import ramble.sokol.tgm_inverse.model.data.SplashIconEntity
+import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreateResponse
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
@@ -91,12 +93,16 @@ class SplashScreen : Screen {
     private lateinit var languageCode: MutableState<String?>
     private lateinit var isPremium: MutableState<Boolean?>
     private lateinit var referalCode: MutableState<Long?>
+    private lateinit var splashIocns: MutableState<List<SplashIconEntity>>
 
     @Composable
     override fun Content() {
 
         val scope  = rememberCoroutineScope()
         apiRepo = ApiRepository()
+        splashIocns = remember {
+            mutableStateOf(listOf())
+        }
 
         initData = remember {
             mutableStateOf("")
@@ -152,6 +158,10 @@ class SplashScreen : Screen {
 
         navigator = LocalNavigator.current!!
 
+        scope.launch {
+            getIcon()
+        }
+
             val transition = rememberInfiniteTransition(label = "")
             val alpha by transition.animateFloat(
                 initialValue = 0f,
@@ -160,7 +170,6 @@ class SplashScreen : Screen {
                     animation = tween(
                         durationMillis = 3000
                     ),
-                    repeatMode = RepeatMode.Reverse
                 ), label = ""
             )
 
@@ -242,6 +251,13 @@ class SplashScreen : Screen {
             }
 
         }
+
+    }
+
+    private suspend fun getIcon() {
+
+        val body = apiRepo.getSplashIcon()
+        splashIocns.value = body
 
     }
 
