@@ -72,7 +72,7 @@ class TasksScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                //.verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState())
                 .background(background_screens)
                 .padding(top = 24.dp, start = 16.dp, end = 16.dp)
                 .windowInsetsPadding(WindowInsets.safeDrawing)
@@ -97,7 +97,9 @@ class TasksScreen(
                 ProgressBarTasks()
             } else {
 
-                LazyColumn() {
+                LazyColumn(
+                    userScrollEnabled = false
+                ) {
                     items(listTasks.value) { tasks: TasksMeEntity ->
 //                        TasksPerformProgress(
 //                            name = tasks.task.description,
