@@ -283,14 +283,7 @@ class SplashScreen : Screen {
                 //navigator?.push(MainMenuScreen())
             }
 
-
         }
-
-
-//            withContext(Dispatchers.Default) {
-//                initData.value = webApp.initData
-//            }
-
 
     }
 
