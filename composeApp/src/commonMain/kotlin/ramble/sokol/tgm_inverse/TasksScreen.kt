@@ -97,18 +97,6 @@ class TasksScreen(
                 ProgressBarTasks()
             } else {
 
-                Text(
-                    text = "tasks: ${listTasks.value}" +
-                            "name ${listTasks.value[0].task.description}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
-
                 LazyColumn() {
                     items(listTasks.value) { tasks: TasksMeEntity ->
 //                        TasksPerformProgress(
