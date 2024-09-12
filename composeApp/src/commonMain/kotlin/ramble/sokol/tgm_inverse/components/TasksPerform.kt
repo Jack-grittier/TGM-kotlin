@@ -79,10 +79,10 @@ fun TasksPerform(
                     contentDescription = "iconActive"
                 )
 
-//                KamelImage(
-//                    resource = asyncPainterResource(data = tasks.task.iconURL),
-//                    contentDescription = "description"
-//                )
+                KamelImage(
+                    resource = asyncPainterResource(data = tasks.task.iconURL),
+                    contentDescription = "description"
+                )
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
 
