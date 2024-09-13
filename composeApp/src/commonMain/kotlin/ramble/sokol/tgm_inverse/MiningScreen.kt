@@ -291,15 +291,26 @@ class MiningScreen (
 
             } else {
 
-                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                Row (
+                    modifier = Modifier.padding(start = 16.dp),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
 
-                LazyRow() {
-                    items(listMusic.value) { items: MusicResponse ->
+                    Spacer(modifier = Modifier.padding(horizontal = 8.dp))
 
-                        PlaylistItem(name = items.name, author = items.group, price = items.reward.toString())
+                    LazyRow() {
+                        items(listMusic.value) { items: MusicResponse ->
 
-                        Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                            PlaylistItem(
+                                name = items.name,
+                                author = items.group,
+                                price = items.reward.toString()
+                            )
 
+                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                        }
                     }
                 }
             }
