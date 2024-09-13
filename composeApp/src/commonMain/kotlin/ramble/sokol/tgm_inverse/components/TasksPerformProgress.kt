@@ -74,6 +74,17 @@ fun TasksPerformProgress(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ){
+//
+//                AsyncImage(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(150.dp)
+//                        .clip(RoundedCornerShape(16.dp)),
+//                    model = photoUrl,
+//                    contentDescription = "image events",
+//                    contentScale = ContentScale.Crop,
+//                    ima
+//                )
 
 //                Image(
 //                    modifier = Modifier
@@ -87,16 +98,6 @@ fun TasksPerformProgress(
                     resource = asyncPainterResource(data = photoUrl),
                     contentDescription = "description"
                 )
-
-//                AsyncImage(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(150.dp)
-//                        .clip(RoundedCornerShape(16.dp)),
-//                    model = area.image,
-//                    contentDescription = "image events",
-//                    contentScale = ContentScale.Crop
-//                )
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
 

@@ -8,6 +8,7 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.HttpHeaders
+import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.SplashIconEntity
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
@@ -33,6 +34,19 @@ class ApiRepository {
         client.get(ApiRoutes.GET_SPLASH_SCREEN){
             url {
                 parameters.append("enabled", true.toString())
+            }
+        }.body()
+
+    suspend fun getMusic(
+        page: String,
+        limit: String,
+    ) : List<MusicResponse> =
+        client.get(ApiRoutes.GET_MUSIC){
+            url {
+                parameters.append("page", page)
+                parameters.append("limit", limit)
+                parameters.append("sortField", "name")
+                parameters.append("sortOrder", "ASC")
             }
         }.body()
 
