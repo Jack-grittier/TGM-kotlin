@@ -280,8 +280,18 @@ class MiningScreen (
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
             if (listMusic.value.size == 0) {
-                ProgressBarTasks()
+
+                Box(
+                    modifier = Modifier.fillMaxWidth().height(200.dp).padding(start = 16.dp),
+                    contentAlignment = Alignment.Center){
+
+                    ProgressBarTasks()
+
+                }
+
             } else {
+
+                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
 
                 LazyRow() {
                     items(listMusic.value) { items: MusicResponse ->
