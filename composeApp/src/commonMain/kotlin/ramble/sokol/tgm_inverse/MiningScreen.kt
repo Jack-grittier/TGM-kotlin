@@ -92,6 +92,7 @@ class MiningScreen (
 
     private lateinit var apiRepo: ApiRepository
     private lateinit var listMusic: MutableState<List<MusicResponse>>
+    private lateinit var itemCount: MutableState<Int>
 
     @Composable
     override fun Content() {
@@ -100,6 +101,10 @@ class MiningScreen (
         val scope  = rememberCoroutineScope()
         listMusic = remember {
             mutableStateOf(listOf())
+        }
+
+        itemCount = remember {
+            mutableStateOf(0)
         }
 
         scope.launch {
@@ -292,15 +297,16 @@ class MiningScreen (
             } else {
 
                 Row (
-                    modifier = Modifier.padding(start = 16.dp),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-
                     LazyRow() {
                         items(listMusic.value) { items: MusicResponse ->
+
+                            if (itemCount.value == 0){
+                                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                            }
 
                             PlaylistItem(
                                 name = items.name,
@@ -309,6 +315,8 @@ class MiningScreen (
                             )
 
                             Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                            itemCount.value += 1
 
                         }
                     }

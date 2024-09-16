@@ -19,17 +19,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import io.ktor.client.HttpClient
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.w3c.dom.ImageBitmap
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.theme.background_line_item
 import ramble.sokol.tgm_inverse.theme.background_line_item_white
@@ -79,13 +83,15 @@ fun TasksPerform(
 //                    contentDescription = "iconActive"
 //                )
 
-                KamelImage(
+                AsyncImage(
                     modifier = Modifier
                         .width(36.dp)
                         .height(36.dp),
-                    resource = asyncPainterResource(data = tasks.task.iconURL),
-                    contentDescription = "description"
+                    model = tasks.task.iconURL,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                 )
+
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
 

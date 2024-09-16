@@ -23,6 +23,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.voyager.navigator)
             implementation(libs.coil)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.compose.core)
             implementation(libs.coil.network.ktor)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.moko.mvvm)

@@ -13,6 +13,12 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.setSingletonImageLoaderFactory
+import coil3.request.crossfade
+import coil3.util.DebugLogger
 import tgminverse.composeapp.generated.resources.*
 import ramble.sokol.tgm_inverse.theme.AppTheme
 import ramble.sokol.tgm_inverse.theme.LocalThemeIsDark
@@ -20,7 +26,14 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 internal fun App() = AppTheme {
+    setSingletonImageLoaderFactory { context ->
+        getAsyncImageLoader(context)
+    }
     Navigator(SplashScreen())
 }
+
+fun getAsyncImageLoader(context: PlatformContext)=
+    ImageLoader.Builder(context).crossfade(true).logger(DebugLogger()).build()

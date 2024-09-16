@@ -74,25 +74,15 @@ fun TasksPerformProgress(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ){
-//
-//                AsyncImage(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(150.dp)
-//                        .clip(RoundedCornerShape(16.dp)),
-//                    model = photoUrl,
-//                    contentDescription = "image events",
-//                    contentScale = ContentScale.Crop,
-//                    ima
-//                )
 
-//                Image(
-//                    modifier = Modifier
-//                        .width(36.dp)
-//                        .height(36.dp),
-//                    painter = painterResource(Res.drawable.test_photo),
-//                    contentDescription = "iconActive"
-//                )
+                AsyncImage(
+                    modifier = Modifier
+                        .width(36.dp)
+                        .height(36.dp),
+                    model = photoUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                )
 
                 KamelImage(
                     resource = asyncPainterResource(data = photoUrl),

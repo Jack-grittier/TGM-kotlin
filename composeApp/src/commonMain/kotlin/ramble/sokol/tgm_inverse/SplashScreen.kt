@@ -207,6 +207,15 @@ class SplashScreen : Screen {
 
                 }
 
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 53.dp, horizontal = 24.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ){
+
+                }
+
             }
 
         LaunchedEffect(
