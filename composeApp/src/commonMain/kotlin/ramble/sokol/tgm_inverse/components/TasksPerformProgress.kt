@@ -79,7 +79,7 @@ fun TasksPerformProgress(
                     modifier = Modifier
                         .width(36.dp)
                         .height(36.dp),
-                    model = photoUrl,
+                    model = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2UoKyN61H-7pji5xrj1hoH1u4spsrBHCbFA&s",
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                 )
