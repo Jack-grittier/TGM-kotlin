@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import io.ktor.client.HttpClient
@@ -92,11 +93,11 @@ fun TasksPerform(
 //                    contentDescription = "iconActive"
 //                )
 
-                AsyncImage(
+                SubcomposeAsyncImage(
                     modifier = Modifier
                         .width(36.dp)
                         .height(36.dp),
-                    model = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2UoKyN61H-7pji5xrj1hoH1u4spsrBHCbFA&s",
+                    model = tasks.task.iconURL,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     onError = { error ->
