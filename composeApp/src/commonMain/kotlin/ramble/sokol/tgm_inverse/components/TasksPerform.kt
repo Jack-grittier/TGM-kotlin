@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,10 +52,16 @@ import tgminverse.composeapp.generated.resources.perform
 import tgminverse.composeapp.generated.resources.tasks_navbar
 import tgminverse.composeapp.generated.resources.test_photo
 
+private lateinit var name: MutableState<String>
+
 @Composable
 fun TasksPerform(
     tasks: TasksMeEntity,
 ) {
+
+    name = remember {
+        mutableStateOf(tasks.task.description.toString())
+    }
 
     Box (
         modifier = Modifier
@@ -90,12 +99,21 @@ fun TasksPerform(
                     model = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2UoKyN61H-7pji5xrj1hoH1u4spsrBHCbFA&s",
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
+                    onError = { error ->
+                        name.value = error.toString()
+                    },
+                    onLoading = { load ->
+                        name.value = load.toString()
+                    },
+                    onSuccess = { success ->
+                        name.value = success.toString()
+                    }
                 )
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
 
                 Text(
-                    text = tasks.task.description,
+                    text = name.value,
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 16.sp,

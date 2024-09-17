@@ -301,6 +301,8 @@ class MiningScreen (
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
+                    itemCount.value = 0
+
                     LazyRow() {
                         items(listMusic.value) { items: MusicResponse ->
 
