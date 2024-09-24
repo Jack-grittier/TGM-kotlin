@@ -56,6 +56,7 @@ class TasksScreen(
 
     private lateinit var apiRepo: ApiRepository
     private lateinit var listTasks: MutableState<List<TasksMeEntity>>
+    private lateinit var body: MutableState<TasksMeEntityNew>
 
     @Composable
     override fun Content() {
@@ -98,7 +99,7 @@ class TasksScreen(
             } else {
 
                 Text(
-                    text = "task: ${listTasks}",
+                    text = "task: ${body}",
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,
@@ -158,12 +159,11 @@ class TasksScreen(
 
     private suspend fun getTasks() {
 
-        val body = apiRepo.getTasksMe(userEntityCreate.initData)
-        val notCom = body.NotCompleted
-        val pen = body.Pending
-        val comWithout = body.CompletedWithoutReceivingReward
-        val com = body.Completed
-        listTasks.value = notCom + pen + comWithout + com
+        body.value = apiRepo.getTasksMe(userEntityCreate.initData)
+//        val notCom = body.NotCompleted
+//        val pen = body.Pending
+//        val comWithout = body.CompletedWithoutReceivingReward
+//        val com = body.Completed
     }
 
 }
