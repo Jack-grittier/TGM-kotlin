@@ -5,6 +5,7 @@ import ProgressBarDemo
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -90,6 +91,7 @@ class MiningScreen (
     val userEntityCreate: UserEntityCreate
 ) : Screen {
 
+    private lateinit var startedEarning: MutableState<Boolean>
     private lateinit var apiRepo: ApiRepository
     private lateinit var listMusic: MutableState<List<MusicResponse>>
     private lateinit var itemCount: MutableState<Int>
@@ -107,7 +109,12 @@ class MiningScreen (
             mutableStateOf(0)
         }
 
-        scope.launch {
+        startedEarning = remember {
+            mutableStateOf(false)
+        }
+
+        scope.launch{
+            getEarnings()
             getMusic("1", "25")
         }
 
@@ -184,16 +191,28 @@ class MiningScreen (
                                 }
                             }
 
-                            Image(
-                                modifier = Modifier
-                                    .height(86.dp)
-                                    .width(86.dp)
-                                    .padding(bottom = 14.dp, end = 14.dp),
-                                painter = painterResource(Res.drawable.icon_play_music),
-                                contentDescription = "imageLine"
-                            )
+                            if (startedEarning.value == false) {
 
-                            ProgressBarDemo()
+                                Image(
+                                    modifier = Modifier
+                                        .height(86.dp)
+                                        .width(86.dp)
+                                        .padding(bottom = 14.dp, end = 14.dp)
+                                        .clickable {
+                                            scope.launch {
+                                                postEarnings()
+                                            }
+                                        },
+                                    painter = painterResource(Res.drawable.icon_play_music),
+                                    contentDescription = "imageLine"
+                                )
+                            }
+
+                            if (startedEarning.value == true){
+
+                                ProgressBarDemo()
+
+                            }
 
                         }
 
@@ -371,6 +390,22 @@ class MiningScreen (
 
         }
 
+    }
+
+    private suspend fun getEarnings(){
+        val body = apiRepo.getEarnings(initData = userEntityCreate.initData)
+        if (body.statusCode == 404){
+            startedEarning.value = false
+        }else{
+            startedEarning.value = true
+        }
+    }
+
+    private suspend fun postEarnings(){
+        val body = apiRepo.postEarnings(initData = userEntityCreate.initData)
+        if (body.statusCode == null){
+            startedEarning.value = true
+        }
     }
 
     private suspend fun getMusic(page: String, limit: String) {

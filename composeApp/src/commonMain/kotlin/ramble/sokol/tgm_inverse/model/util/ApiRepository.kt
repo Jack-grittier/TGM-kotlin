@@ -8,6 +8,7 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.HttpHeaders
+import ramble.sokol.tgm_inverse.model.data.GetEarningsEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.SplashIconEntity
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
@@ -49,6 +50,20 @@ class ApiRepository {
                 parameters.append("sortField", "name")
                 parameters.append("sortOrder", "ASC")
             }
+        }.body()
+
+    suspend fun getEarnings(
+        initData: String
+    ) : GetEarningsEntity =
+        client.get(ApiRoutes.GET_MUSIC){
+            header(HttpHeaders.Authorization, "Bearer ${initData}")
+        }.body()
+
+    suspend fun postEarnings(
+        initData: String
+    ) : GetEarningsEntity =
+        client.post(ApiRoutes.GET_MUSIC){
+            header(HttpHeaders.Authorization, "Bearer ${initData}")
         }.body()
 
 }
