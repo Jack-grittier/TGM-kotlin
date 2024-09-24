@@ -56,7 +56,7 @@ class TasksScreen(
 
     private lateinit var apiRepo: ApiRepository
     private lateinit var listTasks: MutableState<List<TasksMeEntity>>
-    private lateinit var body: MutableState<TasksMeEntityNew>
+    private lateinit var body: MutableState<TasksMeEntityNew?>
 
     @Composable
     override fun Content() {
@@ -65,6 +65,9 @@ class TasksScreen(
         val scope  = rememberCoroutineScope()
         listTasks = remember {
             mutableStateOf(listOf())
+        }
+        body = remember {
+            mutableStateOf(null )
         }
 
         scope.launch {
