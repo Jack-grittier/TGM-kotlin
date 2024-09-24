@@ -258,6 +258,7 @@ class MusicalityScreen(
                         .clip(RoundedCornerShape(26.dp))
                         .background(color_background_referal)
                         .clickable {
+                            navigator?.popUntilRoot()
                             navigator?.push(GameScreen())
                         },
                     contentAlignment = Alignment.Center

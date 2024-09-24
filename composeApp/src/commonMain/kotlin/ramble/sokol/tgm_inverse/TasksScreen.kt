@@ -56,6 +56,10 @@ class TasksScreen(
 
     private lateinit var apiRepo: ApiRepository
     private lateinit var listTasks: MutableState<List<TasksMeEntity>>
+    private lateinit var listTasksNotCom: MutableState<List<TasksMeEntity>>
+    private lateinit var listTasksPen: MutableState<List<TasksMeEntity>>
+    private lateinit var listTasksComWithout: MutableState<List<TasksMeEntity>>
+    private lateinit var listTasksCom: MutableState<List<TasksMeEntity>>
     private lateinit var body: MutableState<TasksMeEntityNew?>
 
     @Composable
@@ -66,6 +70,19 @@ class TasksScreen(
         listTasks = remember {
             mutableStateOf(listOf())
         }
+        listTasksCom = remember {
+            mutableStateOf(listOf())
+        }
+        listTasksComWithout = remember {
+            mutableStateOf(listOf())
+        }
+        listTasksNotCom = remember {
+            mutableStateOf(listOf())
+        }
+        listTasksPen = remember {
+            mutableStateOf(listOf())
+        }
+
         body = remember {
             mutableStateOf(null )
         }
@@ -97,62 +114,48 @@ class TasksScreen(
 
             Spacer(modifier = Modifier.padding(top = 24.dp))
 
-//            if (listTasks.value.size == 0) {
-//                ProgressBarTasks()
-//            } else {
+            if (listTasks.value.size == 0) {
+                ProgressBarTasks()
+            } else {
 
-                Text(
-                    text = "task: ${body.value}",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                        fontWeight = FontWeight(600),
-                        color = Color.White,
-                    )
-                )
+//                Text(
+//                    text = "task: ${body.value}",
+//                    style = TextStyle(
+//                        fontSize = 16.sp,
+//                        lineHeight = 21.sp,
+//                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+//                        fontWeight = FontWeight(600),
+//                        color = Color.White,
+//                    )
+//                )
 
-//                LazyColumn() {
-//                    items(listTasks.value) { tasks: TasksMeEntity ->
-//
-//                        Text(
-//                            text = "task: ${tasks}",
-//                            style = TextStyle(
-//                                fontSize = 16.sp,
-//                                lineHeight = 21.sp,
-//                                fontFamily = FontFamily(Font(Res.font.mont_regular)),
-//                                fontWeight = FontWeight(600),
-//                                color = Color.White,
-//                            )
-//                        )
-//
-////                        when (tasks) {
-////                            "CompletedWithoutReceivingReward" -> {
-////                                TasksGetPayment(tasks)
-////                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-////                            }
-////
-////                            "NotCompleted" -> {
-////                                TasksPerform(tasks)
-////                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-////                            }
-////
-////                            "Pending" -> {
-////                                TasksPerformProgress(
-////                                    name = tasks.task.description,
-////                                    photoUrl = tasks.task.iconURL,
-////                                    reward = tasks.task.reward.toString()
-////                                )
-////                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-////                            }
-////                            "Completed" -> {
-////                                TasksDone(tasks)
-////                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-////                            }
-////                        }
-//                    }
-//                }
-           //}
+                LazyColumn() {
+                    items(listTasksNotCom.value) { tasks: TasksMeEntity ->
+                        TasksPerform(tasks)
+                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                    }
+
+                    items(listTasksPen.value) { tasks: TasksMeEntity ->
+                        TasksPerformProgress(
+                            name = tasks.task.description,
+                            photoUrl = tasks.task.iconURL,
+                            reward = tasks.task.reward.toString()
+                        )
+                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                    }
+
+                    items(listTasksComWithout.value) { tasks: TasksMeEntity ->
+                        TasksGetPayment(tasks)
+                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                    }
+
+                    items(listTasksCom.value) { tasks: TasksMeEntity ->
+                        TasksDone(tasks)
+                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                    }
+
+                }
+           }
 
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
 
@@ -163,10 +166,10 @@ class TasksScreen(
     private suspend fun getTasks() {
 
         body.value = apiRepo.getTasksMe(userEntityCreate.initData)
-//        val notCom = body.NotCompleted
-//        val pen = body.Pending
-//        val comWithout = body.CompletedWithoutReceivingReward
-//        val com = body.Completed
+        listTasksNotCom.value = body.value!!.NotCompleted!!
+        listTasksPen.value = body.value!!.Pending!!
+        listTasksComWithout.value = body.value!!.CompletedWithoutReceivingReward!!
+        listTasksCom.value = body.value!!.Completed!!
     }
 
 }
