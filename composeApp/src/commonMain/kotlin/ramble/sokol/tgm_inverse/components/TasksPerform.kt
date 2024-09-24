@@ -61,10 +61,6 @@ fun TasksPerform(
     onClick: () -> Unit,
 ) {
 
-    name = remember {
-        mutableStateOf(tasks.task.description.toString())
-    }
-
     Box (
         modifier = Modifier
             .fillMaxWidth()
@@ -94,28 +90,28 @@ fun TasksPerform(
 //                    contentDescription = "iconActive"
 //                )
 
-                SubcomposeAsyncImage(
-                    modifier = Modifier
-                        .width(36.dp)
-                        .height(36.dp),
-                    model = tasks.task.iconURL,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    onError = { error ->
-                        name.value = error.toString()
-                    },
-                    onLoading = { load ->
-                        name.value = load.toString()
-                    },
-                    onSuccess = { success ->
-                        name.value = success.toString()
-                    }
-                )
+//                SubcomposeAsyncImage(
+//                    modifier = Modifier
+//                        .width(36.dp)
+//                        .height(36.dp),
+//                    model = tasks.task.iconURL,
+//                    contentDescription = null,
+//                    contentScale = ContentScale.Crop,
+//                    onError = { error ->
+//                        name.value = error.toString()
+//                    },
+//                    onLoading = { load ->
+//                        name.value = load.toString()
+//                    },
+//                    onSuccess = { success ->
+//                        name.value = success.toString()
+//                    }
+//                )
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
 
                 Text(
-                    text = name.value,
+                    text = tasks.task.description,
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 16.sp,

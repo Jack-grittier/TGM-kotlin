@@ -259,7 +259,6 @@ class MusicalityScreen(
                         .background(color_background_referal)
                         .clickable {
                             navigator?.push(GameScreen())
-                            navigator?.pop()
                         },
                     contentAlignment = Alignment.Center
                 ) {
