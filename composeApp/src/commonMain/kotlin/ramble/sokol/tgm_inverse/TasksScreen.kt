@@ -175,6 +175,7 @@ class TasksScreen(
         listTasksPen.value = body.value!!.Pending!!
         listTasksComWithout.value = body.value!!.CompletedWithoutReceivingReward!!
         listTasksCom.value = body.value!!.Completed!!
+        listTasks.value = listTasksCom.value + listTasksPen.value + listTasksNotCom.value + listTasksComWithout.value
     }
 
 }
