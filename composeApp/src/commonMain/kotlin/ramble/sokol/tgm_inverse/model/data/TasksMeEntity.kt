@@ -4,6 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TasksMeEntity(
-    val status: String,
     val task: TasksEntity,
 )
