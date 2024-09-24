@@ -40,6 +40,7 @@ import ramble.sokol.tgm_inverse.components.TasksGetPayment
 import ramble.sokol.tgm_inverse.components.TasksPerform
 import ramble.sokol.tgm_inverse.components.TasksPerformProgress
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
+import ramble.sokol.tgm_inverse.model.data.TasksMeEntityNew
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_screens
@@ -54,7 +55,7 @@ class TasksScreen(
 ) : Screen {
 
     private lateinit var apiRepo: ApiRepository
-    private lateinit var listTasks: MutableState<List<TasksMeEntity>>
+    private lateinit var listTasks: MutableState<List<TasksMeEntityNew>>
 
     @Composable
     override fun Content() {
@@ -97,47 +98,43 @@ class TasksScreen(
             } else {
 
                 LazyColumn() {
-                    items(listTasks.value) { tasks: TasksMeEntity ->
-//                        TasksPerformProgress(
-//                            name = tasks.task.description,
-//                            photoUrl = tasks.task.iconURL,
-//                            reward = tasks.task.reward.toString()
-//                        )
-////                        Text(
-////                            text = "task: ${tasks}",
-////                            style = TextStyle(
-////                                fontSize = 16.sp,
-////                                lineHeight = 21.sp,
-////                                fontFamily = FontFamily(Font(Res.font.mont_regular)),
-////                                fontWeight = FontWeight(600),
-////                                color = Color.White,
-////                            )
-////                        )
+                    items(listTasks.value) { tasks: TasksMeEntityNew ->
 
-                        when (tasks.status) {
-                            "CompletedWithoutReceivingReward" -> {
-                                TasksGetPayment(tasks)
-                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-                            }
+                        Text(
+                            text = "task: ${tasks}",
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                lineHeight = 21.sp,
+                                fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                fontWeight = FontWeight(600),
+                                color = Color.White,
+                            )
+                        )
 
-                            "NotCompleted" -> {
-                                TasksPerform(tasks)
-                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-                            }
-
-                            "Pending" -> {
-                                TasksPerformProgress(
-                                    name = tasks.task.description,
-                                    photoUrl = tasks.task.iconURL,
-                                    reward = tasks.task.reward.toString()
-                                )
-                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-                            }
-                            "Completed" -> {
-                                TasksDone(tasks)
-                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-                            }
-                        }
+//                        when (tasks) {
+//                            "CompletedWithoutReceivingReward" -> {
+//                                TasksGetPayment(tasks)
+//                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+//                            }
+//
+//                            "NotCompleted" -> {
+//                                TasksPerform(tasks)
+//                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+//                            }
+//
+//                            "Pending" -> {
+//                                TasksPerformProgress(
+//                                    name = tasks.task.description,
+//                                    photoUrl = tasks.task.iconURL,
+//                                    reward = tasks.task.reward.toString()
+//                                )
+//                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+//                            }
+//                            "Completed" -> {
+//                                TasksDone(tasks)
+//                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+//                            }
+//                        }
                     }
                 }
            }

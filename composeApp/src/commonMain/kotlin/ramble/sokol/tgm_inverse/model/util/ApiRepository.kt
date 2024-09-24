@@ -11,6 +11,7 @@ import io.ktor.http.HttpHeaders
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.SplashIconEntity
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
+import ramble.sokol.tgm_inverse.model.data.TasksMeEntityNew
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreateResponse
 import ramble.sokol.tgm_inverse.model.util.ApiClient.client
@@ -24,7 +25,7 @@ class ApiRepository {
 
     suspend fun getTasksMe(
         initData: String
-    ) : List<TasksMeEntity> =
+    ) : List<TasksMeEntityNew> =
         client.get(ApiRoutes.GET_TASKS_ME){
             header(HttpHeaders.Authorization, "Bearer ${initData}")
         }.body()
