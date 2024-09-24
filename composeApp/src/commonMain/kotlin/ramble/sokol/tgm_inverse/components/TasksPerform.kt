@@ -58,6 +58,7 @@ private lateinit var name: MutableState<String>
 @Composable
 fun TasksPerform(
     tasks: TasksMeEntity,
+    onClick: () -> Unit,
 ) {
 
     name = remember {
@@ -157,6 +158,9 @@ fun TasksPerform(
                 )
 
                 Row (
+                    modifier = Modifier.clickable {
+                        onClick()
+                    },
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ){
