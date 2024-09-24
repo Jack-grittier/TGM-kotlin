@@ -55,7 +55,7 @@ class TasksScreen(
 ) : Screen {
 
     private lateinit var apiRepo: ApiRepository
-    private lateinit var listTasks: MutableState<List<TasksMeEntityNew>>
+    private lateinit var listTasks: MutableState<List<TasksMeEntity>>
 
     @Composable
     override fun Content() {
@@ -97,8 +97,10 @@ class TasksScreen(
                 ProgressBarTasks()
             } else {
 
+
+
                 LazyColumn() {
-                    items(listTasks.value) { tasks: TasksMeEntityNew ->
+                    items(listTasks.value) { tasks: TasksMeEntity ->
 
                         Text(
                             text = "task: ${tasks}",
@@ -148,8 +150,11 @@ class TasksScreen(
     private suspend fun getTasks() {
 
         val body = apiRepo.getTasksMe(userEntityCreate.initData)
-        listTasks.value = body
-
+        val notCom = body.NotCompleted
+        val pen = body.Pending
+        val comWithout = body.CompletedWithoutReceivingReward
+        val com = body.Completed
+        listTasks.value = notCom + pen + comWithout + com
     }
 
 }

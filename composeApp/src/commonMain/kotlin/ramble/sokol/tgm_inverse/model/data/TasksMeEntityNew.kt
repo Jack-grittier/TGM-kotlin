@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TasksMeEntityNew(
-    val NotCompleted: TasksMeEntity,
-    val Pending: TasksMeEntity,
-    val CompletedWithoutReceivingReward: TasksMeEntity,
-    val Completed: TasksMeEntity,
+    val NotCompleted: List<TasksMeEntity>,
+    val Pending: List<TasksMeEntity>,
+    val CompletedWithoutReceivingReward: List<TasksMeEntity>,
+    val Completed: List<TasksMeEntity>,
 )

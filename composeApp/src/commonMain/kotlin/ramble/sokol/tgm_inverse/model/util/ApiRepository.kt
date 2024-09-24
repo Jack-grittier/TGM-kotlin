@@ -25,7 +25,7 @@ class ApiRepository {
 
     suspend fun getTasksMe(
         initData: String
-    ) : List<TasksMeEntityNew> =
+    ) : TasksMeEntityNew =
         client.get(ApiRoutes.GET_TASKS_ME){
             header(HttpHeaders.Authorization, "Bearer ${initData}")
         }.body()
