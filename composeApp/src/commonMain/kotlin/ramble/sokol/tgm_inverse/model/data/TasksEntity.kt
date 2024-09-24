@@ -8,4 +8,5 @@ data class TasksEntity(
     val description: String,
     val reward: Long,
     val iconURL: String,
+    val url: String
 )
