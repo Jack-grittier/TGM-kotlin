@@ -94,12 +94,12 @@ class TasksScreen(
 
             Spacer(modifier = Modifier.padding(top = 24.dp))
 
-            if (listTasks.value.size == 0) {
-                ProgressBarTasks()
-            } else {
+//            if (listTasks.value.size == 0) {
+//                ProgressBarTasks()
+//            } else {
 
                 Text(
-                    text = "task: ${body}",
+                    text = "task: ${body.value}",
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,
@@ -149,7 +149,7 @@ class TasksScreen(
 ////                        }
 //                    }
 //                }
-           }
+           //}
 
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
 
@@ -159,7 +159,7 @@ class TasksScreen(
 
     private suspend fun getTasks() {
 
-        //body.value = apiRepo.getTasksMe(userEntityCreate.initData)
+        body.value = apiRepo.getTasksMe(userEntityCreate.initData)
 //        val notCom = body.NotCompleted
 //        val pen = body.Pending
 //        val comWithout = body.CompletedWithoutReceivingReward
