@@ -1,9 +1,11 @@
 package ramble.sokol.tgm_inverse
 
+import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateValue
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -76,6 +78,8 @@ import kotlin.random.Random
 class GameScreen : Screen {
 
     private val startPosition = mutableStateOf(getRandomNumber())
+    private val lastPosition = mutableStateOf(0)
+    private val nextPosition = mutableStateOf(0)
 
     @Composable
     override fun Content() {
@@ -84,11 +88,63 @@ class GameScreen : Screen {
 
         var offsetY by remember { mutableStateOf(0.dp) }
 
-        // Запускаем анимацию один раз при первом запуске
         val animatedOffsetY by animateDpAsState(
             targetValue = offsetY,
             animationSpec = tween(durationMillis = (1000 / speed.value).toInt())
         )
+
+        var isBoxVisible by remember { mutableStateOf(true) }
+
+        // Определяем анимацию перемещения
+        val transition = updateTransition(targetState = isBoxVisible, label = "Box Transition")
+
+        // Определяем начальную и конечную позиции для анимации
+        val boxOffsetY by transition.animateDp(
+            transitionSpec = { tween(durationMillis = (1000 / speed.value).toInt()) },
+            label = "Box Offset Y"
+        ) { state ->
+            if (state) -200.dp else (1000.dp) // Начальная позиция за верхней границей
+        }
+
+        var isBoxVisible2 by remember { mutableStateOf(true) }
+
+        // Определяем анимацию перемещения
+        val transition2 = updateTransition(targetState = isBoxVisible2, label = "Box Transition")
+
+        // Определяем начальную и конечную позиции для анимации
+        val boxOffsetY2 by transition2.animateDp(
+            transitionSpec = { tween(durationMillis = (1000 / speed.value).toInt()) },
+            label = "Box Offset Y"
+        ) { state ->
+            if (state) -200.dp else (1000.dp) // Начальная позиция за верхней границей
+        }
+
+        var isBoxVisible3 by remember { mutableStateOf(true) }
+
+        // Определяем анимацию перемещения
+        val transition3 = updateTransition(targetState = isBoxVisible3, label = "Box Transition")
+
+        // Определяем начальную и конечную позиции для анимации
+        val boxOffsetY3 by transition3.animateDp(
+            transitionSpec = { tween(durationMillis = (1000 / speed.value).toInt()) },
+            label = "Box Offset Y"
+        ) { state ->
+            if (state) -200.dp else (1000.dp) // Начальная позиция за верхней границей
+        }
+
+        var isBoxVisible4 by remember { mutableStateOf(true) }
+
+        // Определяем анимацию перемещения
+        val transition4 = updateTransition(targetState = isBoxVisible4, label = "Box Transition")
+
+        // Определяем начальную и конечную позиции для анимации
+        val boxOffsetY4 by transition4.animateDp(
+            transitionSpec = { tween(durationMillis = (1000 / speed.value).toInt()) },
+            label = "Box Offset Y"
+        ) { state ->
+            if (state) -200.dp else (1000.dp) // Начальная позиция за верхней границей
+        }
+
 
         var progress by remember { mutableStateOf(0f) }
 
@@ -137,11 +193,37 @@ class GameScreen : Screen {
                             Box(
                                 modifier = Modifier.offset(y = animatedOffsetY)
                             ) {
-                                GameBlockActive(true) {
+                                GameBlockActive(
+                                    startActive = if (lastPosition.value == 1 && nextPosition.value != 1) false else true,
+                                    backgroundClick = if (lastPosition.value == 1 && nextPosition.value != 1) true else false
+                                ) {
                                     offsetY = 1000.dp
+                                    lastPosition.value = startPosition.value
+                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                    when (nextPosition.value){
+                                        2 -> isBoxVisible2 = false
+                                        3 -> isBoxVisible3 = false
+                                        4 -> isBoxVisible4 = false
+                                    }
                                 }
                             }
                         }
+
+                    }
+
+                    if (nextPosition.value == 1) {
+
+                            Box(
+                                modifier = Modifier.offset(y = boxOffsetY)
+                            ) {
+                                GameBlockActive(
+                                    startActive = if (lastPosition.value == 1) false else true,
+                                    backgroundClick = if (lastPosition.value == 1) true else false
+                                ) {
+                                    lastPosition.value = nextPosition.value
+                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                }
+                            }
 
                     }
 
@@ -171,9 +253,35 @@ class GameScreen : Screen {
                             Box(
                                 modifier = Modifier.offset(y = animatedOffsetY)
                             ) {
-                                GameBlockActive(true) {
+                                GameBlockActive(
+                                    startActive = if (lastPosition.value == 2 && nextPosition.value != 2) false else true,
+                                    backgroundClick = if (lastPosition.value == 2 && nextPosition.value != 2) true else false
+                                ) {
                                     offsetY = 1000.dp
+                                    lastPosition.value = startPosition.value
+                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                    when (nextPosition.value){
+                                        1 -> isBoxVisible = false
+                                        3 -> isBoxVisible3 = false
+                                        4 -> isBoxVisible4 = false
+                                    }
                                 }
+                            }
+                        }
+
+                    }
+
+                    if (nextPosition.value == 2) {
+
+                        Box(
+                            modifier = Modifier.offset(y = boxOffsetY2)
+                        ) {
+                            GameBlockActive(
+                                startActive = if (lastPosition.value == 2) false else true,
+                                backgroundClick = if (lastPosition.value == 2) true else false
+                            ) {
+                                lastPosition.value = nextPosition.value
+                                nextPosition.value = getRandomNumber(lastPosition.value)
                             }
                         }
 
@@ -205,9 +313,34 @@ class GameScreen : Screen {
                             Box(
                                 modifier = Modifier.offset(y = animatedOffsetY)
                             ) {
-                                GameBlockActive(true) {
+                                GameBlockActive(startActive = if (lastPosition.value == 3 && nextPosition.value != 3) false else true,
+                                    backgroundClick = if (lastPosition.value == 3 && nextPosition.value != 3) true else false
+                                ) {
                                     offsetY = 1000.dp
+                                    lastPosition.value = startPosition.value
+                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                    when (nextPosition.value){
+                                        1 -> isBoxVisible = false
+                                        2 -> isBoxVisible2 = false
+                                        4 -> isBoxVisible4 = false
+                                    }
                                 }
+                            }
+                        }
+
+                    }
+
+                    if (nextPosition.value == 3) {
+
+                        Box(
+                            modifier = Modifier.offset(y = boxOffsetY3)
+                        ) {
+                            GameBlockActive(
+                                startActive = if (lastPosition.value == 3) false else true,
+                                backgroundClick = if (lastPosition.value == 3) true else false
+                            ) {
+                                lastPosition.value = nextPosition.value
+                                nextPosition.value = getRandomNumber(lastPosition.value)
                             }
                         }
 
@@ -239,15 +372,42 @@ class GameScreen : Screen {
                             Box(
                                 modifier = Modifier.offset(y = animatedOffsetY)
                             ) {
-                                GameBlockActive(true) {
+                                GameBlockActive(
+                                    startActive = if (lastPosition.value == 4 && nextPosition.value != 4) false else true,
+                                    backgroundClick = if (lastPosition.value == 4 && nextPosition.value != 4) true else false
+                                ) {
                                     offsetY = 1000.dp
+                                    lastPosition.value = startPosition.value
+                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                    when (nextPosition.value){
+                                        1 -> isBoxVisible = false
+                                        2 -> isBoxVisible2 = false
+                                        3 -> isBoxVisible3 = false
+                                    }
                                 }
                             }
                         }
 
                     }
 
+                    if (nextPosition.value == 4) {
+
+                        Box(
+                            modifier = Modifier.offset(y = boxOffsetY4)
+                        ) {
+                            GameBlockActive(
+                                startActive = if (lastPosition.value == 4) false else true,
+                                backgroundClick = if (lastPosition.value == 4) true else false
+                            ) {
+                                lastPosition.value = nextPosition.value
+                                nextPosition.value = getRandomNumber(lastPosition.value)
+                            }
+                        }
+
+                    }
+
                 }
+
 
             }
 
@@ -471,5 +631,11 @@ class GameScreen : Screen {
         val randomNumber = Random.nextInt(1, 5)
         return randomNumber
     }
+
+    fun getRandomNumber(excludedNumber: Int): Int {
+        val numbers = (1..4).filter { it != excludedNumber }
+        return numbers[Random.nextInt(numbers.size)]
+    }
+
 
 }

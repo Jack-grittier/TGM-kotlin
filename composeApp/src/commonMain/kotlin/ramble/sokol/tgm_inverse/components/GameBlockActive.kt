@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.ktor.websocket.Frame
 import org.jetbrains.compose.resources.Font
+import ramble.sokol.tgm_inverse.theme.background_game_block_click
 import ramble.sokol.tgm_inverse.theme.background_line_game
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
@@ -40,6 +41,7 @@ import tgminverse.composeapp.generated.resources.Res
 @Composable
 fun GameBlockActive(
     startActive: Boolean = false,
+    backgroundClick: Boolean = false,
     onClick: () -> Unit,
 ){
 
@@ -47,9 +49,13 @@ fun GameBlockActive(
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .height(200.dp)
-                .background(Color.White)
+                .background(
+                    if (backgroundClick) background_game_block_click
+                    else Color.White
+                )
                 .padding(horizontal = 18.dp)
                 .clickable(
+                    enabled = !backgroundClick,
                     onClick = onClick,
                     indication = null,
                     interactionSource = remember { MutableInteractionSource()}
