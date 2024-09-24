@@ -97,48 +97,57 @@ class TasksScreen(
                 ProgressBarTasks()
             } else {
 
+                Text(
+                    text = "task: ${listTasks}",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(600),
+                        color = Color.White,
+                    )
+                )
 
-
-                LazyColumn() {
-                    items(listTasks.value) { tasks: TasksMeEntity ->
-
-                        Text(
-                            text = "task: ${tasks}",
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                lineHeight = 21.sp,
-                                fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                                fontWeight = FontWeight(600),
-                                color = Color.White,
-                            )
-                        )
-
-//                        when (tasks) {
-//                            "CompletedWithoutReceivingReward" -> {
-//                                TasksGetPayment(tasks)
-//                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-//                            }
+//                LazyColumn() {
+//                    items(listTasks.value) { tasks: TasksMeEntity ->
 //
-//                            "NotCompleted" -> {
-//                                TasksPerform(tasks)
-//                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-//                            }
+//                        Text(
+//                            text = "task: ${tasks}",
+//                            style = TextStyle(
+//                                fontSize = 16.sp,
+//                                lineHeight = 21.sp,
+//                                fontFamily = FontFamily(Font(Res.font.mont_regular)),
+//                                fontWeight = FontWeight(600),
+//                                color = Color.White,
+//                            )
+//                        )
 //
-//                            "Pending" -> {
-//                                TasksPerformProgress(
-//                                    name = tasks.task.description,
-//                                    photoUrl = tasks.task.iconURL,
-//                                    reward = tasks.task.reward.toString()
-//                                )
-//                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-//                            }
-//                            "Completed" -> {
-//                                TasksDone(tasks)
-//                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-//                            }
-//                        }
-                    }
-                }
+////                        when (tasks) {
+////                            "CompletedWithoutReceivingReward" -> {
+////                                TasksGetPayment(tasks)
+////                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+////                            }
+////
+////                            "NotCompleted" -> {
+////                                TasksPerform(tasks)
+////                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+////                            }
+////
+////                            "Pending" -> {
+////                                TasksPerformProgress(
+////                                    name = tasks.task.description,
+////                                    photoUrl = tasks.task.iconURL,
+////                                    reward = tasks.task.reward.toString()
+////                                )
+////                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+////                            }
+////                            "Completed" -> {
+////                                TasksDone(tasks)
+////                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+////                            }
+////                        }
+//                    }
+//                }
            }
 
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
