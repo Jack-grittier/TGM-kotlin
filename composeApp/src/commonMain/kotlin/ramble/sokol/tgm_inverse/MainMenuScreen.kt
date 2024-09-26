@@ -34,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -74,6 +75,7 @@ import org.jetbrains.compose.resources.stringResource
 import ramble.sokol.tgm_inverse.components.ButtonClose
 import ramble.sokol.tgm_inverse.components.ButtonDisconnect
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
+import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_line_item
 import ramble.sokol.tgm_inverse.theme.background_line_item_white
 import ramble.sokol.tgm_inverse.theme.background_navbar
@@ -113,10 +115,18 @@ class MainMenuScreen(
 ) : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
-
+    private lateinit var apiRepo: ApiRepository
+    private lateinit var balance: MutableState<Long?>
 
     @Composable
     override fun Content() {
+
+        apiRepo = ApiRepository()
+        val scope  = rememberCoroutineScope()
+
+        balance = remember {
+            mutableStateOf(0)
+        }
 
         var selectedItem by rememberSaveable {
             mutableIntStateOf(1)
@@ -124,6 +134,10 @@ class MainMenuScreen(
 
         if (clickSheet.value == 1) {
             bottomSheet()
+        }
+
+        scope.launch{
+            getBalance()
         }
 
 
@@ -559,6 +573,11 @@ class MainMenuScreen(
 
         }
 
+    }
+
+    suspend fun getBalance(){
+        val body = apiRepo.getBalance(userEntityCreate.initData)
+        balance.value = body.balance
     }
 
 }
