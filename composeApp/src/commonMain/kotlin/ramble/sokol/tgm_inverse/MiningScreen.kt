@@ -228,7 +228,7 @@ class MiningScreen (
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = statusCode.value.toString(),
+                    text = "48534",
                     style = TextStyle(
                         fontSize = 32.sp,
                         lineHeight = 32.sp,
@@ -365,7 +365,7 @@ class MiningScreen (
 
     private suspend fun postEarnings(){
         val body = apiRepo.postEarnings(initData = userEntityCreate.initData)
-
+        statusCode.value = body.statusCode
     }
 
     private suspend fun getMusic(page: String, limit: String) {
