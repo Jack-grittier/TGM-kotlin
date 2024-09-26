@@ -401,7 +401,7 @@ class MiningScreen (
 
     private suspend fun getEarnings(){
         val body = apiRepo.getEarnings(initData = userEntityCreate.initData)
-        statusCode.value == body.statusCode
+        statusCode.value = body.statusCode
     }
 
     private suspend fun postEarnings(){
