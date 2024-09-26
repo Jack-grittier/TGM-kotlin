@@ -228,7 +228,7 @@ class MiningScreen (
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "30646",
+                    text = statusCode.value.toString(),
                     style = TextStyle(
                         fontSize = 32.sp,
                         lineHeight = 32.sp,
@@ -351,47 +351,6 @@ class MiningScreen (
                 }
             }
 
-//            Row (
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .horizontalScroll(rememberScrollState()),
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.Start
-//            ){
-//
-//                Spacer(modifier = Modifier.padding(start = 16.dp))
-//
-//                PlaylistItem(
-//                    "Кис Кис Кис",
-//                    "Монеточка",
-//                    "200"
-//                )
-//
-//                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-//
-//                PlaylistItem(
-//                    "Спасти 10 детей, необязательно черных",
-//                    "Мега пачка чипсов с крабом лееееейс",
-//                    "200"
-//                )
-//                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-//
-//                PlaylistItem(
-//                    "Кис Кис Кис",
-//                    "Монеточка",
-//                    "200"
-//                )
-//
-//                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-//
-//                PlaylistItem(
-//                    "Кис Кис Кис",
-//                    "Монеточка",
-//                    "200"
-//                )
-//
-//
-//            }
 
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
