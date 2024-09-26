@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import dev.inmo.tgbotapi.types.MembersLimit
+import kotlinx.browser.window
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
@@ -40,8 +43,10 @@ import ramble.sokol.tgm_inverse.components.PhotoFirstRatingLider
 import ramble.sokol.tgm_inverse.components.PhotoOtherRating
 import ramble.sokol.tgm_inverse.components.ProgressBarTasks
 import ramble.sokol.tgm_inverse.components.RatingPersonLiderboard
+import ramble.sokol.tgm_inverse.components.TasksPerform
 import ramble.sokol.tgm_inverse.model.data.LeaderBoardEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
+import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_screens
@@ -134,13 +139,15 @@ class LiderboardScreen(
 
 
                 Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
-                for (i in 1..10) {
-                    RatingPersonLiderboard(
-                        i.toString(), "1000", "Baby"
-                    )
-                    if (i != 10) {
-                        Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                if (listLeader.value.size > 3) {
+                    val newListLeader = listLeader.value.subList(3, listLeader.value.size)
+                    LazyColumn() {
+                        items(newListLeader) { leader: LeaderBoardEntity ->
+                            RatingPersonLiderboard(
+                                leader.position.toString(), leader.amount.toString(), leader.username
+                            )
+                            Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                        }
                     }
                 }
 
