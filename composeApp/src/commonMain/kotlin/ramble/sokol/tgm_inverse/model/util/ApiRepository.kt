@@ -55,14 +55,14 @@ class ApiRepository {
     suspend fun getEarnings(
         initData: String
     ) : GetEarningsEntity =
-        client.get(ApiRoutes.GET_MUSIC){
+        client.get(ApiRoutes.GET_EARNINGS){
             header(HttpHeaders.Authorization, "Bearer ${initData}")
         }.body()
 
     suspend fun postEarnings(
         initData: String
     ) : GetEarningsEntity =
-        client.post(ApiRoutes.GET_MUSIC){
+        client.post(ApiRoutes.GET_EARNINGS){
             header(HttpHeaders.Authorization, "Bearer ${initData}")
         }.body()
 
