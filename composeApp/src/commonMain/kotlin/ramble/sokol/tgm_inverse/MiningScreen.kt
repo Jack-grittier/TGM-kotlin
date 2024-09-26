@@ -59,12 +59,14 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.w3c.fetch.Body
 import ramble.sokol.tgm_inverse.components.PlaylistItem
 import ramble.sokol.tgm_inverse.components.ProgressBarTasks
 import ramble.sokol.tgm_inverse.components.TasksDone
 import ramble.sokol.tgm_inverse.components.TasksGetPayment
 import ramble.sokol.tgm_inverse.components.TasksPerform
 import ramble.sokol.tgm_inverse.components.TasksPerformProgress
+import ramble.sokol.tgm_inverse.model.data.GetEarningsEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
@@ -95,6 +97,7 @@ class MiningScreen (
     private lateinit var apiRepo: ApiRepository
     private lateinit var listMusic: MutableState<List<MusicResponse>>
     private lateinit var itemCount: MutableState<Int>
+    private lateinit var body: MutableState<GetEarningsEntity?>
 
     @Composable
     override fun Content() {
@@ -107,6 +110,10 @@ class MiningScreen (
 
         itemCount = remember {
             mutableStateOf(0)
+        }
+
+        body = remember {
+            mutableStateOf(null)
         }
 
         startedEarning = remember {
@@ -191,7 +198,7 @@ class MiningScreen (
                                 }
                             }
 
-                            if (startedEarning.value == false) {
+                            if (body.value!!.statusCode == 404) {
 
                                 Image(
                                     modifier = Modifier
@@ -208,7 +215,7 @@ class MiningScreen (
                                 )
                             }
 
-                            if (startedEarning.value == true){
+                            if (body.value!!.statusCode == null){
 
                                 ProgressBarDemo()
 
@@ -393,19 +400,12 @@ class MiningScreen (
     }
 
     private suspend fun getEarnings(){
-        val body = apiRepo.getEarnings(initData = userEntityCreate.initData)
-        if (body.statusCode == 404){
-            startedEarning.value = false
-        }else{
-            startedEarning.value = true
-        }
+        body.value = apiRepo.getEarnings(initData = userEntityCreate.initData)
     }
 
     private suspend fun postEarnings(){
         val body = apiRepo.postEarnings(initData = userEntityCreate.initData)
-        if (body.statusCode == null){
-            startedEarning.value = true
-        }
+
     }
 
     private suspend fun getMusic(page: String, limit: String) {
