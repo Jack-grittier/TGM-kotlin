@@ -97,7 +97,7 @@ class MiningScreen (
     private lateinit var apiRepo: ApiRepository
     private lateinit var listMusic: MutableState<List<MusicResponse>>
     private lateinit var itemCount: MutableState<Int>
-    private lateinit var body: MutableState<GetEarningsEntity?>
+    private lateinit var statusCode: MutableState<Int?>
 
     @Composable
     override fun Content() {
@@ -112,7 +112,7 @@ class MiningScreen (
             mutableStateOf(0)
         }
 
-        body = remember {
+        statusCode = remember {
             mutableStateOf(null)
         }
 
@@ -198,7 +198,7 @@ class MiningScreen (
                                 }
                             }
 
-                            if (body.value!!.statusCode == 404) {
+                            if (statusCode.value == 404) {
 
                                 Image(
                                     modifier = Modifier
@@ -215,7 +215,7 @@ class MiningScreen (
                                 )
                             }
 
-                            if (body.value!!.statusCode == null){
+                            if (statusCode.value == null){
 
                                 ProgressBarDemo()
 
@@ -400,7 +400,8 @@ class MiningScreen (
     }
 
     private suspend fun getEarnings(){
-        body.value = apiRepo.getEarnings(initData = userEntityCreate.initData)
+        val body = apiRepo.getEarnings(initData = userEntityCreate.initData)
+        statusCode.value == body.statusCode
     }
 
     private suspend fun postEarnings(){
