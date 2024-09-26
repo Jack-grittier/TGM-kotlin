@@ -9,4 +9,5 @@ object ApiRoutes {
     var GET_TASKS_ME = "$BASE_URL/users-tasks/@me"
     var GET_EARNINGS = "$BASE_URL/earnings/@me"
     var GET_BALANCE = "$BASE_URL/bills/internal/@me"
+    var GET_LEADERBOARD = "$BASE_URL/leaderboards"
 }

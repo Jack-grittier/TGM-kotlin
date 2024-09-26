@@ -10,6 +10,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.HttpHeaders
 import ramble.sokol.tgm_inverse.model.data.BalanceEntity
 import ramble.sokol.tgm_inverse.model.data.GetEarningsEntity
+import ramble.sokol.tgm_inverse.model.data.LeaderBoardEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.SplashIconEntity
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
@@ -72,6 +73,17 @@ class ApiRepository {
     ) : BalanceEntity =
         client.get(ApiRoutes.GET_BALANCE){
             header(HttpHeaders.Authorization, "Bearer ${initData}")
+        }.body()
+
+    suspend fun getLeaderboard(
+        page: String,
+        limit: String,
+    ) : List<LeaderBoardEntity> =
+        client.get(ApiRoutes.GET_LEADERBOARD){
+            url {
+                parameters.append("page", page)
+                parameters.append("limit", limit)
+            }
         }.body()
 
 }
