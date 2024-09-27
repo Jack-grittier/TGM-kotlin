@@ -40,6 +40,7 @@ import tgminverse.composeapp.generated.resources.icon_first_liderboard
 import tgminverse.composeapp.generated.resources.icon_home_onboarding
 import tgminverse.composeapp.generated.resources.icon_next_onboarding
 import tgminverse.composeapp.generated.resources.icon_on_boarding_top
+import tgminverse.composeapp.generated.resources.icon_onboarding_first
 import tgminverse.composeapp.generated.resources.image_line
 import tgminverse.composeapp.generated.resources.mont_bold
 import tgminverse.composeapp.generated.resources.mont_regular
@@ -107,7 +108,7 @@ class OnBoardingScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 9.dp),
-                    painter = painterResource(Res.drawable.icon_first_liderboard),
+                    painter = painterResource(Res.drawable.icon_onboarding_first    ),
                     contentDescription = "imageLine",
                     contentScale = ContentScale.Crop
                 )
