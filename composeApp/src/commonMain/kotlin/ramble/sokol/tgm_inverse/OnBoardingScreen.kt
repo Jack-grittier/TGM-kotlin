@@ -36,10 +36,12 @@ import ramble.sokol.tgm_inverse.theme.background_screens
 import ramble.sokol.tgm_inverse.theme.text_navbar
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.get_bonuses
+import tgminverse.composeapp.generated.resources.icon_first_liderboard
 import tgminverse.composeapp.generated.resources.icon_home_onboarding
 import tgminverse.composeapp.generated.resources.icon_next_onboarding
 import tgminverse.composeapp.generated.resources.icon_on_boarding_top
 import tgminverse.composeapp.generated.resources.image_line
+import tgminverse.composeapp.generated.resources.mont_bold
 import tgminverse.composeapp.generated.resources.mont_regular
 
 class OnBoardingScreen(
@@ -70,7 +72,7 @@ class OnBoardingScreen(
                     style = TextStyle(
                         fontSize = 20.sp,
                         lineHeight = 20.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontFamily = FontFamily(Font(Res.font.mont_bold)),
                         fontWeight = FontWeight(700),
                         color = text_navbar,
                     )
@@ -86,18 +88,33 @@ class OnBoardingScreen(
                     contentScale = ContentScale.Crop
                 )
 
+                Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
                 Text(
                     text = "Your balance has reached 320457",
                     style = TextStyle(
                         fontSize = 28.sp,
                         lineHeight = 28.sp,
-                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontFamily = FontFamily(Font(Res.font.mont_bold)),
                         fontWeight = FontWeight(700),
                         color = Color.White,
                     )
                 )
 
+                Spacer(modifier = Modifier.padding(vertical = 24.dp))
+
+                Image(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 9.dp),
+                    painter = painterResource(Res.drawable.icon_first_liderboard),
+                    contentDescription = "imageLine",
+                    contentScale = ContentScale.Crop
+                )
+
             }
+
+            Spacer(modifier = Modifier.padding(vertical = 5.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -138,6 +155,8 @@ class OnBoardingScreen(
                 }
 
             }
+
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
         }
 
