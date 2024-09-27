@@ -117,6 +117,7 @@ class MainMenuScreen(
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
     private lateinit var apiRepo: ApiRepository
     private lateinit var balance: MutableState<Long?>
+    private lateinit var navigator: Navigator
 
     @Composable
     override fun Content() {
@@ -135,6 +136,8 @@ class MainMenuScreen(
         if (clickSheet.value == 1) {
             bottomSheet()
         }
+
+        navigator = LocalNavigator.current!!
 
         scope.launch{
             getBalance()
@@ -504,6 +507,9 @@ class MainMenuScreen(
                 Spacer(modifier = Modifier.padding(start = 6.dp))
 
                 Text(
+                    modifier = Modifier.clickable {
+                        navigator?.push(OnBoardingScreen(userEntityCreate))
+                    },
                     text = "@${userEntityCreate.username.toString()}",
                     style = TextStyle(
                         fontSize = 16.sp,

@@ -137,8 +137,8 @@ class LiderboardScreen(
 
                 }
 
-
                 Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
                 if (listLeader.value.size > 3) {
                     val newListLeader = listLeader.value.subList(3, listLeader.value.size)
                     LazyColumn() {
