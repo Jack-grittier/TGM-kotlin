@@ -255,7 +255,7 @@ class SplashScreen : Screen {
                 body.value = apiRepo.createUser(userEntityCreate)
                 loading.value = true
                 if (body.value!!.error == null) {
-                    navigator?.push(MainMenuScreen(userEntityCreate))
+                    navigator?.push(MainMenuScreen(userEntityCreate, body.value!!))
                 }else {
 
                 }

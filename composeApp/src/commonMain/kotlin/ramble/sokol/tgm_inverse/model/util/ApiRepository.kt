@@ -13,6 +13,7 @@ import ramble.sokol.tgm_inverse.model.data.GetEarningsEntity
 import ramble.sokol.tgm_inverse.model.data.LeaderBoardEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.SplashIconEntity
+import ramble.sokol.tgm_inverse.model.data.StatisticsEntity
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntityNew
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
@@ -84,6 +85,13 @@ class ApiRepository {
                 parameters.append("page", page)
                 parameters.append("limit", limit)
             }
+        }.body()
+
+    suspend fun getUserStatistics(
+        initData: String
+    ) : StatisticsEntity =
+        client.get(ApiRoutes.GET_STATISTICS){
+            header(HttpHeaders.Authorization, "Bearer ${initData}")
         }.body()
 
 }

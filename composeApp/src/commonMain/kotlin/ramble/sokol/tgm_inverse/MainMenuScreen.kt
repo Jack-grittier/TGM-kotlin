@@ -75,6 +75,7 @@ import org.jetbrains.compose.resources.stringResource
 import ramble.sokol.tgm_inverse.components.ButtonClose
 import ramble.sokol.tgm_inverse.components.ButtonDisconnect
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreateResponse
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_line_item
 import ramble.sokol.tgm_inverse.theme.background_line_item_white
@@ -111,7 +112,8 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 
 class MainMenuScreen(
-    val userEntityCreate: UserEntityCreate
+    val userEntityCreate: UserEntityCreate,
+    val bodyUserCreate: UserEntityCreateResponse,
 ) : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
@@ -508,7 +510,7 @@ class MainMenuScreen(
 
                 Text(
                     modifier = Modifier.clickable {
-                        navigator?.push(OnBoardingScreen(userEntityCreate))
+                        navigator?.push(OnBoardingScreen(userEntityCreate, bodyUserCreate))
                     },
                     text = "@${userEntityCreate.username.toString()}",
                     style = TextStyle(
