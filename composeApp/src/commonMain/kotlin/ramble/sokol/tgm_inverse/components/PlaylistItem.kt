@@ -58,9 +58,9 @@ fun PlaylistItem(
 
     var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
 
-    LaunchedEffect(items.url) {
+    LaunchedEffect(items.coverURL) {
         // Загружаем изображение асинхронно
-        val img = window.fetch(items.url)
+        val img = window.fetch(items.coverURL)
             .await()
             .arrayBuffer()
             .await()
@@ -150,7 +150,7 @@ fun PlaylistItem(
                     lineHeight = 16.sp,
                     fontFamily = FontFamily(Font(Res.font.mont_regular)),
                     fontWeight = FontWeight(700),
-                    color = Color.White,
+                    color = Color.Black,
                 ),
                 textAlign = TextAlign.Start,
                 maxLines = 2,
@@ -167,7 +167,7 @@ fun PlaylistItem(
                 lineHeight = 13.sp,
                 fontFamily = FontFamily(Font(Res.font.mont_regular)),
                 fontWeight = FontWeight(700),
-                color = background_text_author,
+                color = Color.Black,
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

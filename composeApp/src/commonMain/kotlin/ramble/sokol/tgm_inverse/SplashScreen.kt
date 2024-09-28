@@ -159,7 +159,7 @@ class SplashScreen : Screen {
         navigator = LocalNavigator.current!!
 
         scope.launch {
-            getIcon()
+            //getIcon()
         }
 
             val transition = rememberInfiniteTransition(label = "")
