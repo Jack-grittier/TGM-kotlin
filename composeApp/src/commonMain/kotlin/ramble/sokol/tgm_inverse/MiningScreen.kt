@@ -336,11 +336,7 @@ class MiningScreen (
                                 Spacer(modifier = Modifier.padding(horizontal = 8.dp))
                             }
 
-                            PlaylistItem(
-                                name = items.name,
-                                author = items.group,
-                                price = items.reward.toString()
-                            )
+                            PlaylistItem(items)
 
                             Spacer(modifier = Modifier.padding(horizontal = 4.dp))
 

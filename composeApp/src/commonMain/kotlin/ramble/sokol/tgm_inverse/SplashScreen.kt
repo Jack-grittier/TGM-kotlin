@@ -223,7 +223,7 @@ class SplashScreen : Screen {
         ) {
             delay(3000L)
 
-            //navigator?.push(GameScreen())
+            //navigator?.push(TestScreen())
 
             scope.launch {
                 initData.value = webApp.initData

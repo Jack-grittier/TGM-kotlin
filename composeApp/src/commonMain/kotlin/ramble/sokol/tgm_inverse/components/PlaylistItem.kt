@@ -10,14 +10,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -27,8 +35,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
+import dev.inmo.micro_utils.common.toByteArray
+import kotlinx.browser.window
+import kotlinx.coroutines.await
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.skia.Image.Companion.makeFromEncoded
+import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.theme.background_price_music
 import ramble.sokol.tgm_inverse.theme.background_text_author
 import ramble.sokol.tgm_inverse.theme.color_text_price_rating
@@ -40,10 +53,23 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 @Composable
 fun PlaylistItem(
-    name: String,
-    author: String,
-    price: String,
+    items: MusicResponse,
 ){
+
+    var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
+
+    LaunchedEffect(items.url) {
+        // Загружаем изображение асинхронно
+        val img = window.fetch(items.url)
+            .await()
+            .arrayBuffer()
+            .await()
+            .let {
+                makeFromEncoded(it.toByteArray())
+            }
+            .toComposeImageBitmap()
+        imageBitmap = img
+    }
 
     Column(
         modifier = Modifier.width(136.dp),
@@ -58,12 +84,17 @@ fun PlaylistItem(
                 .clip(RoundedCornerShape(22.dp))
         ){
 
-            Image(
-                painter = painterResource(Res.drawable.test_photo),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
+            imageBitmap?.let {
+                Image(
+                    bitmap = it,
+                    contentDescription = "Loaded image",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+
+            } ?: run {
+                ProgressBarTasks()
+            }
 
             Box(
                 modifier = Modifier
@@ -88,7 +119,7 @@ fun PlaylistItem(
 
                     Text(
                         modifier = Modifier.padding(top = 2.dp),
-                        text = price,
+                        text = items.reward.toString(),
                         style = TextStyle(
                             fontSize = 12.sp,
                             lineHeight = 15.sp,
@@ -113,7 +144,7 @@ fun PlaylistItem(
         ) {
 
             Text(
-                text = name,
+                text = items.name,
                 style = TextStyle(
                     fontSize = 16.sp,
                     lineHeight = 16.sp,
@@ -130,7 +161,7 @@ fun PlaylistItem(
         Spacer(modifier = Modifier.padding(vertical = 2.dp))
 
         Text(
-            text = author,
+            text = items.group,
             style = TextStyle(
                 fontSize = 10.sp,
                 lineHeight = 13.sp,
