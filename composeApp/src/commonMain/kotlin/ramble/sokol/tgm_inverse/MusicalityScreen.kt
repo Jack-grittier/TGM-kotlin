@@ -103,9 +103,9 @@ class MusicalityScreen(
             mutableStateOf(listOf())
         }
 
-        scope.launch {
-            getLeader("1", "25")
-        }
+//        scope.launch {
+//            getLeader("1", "25")
+//        }
 
         Toaster(state = toaster, alignment = Alignment.BottomCenter)
 
