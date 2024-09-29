@@ -164,6 +164,8 @@ class SplashScreen : Screen {
             mutableStateOf(null)
         }
 
+        var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
+
         navigator = LocalNavigator.current!!
 
         scope.launch {
@@ -192,7 +194,7 @@ class SplashScreen : Screen {
 
                 Box(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ){
 
@@ -207,8 +209,7 @@ class SplashScreen : Screen {
                         modifier = Modifier
                             .height(51.dp)
                             .fillMaxWidth()
-                        .alpha(alpha = alpha)
-                        ,
+                        .alpha(alpha = alpha),
                         painter = painterResource(Res.drawable.icon_logo_splash_screen),
                         contentDescription = "imageSplashScreen"
                     )
@@ -217,17 +218,26 @@ class SplashScreen : Screen {
 
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .padding(vertical = 53.dp, horizontal = 24.dp),
                     contentAlignment = Alignment.BottomCenter
                 ){
 
+                    Text(
+                        modifier = Modifier.padding(top = 2.dp),
+                        text = splashIocns.value[0].toString(),
+                        style = TextStyle(
+                            fontSize = 12.sp,
+                            lineHeight = 15.sp,
+                            fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                            fontWeight = FontWeight(700),
+                            color = Color.White,
+                        )
+                    )
+
                     if (splashIocns.value.size != 0) {
 
-                        var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
-
                         LaunchedEffect(splashIocns.value[0].fileURL) {
-                            // Загружаем изображение асинхронно
                             val img = window.fetch(splashIocns.value[0].fileURL)
                                 .await()
                                 .arrayBuffer()
