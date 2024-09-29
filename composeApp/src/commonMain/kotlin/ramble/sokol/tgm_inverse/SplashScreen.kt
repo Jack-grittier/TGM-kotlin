@@ -64,11 +64,18 @@ import tgminverse.composeapp.generated.resources.icon_logo_splash_screen
 import tgminverse.composeapp.generated.resources.image_background_splash_screen
 import tgminverse.composeapp.generated.resources.mont_regular
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import cafe.adriel.voyager.navigator.Navigator
+import dev.inmo.micro_utils.common.toByteArray
 import dev.inmo.tgbotapi.webapps.webApp
+import kotlinx.browser.window
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.await
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.internal.JSJoda.use
+import org.jetbrains.skia.Image.Companion.makeFromEncoded
 import ramble.sokol.tgm_inverse.model.data.SplashIconEntity
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
@@ -159,7 +166,7 @@ class SplashScreen : Screen {
         navigator = LocalNavigator.current!!
 
         scope.launch {
-            //getIcon()
+            getIcon()
         }
 
             val transition = rememberInfiniteTransition(label = "")
@@ -213,6 +220,35 @@ class SplashScreen : Screen {
                         .padding(vertical = 53.dp, horizontal = 24.dp),
                     contentAlignment = Alignment.BottomCenter
                 ){
+
+                    if (splashIocns.value.size != 0) {
+
+                        var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
+
+                        LaunchedEffect(splashIocns.value[0].fileURL) {
+                            // Загружаем изображение асинхронно
+                            val img = window.fetch(splashIocns.value[0].fileURL)
+                                .await()
+                                .arrayBuffer()
+                                .await()
+                                .let {
+                                    makeFromEncoded(it.toByteArray())
+                                }
+                                .toComposeImageBitmap()
+                            imageBitmap = img
+                        }
+
+                        imageBitmap?.let {
+                            Image(
+                                bitmap = it,
+                                contentDescription = "Loaded image",
+                                modifier = Modifier.height(45.dp),
+                                contentScale = ContentScale.Crop
+                            )
+
+                        } ?: run {}
+
+                    }
 
                 }
 
