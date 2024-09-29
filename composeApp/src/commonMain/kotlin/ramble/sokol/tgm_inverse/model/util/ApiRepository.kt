@@ -110,6 +110,7 @@ class ApiRepository {
         limit: String
     ) : List<LeaderboardReferalEntity> =
         client.get(ApiRoutes.GET_LEADERBOARD_REFERAL){
+            header(HttpHeaders.Authorization, "Bearer ${initData}")
             url {
                 parameters.append("page", page)
                 parameters.append("limit", limit)

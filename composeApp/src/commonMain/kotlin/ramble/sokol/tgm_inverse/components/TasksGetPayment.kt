@@ -100,7 +100,6 @@ fun TasksGetPayment(
                     )
 
                 } ?: run {
-                    ProgressBarTasks()
                 }
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))

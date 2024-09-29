@@ -111,7 +111,6 @@ fun TasksPerformProgress(
                     )
 
                 } ?: run {
-                    ProgressBarTasks()
                 }
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
