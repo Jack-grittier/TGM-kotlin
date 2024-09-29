@@ -82,7 +82,6 @@ fun PlaylistItem(
                 .height(140.dp)
                 .width(136.dp)
                 .clip(RoundedCornerShape(22.dp)),
-            contentAlignment = Alignment.Center
         ){
 
             imageBitmap?.let {
@@ -94,7 +93,14 @@ fun PlaylistItem(
                 )
 
             } ?: run {
-                ProgressBarTasks()
+
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+
+                    ProgressBarTasks()
+                }
             }
 
             Box(

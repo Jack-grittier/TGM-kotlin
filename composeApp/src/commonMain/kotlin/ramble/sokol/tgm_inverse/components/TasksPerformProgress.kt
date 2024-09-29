@@ -65,9 +65,9 @@ fun TasksPerformProgress(
 
     var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
 
-    LaunchedEffect(tasks.task.url) {
+    LaunchedEffect(tasks.task.iconURL) {
         // Загружаем изображение асинхронно
-        val img = window.fetch(tasks.task.url)
+        val img = window.fetch(tasks.task.iconURL)
             .await()
             .arrayBuffer()
             .await()

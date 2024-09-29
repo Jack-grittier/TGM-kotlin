@@ -8,7 +8,9 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.HttpHeaders
+import ramble.sokol.tgm_inverse.model.data.AdvertisementsEntity
 import ramble.sokol.tgm_inverse.model.data.BalanceEntity
+import ramble.sokol.tgm_inverse.model.data.DurationAdEntity
 import ramble.sokol.tgm_inverse.model.data.GetEarningsEntity
 import ramble.sokol.tgm_inverse.model.data.LeaderBoardEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
@@ -93,5 +95,8 @@ class ApiRepository {
         client.get(ApiRoutes.GET_STATISTICS){
             header(HttpHeaders.Authorization, "Bearer ${initData}")
         }.body()
+
+    suspend fun getaAdvertisements() : AdvertisementsEntity =
+        client.get(ApiRoutes.GET_ADVERTISEMENTS).body()
 
 }

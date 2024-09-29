@@ -135,7 +135,6 @@ class TasksScreen(
                     items(listTasksNotCom.value) { tasks: TasksMeEntity ->
                         TasksPerform(tasks){
                             window.open(tasks.task.url, "_blank")
-
                         }
                         Spacer(modifier = Modifier.padding(vertical = 4.dp))
                     }

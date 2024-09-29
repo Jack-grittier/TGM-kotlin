@@ -98,6 +98,7 @@ class MiningScreen (
     private lateinit var listMusic: MutableState<List<MusicResponse>>
     private lateinit var itemCount: MutableState<Int>
     private lateinit var statusCode: MutableState<Int?>
+    private lateinit var statusCodeAd: MutableState<Int?>
 
     @Composable
     override fun Content() {
@@ -116,6 +117,10 @@ class MiningScreen (
             mutableStateOf(null)
         }
 
+        statusCodeAd = remember {
+            mutableStateOf(0)
+        }
+
         startedEarning = remember {
             mutableStateOf(false)
         }
@@ -123,6 +128,7 @@ class MiningScreen (
         scope.launch{
             getEarnings()
             getMusic("1", "25")
+            getAd()
         }
 
         Column(
@@ -266,22 +272,25 @@ class MiningScreen (
                 )
             }
 
-            Spacer(modifier = Modifier.padding(top = 17.dp))
+            if (statusCodeAd.value == null) {
 
-            Box(
-                modifier = Modifier
-                    .height(228.dp)
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(22.dp))
-            ) {
+                Spacer(modifier = Modifier.padding(top = 17.dp))
 
-                Image(
-                    painter = painterResource(Res.drawable.test_photo),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
+                Box(
+                    modifier = Modifier
+                        .height(228.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .clip(RoundedCornerShape(22.dp))
+                ) {
+
+                    Image(
+                        painter = painterResource(Res.drawable.test_photo),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.padding(vertical = 12.dp))
@@ -369,6 +378,11 @@ class MiningScreen (
         val body = apiRepo.getMusic(page, limit)
         listMusic.value = body
 
+    }
+
+    private suspend fun getAd(){
+        val body = apiRepo.getaAdvertisements()
+        statusCodeAd.value = body.statusCode
     }
 
 }
