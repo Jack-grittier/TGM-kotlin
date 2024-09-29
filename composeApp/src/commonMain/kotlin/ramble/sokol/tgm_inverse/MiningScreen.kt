@@ -76,6 +76,7 @@ import ramble.sokol.tgm_inverse.theme.background_screens
 import ramble.sokol.tgm_inverse.theme.center_circle_playlist
 import ramble.sokol.tgm_inverse.theme.center_circle_playlist_shadow
 import ramble.sokol.tgm_inverse.theme.color_background_referal
+import ramble.sokol.tgm_inverse.theme.text_navbar
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.get_bonuses
@@ -84,6 +85,7 @@ import tgminverse.composeapp.generated.resources.image_back_circle_playlist
 import tgminverse.composeapp.generated.resources.image_back_mining
 import tgminverse.composeapp.generated.resources.image_line
 import tgminverse.composeapp.generated.resources.image_play_game
+import tgminverse.composeapp.generated.resources.liderboard
 import tgminverse.composeapp.generated.resources.mont_regular
 import tgminverse.composeapp.generated.resources.tasks_navbar
 import tgminverse.composeapp.generated.resources.test_photo
@@ -104,263 +106,274 @@ class MiningScreen (
     @Composable
     override fun Content() {
 
-        apiRepo = ApiRepository()
-        val scope  = rememberCoroutineScope()
-        listMusic = remember {
-            mutableStateOf(listOf())
-        }
+        Text(
+            text = stringResource(Res.string.liderboard),
+            color = Color.Black,
+            style = TextStyle(
+                fontSize = 22.sp,
+                lineHeight = 26.sp,
+                fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                fontWeight = FontWeight(700)
+            )
+        )
 
-        itemCount = remember {
-            mutableStateOf(0)
-        }
-
-        statusCode = remember {
-            mutableStateOf(null)
-        }
-
-//        statusCodeAd = remember {
+//        apiRepo = ApiRepository()
+//        val scope  = rememberCoroutineScope()
+//        listMusic = remember {
+//            mutableStateOf(listOf())
+//        }
+//
+//        itemCount = remember {
 //            mutableStateOf(0)
 //        }
-
-        startedEarning = remember {
-            mutableStateOf(false)
-        }
-
-//        scope.launch{
-//            getEarnings()
-//            getMusic("1", "25")
-//            //getAd()
+//
+//        statusCode = remember {
+//            mutableStateOf(null)
 //        }
-
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .background(background_screens)
-                .windowInsetsPadding(WindowInsets.safeDrawing)
-        ){
-
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-
-                        Image(
-                            modifier = Modifier.fillMaxWidth(),
-                            painter = painterResource(Res.drawable.image_back_mining),
-                            contentDescription = "image_play_game",
-                            contentScale = ContentScale.Crop
-                        )
-
-                        Box(
-                            modifier = Modifier.width(300.dp).height(300.dp),
-                            contentAlignment = Alignment.BottomEnd
-                        ) {
-
-                            Box(
-                                modifier = Modifier.fillMaxWidth().padding(25.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-
-                                Surface(
-                                    modifier = Modifier.size(250.dp),
-                                    shape = CircleShape
-                                ) {
-                                    Image(
-                                        painter = painterResource(Res.drawable.test_photo),
-                                        contentDescription = null,
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentScale = ContentScale.Crop
-                                    )
-                                }
-
-                                Image(
-                                    modifier = Modifier.width(109.dp).height(109.dp),
-                                    painter = painterResource(Res.drawable.image_back_circle_playlist),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop
-                                )
-
-
-                                Surface(
-                                    modifier = Modifier.size(68.dp),
-                                    shape = CircleShape
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .height(68.dp)
-                                            .background(center_circle_playlist)
-                                    )
-                                }
-                            }
-
-//                            if (statusCode.value == 404) {
+//
+////        statusCodeAd = remember {
+////            mutableStateOf(0)
+////        }
+//
+//        startedEarning = remember {
+//            mutableStateOf(false)
+//        }
+//
+////        scope.launch{
+////            getEarnings()
+////            getMusic("1", "25")
+////            //getAd()
+////        }
+//
+//        Column(
+//            modifier = modifier
+//                .fillMaxSize()
+//                .verticalScroll(rememberScrollState())
+//                .background(background_screens)
+//                .windowInsetsPadding(WindowInsets.safeDrawing)
+//        ){
+//
+//            Box(
+//                modifier = Modifier.fillMaxWidth(),
+//                contentAlignment = Alignment.BottomCenter
+//            ) {
+//
+//                Column(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalArrangement = Arrangement.Top,
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//
+//                    Box(
+//                        modifier = Modifier.fillMaxWidth(),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//
+//                        Image(
+//                            modifier = Modifier.fillMaxWidth(),
+//                            painter = painterResource(Res.drawable.image_back_mining),
+//                            contentDescription = "image_play_game",
+//                            contentScale = ContentScale.Crop
+//                        )
+//
+//                        Box(
+//                            modifier = Modifier.width(300.dp).height(300.dp),
+//                            contentAlignment = Alignment.BottomEnd
+//                        ) {
+//
+//                            Box(
+//                                modifier = Modifier.fillMaxWidth().padding(25.dp),
+//                                contentAlignment = Alignment.Center
+//                            ) {
+//
+//                                Surface(
+//                                    modifier = Modifier.size(250.dp),
+//                                    shape = CircleShape
+//                                ) {
+//                                    Image(
+//                                        painter = painterResource(Res.drawable.test_photo),
+//                                        contentDescription = null,
+//                                        modifier = Modifier.fillMaxSize(),
+//                                        contentScale = ContentScale.Crop
+//                                    )
+//                                }
 //
 //                                Image(
-//                                    modifier = Modifier
-//                                        .height(86.dp)
-//                                        .width(86.dp)
-//                                        .padding(bottom = 14.dp, end = 14.dp)
-//                                        .clickable {
-//                                            scope.launch {
-//                                                postEarnings()
-//                                            }
-//                                        },
-//                                    painter = painterResource(Res.drawable.icon_play_music),
-//                                    contentDescription = "imageLine"
+//                                    modifier = Modifier.width(109.dp).height(109.dp),
+//                                    painter = painterResource(Res.drawable.image_back_circle_playlist),
+//                                    contentDescription = null,
+//                                    contentScale = ContentScale.Crop
 //                                )
+//
+//
+//                                Surface(
+//                                    modifier = Modifier.size(68.dp),
+//                                    shape = CircleShape
+//                                ) {
+//                                    Box(
+//                                        modifier = Modifier
+//                                            .height(68.dp)
+//                                            .background(center_circle_playlist)
+//                                    )
+//                                }
 //                            }
 //
-//                            if (statusCode.value == null){
-//
-//                                ProgressBarDemo()
-//
-//                            }
-
-                        }
-
-                    }
-                }
-
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = testString.value.toString(),
-                    style = TextStyle(
-                        fontSize = 32.sp,
-                        lineHeight = 32.sp,
-                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                        fontWeight = FontWeight(400),
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                    )
-                )
-
-            }
-
-            Spacer(modifier = Modifier.padding(top = 17.dp))
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(background_airdrop),
-                contentAlignment = Alignment.Center
-            ) {
-
-                Text(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 10.dp),
-                    text = "Airdrop: 52:12:56",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 16.sp,
-                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                        fontWeight = FontWeight(400),
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                    )
-                )
-            }
-
-//            if (statusCodeAd.value == null) {
-//
-//                Spacer(modifier = Modifier.padding(top = 17.dp))
-//
-//                Box(
-//                    modifier = Modifier
-//                        .height(228.dp)
-//                        .fillMaxWidth()
-//                        .padding(horizontal = 16.dp)
-//                        .clip(RoundedCornerShape(22.dp))
-//                ) {
-//
-//                    Image(
-//                        painter = painterResource(Res.drawable.test_photo),
-//                        contentDescription = null,
-//                        modifier = Modifier.fillMaxSize(),
-//                        contentScale = ContentScale.Crop
-//                    )
-//                }
-//            }
-
-            Spacer(modifier = Modifier.padding(vertical = 12.dp))
-
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                painter = painterResource(Res.drawable.image_line),
-                contentDescription = "imageLine"
-            )
-
-            Spacer(modifier = Modifier.padding(vertical = 12.dp))
-
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = stringResource(Res.string.get_bonuses),
-                style = TextStyle(
-                    fontSize = 22.sp,
-                    lineHeight = 22.sp,
-                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                    fontWeight = FontWeight(800),
-                    color = Color.White,
-                )
-            )
-
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
-//            if (listMusic.value.size == 0) {
-//
-//                Box(
-//                    modifier = Modifier.fillMaxWidth().height(200.dp).padding(start = 16.dp),
-//                    contentAlignment = Alignment.Center){
-//
-//                    ProgressBarTasks()
-//
-//                }
-//
-//            } else {
-//
-//                Row (
-//                    horizontalArrangement = Arrangement.Start,
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//
-//                    itemCount.value = 0
-//
-//                    LazyRow() {
-//                        items(listMusic.value) { items: MusicResponse ->
-//
-//                            if (itemCount.value == 0){
-//                                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-//                            }
-//
-//                            PlaylistItem(items)
-//
-//                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-//
-//                            itemCount.value += 1
+////                            if (statusCode.value == 404) {
+////
+////                                Image(
+////                                    modifier = Modifier
+////                                        .height(86.dp)
+////                                        .width(86.dp)
+////                                        .padding(bottom = 14.dp, end = 14.dp)
+////                                        .clickable {
+////                                            scope.launch {
+////                                                postEarnings()
+////                                            }
+////                                        },
+////                                    painter = painterResource(Res.drawable.icon_play_music),
+////                                    contentDescription = "imageLine"
+////                                )
+////                            }
+////
+////                            if (statusCode.value == null){
+////
+////                                ProgressBarDemo()
+////
+////                            }
 //
 //                        }
+//
 //                    }
 //                }
+//
+//                Text(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    text = testString.value.toString(),
+//                    style = TextStyle(
+//                        fontSize = 32.sp,
+//                        lineHeight = 32.sp,
+//                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+//                        fontWeight = FontWeight(400),
+//                        color = Color.White,
+//                        textAlign = TextAlign.Center,
+//                    )
+//                )
+//
 //            }
-
-
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
-        }
+//
+//            Spacer(modifier = Modifier.padding(top = 17.dp))
+//
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(horizontal = 16.dp)
+//                    .clip(RoundedCornerShape(12.dp))
+//                    .background(background_airdrop),
+//                contentAlignment = Alignment.Center
+//            ) {
+//
+//                Text(
+//                    modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 10.dp),
+//                    text = "Airdrop: 52:12:56",
+//                    style = TextStyle(
+//                        fontSize = 16.sp,
+//                        lineHeight = 16.sp,
+//                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+//                        fontWeight = FontWeight(400),
+//                        color = Color.White,
+//                        textAlign = TextAlign.Center,
+//                    )
+//                )
+//            }
+//
+////            if (statusCodeAd.value == null) {
+////
+////                Spacer(modifier = Modifier.padding(top = 17.dp))
+////
+////                Box(
+////                    modifier = Modifier
+////                        .height(228.dp)
+////                        .fillMaxWidth()
+////                        .padding(horizontal = 16.dp)
+////                        .clip(RoundedCornerShape(22.dp))
+////                ) {
+////
+////                    Image(
+////                        painter = painterResource(Res.drawable.test_photo),
+////                        contentDescription = null,
+////                        modifier = Modifier.fillMaxSize(),
+////                        contentScale = ContentScale.Crop
+////                    )
+////                }
+////            }
+//
+//            Spacer(modifier = Modifier.padding(vertical = 12.dp))
+//
+//            Image(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(horizontal = 16.dp),
+//                painter = painterResource(Res.drawable.image_line),
+//                contentDescription = "imageLine"
+//            )
+//
+//            Spacer(modifier = Modifier.padding(vertical = 12.dp))
+//
+//            Text(
+//                modifier = Modifier.padding(horizontal = 16.dp),
+//                text = stringResource(Res.string.get_bonuses),
+//                style = TextStyle(
+//                    fontSize = 22.sp,
+//                    lineHeight = 22.sp,
+//                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+//                    fontWeight = FontWeight(800),
+//                    color = Color.White,
+//                )
+//            )
+//
+//            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+//
+////            if (listMusic.value.size == 0) {
+////
+////                Box(
+////                    modifier = Modifier.fillMaxWidth().height(200.dp).padding(start = 16.dp),
+////                    contentAlignment = Alignment.Center){
+////
+////                    ProgressBarTasks()
+////
+////                }
+////
+////            } else {
+////
+////                Row (
+////                    horizontalArrangement = Arrangement.Start,
+////                    verticalAlignment = Alignment.CenterVertically
+////                ) {
+////
+////                    itemCount.value = 0
+////
+////                    LazyRow() {
+////                        items(listMusic.value) { items: MusicResponse ->
+////
+////                            if (itemCount.value == 0){
+////                                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+////                            }
+////
+////                            PlaylistItem(items)
+////
+////                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+////
+////                            itemCount.value += 1
+////
+////                        }
+////                    }
+////                }
+////            }
+//
+//
+//            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+//
+//        }
 
     }
 
