@@ -142,7 +142,7 @@ class MainMenuScreen(
         navigator = LocalNavigator.current!!
 
         scope.launch{
-            //getBalance()
+            getBalance()
         }
 
 
