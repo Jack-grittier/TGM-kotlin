@@ -9,9 +9,3 @@ data class AdvertisementsEntity(
     val fileURL: String?,
     val statusCode: Int?,
 )
-
-@Serializable
-data class DurationAdEntity(
-    val start: String,
-    val end: String,
-)

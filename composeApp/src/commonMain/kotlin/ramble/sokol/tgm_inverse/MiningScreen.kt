@@ -385,4 +385,8 @@ class MiningScreen (
         statusCodeAd.value = body.statusCode
     }
 
+    private suspend fun getMusicAd(){
+        val body = apiRepo.getMusicAdvertisements()
+    }
+
 }

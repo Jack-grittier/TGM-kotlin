@@ -13,6 +13,7 @@ import ramble.sokol.tgm_inverse.model.data.BalanceEntity
 import ramble.sokol.tgm_inverse.model.data.DurationAdEntity
 import ramble.sokol.tgm_inverse.model.data.GetEarningsEntity
 import ramble.sokol.tgm_inverse.model.data.LeaderBoardEntity
+import ramble.sokol.tgm_inverse.model.data.MusicAdEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.SplashIconEntity
 import ramble.sokol.tgm_inverse.model.data.StatisticsEntity
@@ -98,5 +99,8 @@ class ApiRepository {
 
     suspend fun getaAdvertisements() : AdvertisementsEntity =
         client.get(ApiRoutes.GET_ADVERTISEMENTS).body()
+
+    suspend fun getMusicAdvertisements() : MusicAdEntity =
+        client.get(ApiRoutes.GET_MUSIC_ADVERTISEMENTS).body()
 
 }
