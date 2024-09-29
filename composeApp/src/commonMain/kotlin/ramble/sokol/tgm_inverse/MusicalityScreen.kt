@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -56,6 +58,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.skiko.ClipboardManager
 import ramble.sokol.tgm_inverse.components.PhotoFirstRating
 import ramble.sokol.tgm_inverse.components.PhotoOtherRating
+import ramble.sokol.tgm_inverse.components.RatingPersonLiderboard
 import ramble.sokol.tgm_inverse.components.RatingPersonMusicality
 import ramble.sokol.tgm_inverse.model.data.LeaderBoardEntity
 import ramble.sokol.tgm_inverse.model.data.LeaderboardReferalEntity
@@ -351,24 +354,46 @@ class MusicalityScreen(
 
                 Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
-                if (listLeader.value.size != 0) {
+                if (listLeader.value.size != 0){
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        PhotoOtherRating(2, "Mahji", "5640")
-
-                        PhotoFirstRating("Alexa12", "5076")
-
-                        PhotoOtherRating(3, "Mahji", "5640")
-
+                Row (
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically ,
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    if (listLeader.value.size>=2) {
+                        val second = listLeader.value[1]
+                        PhotoOtherRating(2, second.username, second.amount.toString())
+                    }
+                    if (listLeader.value.size>=1) {
+                        val first = listLeader.value[0]
+                        PhotoFirstRating(first.username, first.amount.toString())
+                    }
+                    if (listLeader.value.size>=3) {
+                        val third = listLeader.value[2]
+                        PhotoOtherRating(3, third.username, third.amount.toString())
                     }
 
 
-
                 }
+
+
+
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
+                    if (listLeader.value.size > 3) {
+                        val newListLeader = listLeader.value.subList(3, listLeader.value.size)
+                        LazyColumn() {
+                            items(newListLeader) { leader: LeaderboardReferalEntity ->
+                                RatingPersonMusicality(
+                                    leader.amount.toString(), leader.username
+                                )
+                                Spacer(modifier = Modifier.padding(vertical = 6.dp))
+                            }
+                        }
+                    }
+
+                    }
 
             }
 
