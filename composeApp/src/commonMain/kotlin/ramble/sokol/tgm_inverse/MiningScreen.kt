@@ -129,7 +129,7 @@ class MiningScreen (
         scope.launch{
             getEarnings()
             getMusic("1", "25")
-            getAd()
+            //getAd()
         }
 
         Column(

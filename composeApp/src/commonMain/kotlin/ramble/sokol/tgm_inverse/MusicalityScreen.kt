@@ -24,7 +24,10 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,6 +49,7 @@ import com.dokar.sonner.ToastType
 import com.dokar.sonner.Toaster
 import com.dokar.sonner.rememberToasterState
 import kotlinx.browser.window
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -53,7 +57,10 @@ import org.jetbrains.skiko.ClipboardManager
 import ramble.sokol.tgm_inverse.components.PhotoFirstRating
 import ramble.sokol.tgm_inverse.components.PhotoOtherRating
 import ramble.sokol.tgm_inverse.components.RatingPersonMusicality
+import ramble.sokol.tgm_inverse.model.data.LeaderBoardEntity
+import ramble.sokol.tgm_inverse.model.data.LeaderboardReferalEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
+import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_copy_link
 import ramble.sokol.tgm_inverse.theme.background_screens
 import ramble.sokol.tgm_inverse.theme.background_text_link
@@ -78,11 +85,24 @@ class MusicalityScreen(
     val userEntityCreate: UserEntityCreate
 ) : Screen {
 
+    private lateinit var apiRepo: ApiRepository
+    private lateinit var listLeader: MutableState<List<LeaderboardReferalEntity>>
+
     @Composable
     override fun Content() {
 
         val navigator = LocalNavigator.current
         val toaster = rememberToasterState()
+
+        apiRepo = ApiRepository()
+        val scope  = rememberCoroutineScope()
+        listLeader = remember {
+            mutableStateOf(listOf())
+        }
+
+        scope.launch {
+            getLeader("1", "25")
+        }
 
         Toaster(state = toaster, alignment = Alignment.BottomCenter)
 
@@ -331,48 +351,24 @@ class MusicalityScreen(
 
                 Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
-                Row (
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically ,
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    PhotoOtherRating(2, "Mahji", "5640")
+                if (listLeader.value.size != 0) {
 
-                    PhotoFirstRating("Alexa12", "5076")
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        PhotoOtherRating(2, "Mahji", "5640")
 
-                    PhotoOtherRating(3, "Mahji", "5640")
+                        PhotoFirstRating("Alexa12", "5076")
+
+                        PhotoOtherRating(3, "Mahji", "5640")
+
+                    }
+
+
 
                 }
-
-
-
-                Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
-                RatingPersonMusicality(
-                    price = "500",
-                    name = "LALALLALALA"
-                )
-
-                Spacer(modifier = Modifier.padding(vertical = 6.dp))
-
-                RatingPersonMusicality(
-                    price = "500",
-                    name = "LALALLALALA"
-                )
-
-                Spacer(modifier = Modifier.padding(vertical = 6.dp))
-
-                RatingPersonMusicality(
-                    price = "500",
-                    name = "LALALLALALA"
-                )
-
-                Spacer(modifier = Modifier.padding(vertical = 6.dp))
-
-                RatingPersonMusicality(
-                    price = "500",
-                    name = "LALALLALALA"
-                )
 
             }
 
@@ -388,6 +384,11 @@ class MusicalityScreen(
             { },
             { window.alert("Не удалось скопировать текст.") }
         )
+    }
+
+    private suspend fun getLeader(page: String, limit: String){
+        val body = apiRepo.getLeaderBoardReferal(page = page, limit = limit, initData = userEntityCreate.initData)
+        listLeader.value = body
     }
 
 }

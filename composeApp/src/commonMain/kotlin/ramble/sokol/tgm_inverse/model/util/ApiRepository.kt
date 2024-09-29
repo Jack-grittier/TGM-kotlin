@@ -108,7 +108,7 @@ class ApiRepository {
         initData: String,
         page: String,
         limit: String
-    ) : LeaderboardReferalEntity =
+    ) : List<LeaderboardReferalEntity> =
         client.get(ApiRoutes.GET_LEADERBOARD_REFERAL){
             url {
                 parameters.append("page", page)
