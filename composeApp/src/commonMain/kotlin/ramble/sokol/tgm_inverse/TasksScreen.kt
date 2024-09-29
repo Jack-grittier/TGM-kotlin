@@ -141,11 +141,7 @@ class TasksScreen(
                     }
 
                     items(listTasksPen.value) { tasks: TasksMeEntity ->
-                        TasksPerformProgress(
-                            name = tasks.task.description,
-                            photoUrl = tasks.task.iconURL,
-                            reward = tasks.task.reward.toString()
-                        )
+                        TasksPerformProgress(tasks)
                         Spacer(modifier = Modifier.padding(vertical = 4.dp))
                     }
 

@@ -81,7 +81,8 @@ fun PlaylistItem(
             modifier = Modifier
                 .height(140.dp)
                 .width(136.dp)
-                .clip(RoundedCornerShape(22.dp))
+                .clip(RoundedCornerShape(22.dp)),
+            contentAlignment = Alignment.Center
         ){
 
             imageBitmap?.let {
@@ -150,7 +151,7 @@ fun PlaylistItem(
                     lineHeight = 16.sp,
                     fontFamily = FontFamily(Font(Res.font.mont_regular)),
                     fontWeight = FontWeight(700),
-                    color = Color.Black,
+                    color = Color.White,
                 ),
                 textAlign = TextAlign.Start,
                 maxLines = 2,
@@ -167,7 +168,7 @@ fun PlaylistItem(
                 lineHeight = 13.sp,
                 fontFamily = FontFamily(Font(Res.font.mont_regular)),
                 fontWeight = FontWeight(700),
-                color = Color.Black,
+                color = background_text_author,
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

@@ -15,10 +15,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -27,11 +34,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import dev.inmo.micro_utils.common.toByteArray
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import kotlinx.browser.window
+import kotlinx.coroutines.await
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.skia.Image.Companion.makeFromEncoded
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.theme.background_line_item
 import ramble.sokol.tgm_inverse.theme.background_line_item_white
@@ -49,10 +60,24 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 @Composable
 fun TasksPerformProgress(
-    name: String,
-    photoUrl: String,
-    reward: String,
+    tasks: TasksMeEntity,
     ) {
+
+    var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
+
+    LaunchedEffect(tasks.task.url) {
+        // Загружаем изображение асинхронно
+        val img = window.fetch(tasks.task.url)
+            .await()
+            .arrayBuffer()
+            .await()
+            .let {
+                makeFromEncoded(it.toByteArray())
+            }
+            .toComposeImageBitmap()
+        imageBitmap = img
+    }
+
 
     Box (
         modifier = Modifier
@@ -75,24 +100,24 @@ fun TasksPerformProgress(
                 verticalAlignment = Alignment.CenterVertically
             ){
 
-                AsyncImage(
-                    modifier = Modifier
-                        .width(36.dp)
-                        .height(36.dp),
-                    model = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2UoKyN61H-7pji5xrj1hoH1u4spsrBHCbFA&s",
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                )
+                imageBitmap?.let {
+                    Image(
+                        bitmap = it,
+                        contentDescription = "Loaded image",
+                        modifier = Modifier
+                            .width(36.dp)
+                            .height(36.dp),
+                        contentScale = ContentScale.Crop
+                    )
 
-                KamelImage(
-                    resource = asyncPainterResource(data = photoUrl),
-                    contentDescription = "description"
-                )
+                } ?: run {
+                    ProgressBarTasks()
+                }
 
                 Spacer(modifier = Modifier.padding(horizontal = 6.dp))
 
                 Text(
-                    text = name,
+                    text = tasks.task.description,
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 16.sp,
@@ -123,7 +148,7 @@ fun TasksPerformProgress(
 
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = "+${reward} BB",
+                    text = "+${tasks.task.reward} BB",
                     style = TextStyle(
                         fontSize = 14.sp,
                         lineHeight = 14.sp,
