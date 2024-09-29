@@ -124,4 +124,9 @@ class ApiRepository {
             header(HttpHeaders.Authorization, "Bearer ${initData}")
         }.body()
 
+    suspend fun getMusic(
+        id: String
+    ) : MusicResponse =
+        client.get("${ApiRoutes.GET_MUSIC}/{$id}").body()
+
 }

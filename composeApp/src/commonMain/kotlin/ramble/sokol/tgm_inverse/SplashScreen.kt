@@ -183,21 +183,15 @@ class SplashScreen : Screen {
                 ), label = ""
             )
 
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(background_splash)
                     .windowInsetsPadding(WindowInsets.safeDrawing),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                contentAlignment = Alignment.Center
             ){
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(vertical = 53.dp, horizontal = 24.dp),
-                    contentAlignment = Alignment.BottomCenter
-                ){
+                if (splashIocns.value.size != 0) {
 
                     Text(
                         modifier = Modifier.padding(top = 2.dp),
@@ -210,6 +204,39 @@ class SplashScreen : Screen {
                             color = Color.White,
                         )
                     )
+
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
+
+//                Image(
+//                    modifier = Modifier
+//                        .fillMaxWidth(),
+//                    painter = painterResource(Res.drawable.image_background_splash_screen),
+//                    contentDescription = "imageSplashScreen"
+//                )
+
+                    Image(
+                        modifier = Modifier
+                            .height(51.dp)
+                            .fillMaxWidth()
+                        .alpha(alpha = alpha),
+                        painter = painterResource(Res.drawable.icon_logo_splash_screen),
+                        contentDescription = "imageSplashScreen"
+                    )
+
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 53.dp, horizontal = 24.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ){
 
                     if (splashIocns.value.size != 0) {
 
@@ -236,30 +263,6 @@ class SplashScreen : Screen {
                         } ?: run {}
 
                     }
-
-                }
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ){
-
-//                Image(
-//                    modifier = Modifier
-//                        .fillMaxWidth(),
-//                    painter = painterResource(Res.drawable.image_background_splash_screen),
-//                    contentDescription = "imageSplashScreen"
-//                )
-
-                    Image(
-                        modifier = Modifier
-                            .height(51.dp)
-                            .fillMaxWidth()
-                        .alpha(alpha = alpha),
-                        painter = painterResource(Res.drawable.icon_logo_splash_screen),
-                        contentDescription = "imageSplashScreen"
-                    )
 
                 }
 
