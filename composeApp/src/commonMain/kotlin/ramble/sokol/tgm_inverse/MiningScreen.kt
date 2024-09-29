@@ -98,7 +98,7 @@ class MiningScreen (
     private lateinit var listMusic: MutableState<List<MusicResponse>>
     private lateinit var itemCount: MutableState<Int>
     private lateinit var statusCode: MutableState<Int?>
-    private lateinit var statusCodeAd: MutableState<Int?>
+    //private lateinit var statusCodeAd: MutableState<Int?>
     private lateinit var testString: MutableState<String?>
 
     @Composable
@@ -118,9 +118,9 @@ class MiningScreen (
             mutableStateOf(null)
         }
 
-        statusCodeAd = remember {
-            mutableStateOf(0)
-        }
+//        statusCodeAd = remember {
+//            mutableStateOf(0)
+//        }
 
         startedEarning = remember {
             mutableStateOf(false)
@@ -273,26 +273,26 @@ class MiningScreen (
                 )
             }
 
-            if (statusCodeAd.value == null) {
-
-                Spacer(modifier = Modifier.padding(top = 17.dp))
-
-                Box(
-                    modifier = Modifier
-                        .height(228.dp)
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .clip(RoundedCornerShape(22.dp))
-                ) {
-
-                    Image(
-                        painter = painterResource(Res.drawable.test_photo),
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
+//            if (statusCodeAd.value == null) {
+//
+//                Spacer(modifier = Modifier.padding(top = 17.dp))
+//
+//                Box(
+//                    modifier = Modifier
+//                        .height(228.dp)
+//                        .fillMaxWidth()
+//                        .padding(horizontal = 16.dp)
+//                        .clip(RoundedCornerShape(22.dp))
+//                ) {
+//
+//                    Image(
+//                        painter = painterResource(Res.drawable.test_photo),
+//                        contentDescription = null,
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentScale = ContentScale.Crop
+//                    )
+//                }
+//            }
 
             Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
