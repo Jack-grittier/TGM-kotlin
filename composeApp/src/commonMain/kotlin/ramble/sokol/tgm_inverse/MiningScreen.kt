@@ -127,8 +127,8 @@ class MiningScreen (
         }
 
         scope.launch{
-            getEarnings()
-            getMusic("1", "25")
+//            getEarnings()
+//            getMusic("1", "25")
             //getAd()
         }
 
