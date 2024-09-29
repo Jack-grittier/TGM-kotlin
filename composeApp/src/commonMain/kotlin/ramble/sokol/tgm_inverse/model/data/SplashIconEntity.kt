@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SplashIconEntity(
-    val id: Long,
+    val id: String,
     val enabled: Boolean,
     val fileURL: String,
 )

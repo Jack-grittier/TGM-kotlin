@@ -107,6 +107,7 @@ class SplashScreen : Screen {
 
         val scope  = rememberCoroutineScope()
         apiRepo = ApiRepository()
+
         splashIocns = remember {
             mutableStateOf(listOf())
         }
