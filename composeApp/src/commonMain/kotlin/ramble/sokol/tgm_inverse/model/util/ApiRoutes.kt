@@ -13,5 +13,5 @@ object ApiRoutes {
     var GET_STATISTICS = "$BASE_URL/statistics/@me"
     var GET_ADVERTISEMENTS = "$BASE_URL/advertisements/current"
     var GET_MUSIC_ADVERTISEMENTS = "$BASE_URL/music/advertisements/current"
-    var GET_MUSIC_BY_ID = "$BASE_URL/"
+    var GET_LEADERBOARD_REFERAL = "$BASE_URL/leaderboards/musicality/@me/referrals"
 }

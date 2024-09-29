@@ -99,6 +99,7 @@ class MiningScreen (
     private lateinit var itemCount: MutableState<Int>
     private lateinit var statusCode: MutableState<Int?>
     private lateinit var statusCodeAd: MutableState<Int?>
+    private lateinit var testString: MutableState<String?>
 
     @Composable
     override fun Content() {
@@ -234,7 +235,7 @@ class MiningScreen (
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "48534",
+                    text = testString.value.toString(),
                     style = TextStyle(
                         fontSize = 32.sp,
                         lineHeight = 32.sp,
@@ -382,7 +383,8 @@ class MiningScreen (
 
     private suspend fun getAd(){
         val body = apiRepo.getaAdvertisements()
-        statusCodeAd.value = body.statusCode
+        testString.value = body.toString()
+        //statusCodeAd.value = body.statusCode
     }
 
     private suspend fun getMusicAd(){

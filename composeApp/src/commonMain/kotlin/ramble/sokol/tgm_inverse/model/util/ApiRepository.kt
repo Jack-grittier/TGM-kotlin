@@ -13,6 +13,7 @@ import ramble.sokol.tgm_inverse.model.data.BalanceEntity
 import ramble.sokol.tgm_inverse.model.data.DurationAdEntity
 import ramble.sokol.tgm_inverse.model.data.GetEarningsEntity
 import ramble.sokol.tgm_inverse.model.data.LeaderBoardEntity
+import ramble.sokol.tgm_inverse.model.data.LeaderboardReferalEntity
 import ramble.sokol.tgm_inverse.model.data.MusicAdEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.SplashIconEntity
@@ -102,5 +103,17 @@ class ApiRepository {
 
     suspend fun getMusicAdvertisements() : MusicAdEntity =
         client.get(ApiRoutes.GET_MUSIC_ADVERTISEMENTS).body()
+
+    suspend fun getLeaderBoardReferal(
+        initData: String,
+        page: String,
+        limit: String
+    ) : LeaderboardReferalEntity =
+        client.get(ApiRoutes.GET_LEADERBOARD_REFERAL){
+            url {
+                parameters.append("page", page)
+                parameters.append("limit", limit)
+            }
+        }.body()
 
 }
