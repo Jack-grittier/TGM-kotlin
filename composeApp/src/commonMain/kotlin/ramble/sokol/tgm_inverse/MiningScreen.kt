@@ -126,11 +126,11 @@ class MiningScreen (
             mutableStateOf(false)
         }
 
-        scope.launch{
-            getEarnings()
-            getMusic("1", "25")
-            //getAd()
-        }
+//        scope.launch{
+//            getEarnings()
+//            getMusic("1", "25")
+//            //getAd()
+//        }
 
         Column(
             modifier = modifier

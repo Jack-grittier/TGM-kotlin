@@ -132,7 +132,7 @@ class MainMenuScreen(
         }
 
         var selectedItem by rememberSaveable {
-            mutableIntStateOf(0)
+            mutableIntStateOf(1)
         }
 
         if (clickSheet.value == 1) {
