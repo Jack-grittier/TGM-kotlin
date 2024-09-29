@@ -194,31 +194,7 @@ class SplashScreen : Screen {
 
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ){
-
-//                Image(
-//                    modifier = Modifier
-//                        .fillMaxWidth(),
-//                    painter = painterResource(Res.drawable.image_background_splash_screen),
-//                    contentDescription = "imageSplashScreen"
-//                )
-
-                    Image(
-                        modifier = Modifier
-                            .height(51.dp)
-                            .fillMaxWidth()
-                        .alpha(alpha = alpha),
-                        painter = painterResource(Res.drawable.icon_logo_splash_screen),
-                        contentDescription = "imageSplashScreen"
-                    )
-
-                }
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .padding(vertical = 53.dp, horizontal = 24.dp),
                     contentAlignment = Alignment.BottomCenter
                 ){
@@ -260,6 +236,30 @@ class SplashScreen : Screen {
                         } ?: run {}
 
                     }
+
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
+
+//                Image(
+//                    modifier = Modifier
+//                        .fillMaxWidth(),
+//                    painter = painterResource(Res.drawable.image_background_splash_screen),
+//                    contentDescription = "imageSplashScreen"
+//                )
+
+                    Image(
+                        modifier = Modifier
+                            .height(51.dp)
+                            .fillMaxWidth()
+                        .alpha(alpha = alpha),
+                        painter = painterResource(Res.drawable.icon_logo_splash_screen),
+                        contentDescription = "imageSplashScreen"
+                    )
 
                 }
 

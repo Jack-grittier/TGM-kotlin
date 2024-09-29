@@ -65,6 +65,7 @@ class LiderboardScreen(
 
     private lateinit var apiRepo: ApiRepository
     private lateinit var listLeader: MutableState<List<LeaderBoardEntity>>
+    private lateinit var myPosition: MutableState<LeaderBoardEntity?>
 
     @Composable
     override fun Content() {
@@ -75,8 +76,13 @@ class LiderboardScreen(
             mutableStateOf(listOf())
         }
 
+        myPosition = remember {
+            mutableStateOf(null)
+        }
+
         scope.launch {
             getLeader("1", "25")
+            getMyLeader()
         }
 
         Box(
@@ -88,13 +94,16 @@ class LiderboardScreen(
             contentAlignment = Alignment.TopCenter
         ) {
 
-            Box(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
-                contentAlignment = Alignment.BottomCenter
-            ){
+            if (myPosition.value != null) {
 
-                MyRatingLeaderBoard("150", "Penis", "1024")
+                Box(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
 
+                    MyRatingLeaderBoard("150", "Penis", "1024")
+
+                }
             }
 
             Column(
@@ -182,6 +191,11 @@ class LiderboardScreen(
     suspend fun getLeader(page: String, limit: String){
         val body = apiRepo.getLeaderboard(page = page, limit = limit)
         listLeader.value = body
+    }
+
+    suspend fun getMyLeader(){
+        val body = apiRepo.getMyPositionLeaderBoard(userEntityCreate.initData)
+        myPosition.value = body
     }
 
 }

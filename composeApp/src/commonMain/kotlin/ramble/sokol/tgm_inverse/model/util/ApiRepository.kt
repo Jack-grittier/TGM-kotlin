@@ -117,4 +117,11 @@ class ApiRepository {
             }
         }.body()
 
+    suspend fun getMyPositionLeaderBoard(
+        initData: String
+    ) : LeaderBoardEntity =
+        client.get(ApiRoutes.GET_LEADERBOARD_MY_POSITION){
+            header(HttpHeaders.Authorization, "Bearer ${initData}")
+        }.body()
+
 }
