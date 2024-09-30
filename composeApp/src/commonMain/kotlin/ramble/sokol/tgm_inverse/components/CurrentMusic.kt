@@ -57,6 +57,7 @@ import tgminverse.composeapp.generated.resources.icon_bb_rating
 import tgminverse.composeapp.generated.resources.icon_home_onboarding
 import tgminverse.composeapp.generated.resources.mont_regular
 import tgminverse.composeapp.generated.resources.music_pause
+import tgminverse.composeapp.generated.resources.music_play
 import tgminverse.composeapp.generated.resources.test_photo
 
 @Composable
@@ -161,7 +162,9 @@ fun CurrentMusic(
                 .clickable {
             onClick()
         },
-        painter = painterResource(Res.drawable.music_pause),
+        painter =
+        if (play) painterResource(Res.drawable.music_pause)
+            else painterResource(Res.drawable.music_play),
         contentDescription = "imageLine",
         contentScale = ContentScale.Crop
         )

@@ -386,7 +386,7 @@ class MiningScreen (
             if (playMusic.value == true) {
 
                 Box(
-                    modifier = Modifier.fillMaxSize().padding(bottom = 24.dp),
+                    modifier = Modifier.fillMaxSize().padding(bottom = 24.dp, start = 8.dp, end = 8.dp),
                     contentAlignment = Alignment.BottomCenter
                 ) {
 
@@ -412,11 +412,6 @@ class MiningScreen (
             }
 
         }
-
-    }
-
-    @Composable
-    fun AudioPlayerFromUrl(url: String) {
 
     }
 
