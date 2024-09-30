@@ -107,10 +107,10 @@ class MiningScreen (
     override fun Content() {
 
         apiRepo = ApiRepository()
-        val scope  = rememberCoroutineScope()
-        listMusic = remember {
-            mutableStateOf(listOf())
-        }
+        //val scope  = rememberCoroutineScope()
+//        listMusic = remember {
+//            mutableStateOf(listOf())
+//        }
 
         itemCount = remember {
             mutableStateOf(0)
