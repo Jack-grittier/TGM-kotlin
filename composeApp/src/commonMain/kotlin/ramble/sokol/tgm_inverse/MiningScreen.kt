@@ -60,6 +60,8 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.w3c.fetch.Body
+import ramble.sokol.tgm_inverse.components.CurrentMusic
+import ramble.sokol.tgm_inverse.components.MyRatingLeaderBoard
 import ramble.sokol.tgm_inverse.components.PlaylistItem
 import ramble.sokol.tgm_inverse.components.ProgressBarTasks
 import ramble.sokol.tgm_inverse.components.TasksDone
@@ -98,7 +100,9 @@ class MiningScreen (
     private lateinit var listMusic: MutableState<List<MusicResponse>>
     private lateinit var itemCount: MutableState<Int>
     private lateinit var statusCode: MutableState<Int?>
-    private lateinit var statusCodeAd: MutableState<Int?>
+    private lateinit var playMusic: MutableState<Boolean>
+    private lateinit var pauseMusic: MutableState<Boolean>
+    private lateinit var currentSong: MutableState<MusicResponse?>
 
     @Composable
     override fun Content() {
@@ -109,16 +113,24 @@ class MiningScreen (
             mutableStateOf(listOf())
         }
 
+        playMusic = remember {
+            mutableStateOf(false)
+        }
+
+        pauseMusic = remember {
+            mutableStateOf(true)
+        }
+
+        currentSong = remember {
+            mutableStateOf(null)
+        }
+
         itemCount = remember {
             mutableStateOf(0)
         }
 
         statusCode = remember {
             mutableStateOf(null)
-        }
-
-        statusCodeAd = remember {
-            mutableStateOf(0)
         }
 
         startedEarning = remember {
@@ -128,151 +140,155 @@ class MiningScreen (
         scope.launch{
             getEarnings()
             getMusic("1", "25")
-            getAd()
         }
 
-        Column(
+        Box(
             modifier = modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
                 .background(background_screens)
-                .windowInsetsPadding(WindowInsets.safeDrawing)
-        ){
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                .windowInsetsPadding(WindowInsets.safeDrawing),
+            contentAlignment = Alignment.TopCenter
+        ) {
 
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.BottomCenter
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
             ) {
 
-                Column(
+                Box(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    contentAlignment = Alignment.BottomCenter
                 ) {
 
-                    Box(
+                    Column(
                         modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        Image(
-                            modifier = Modifier.fillMaxWidth(),
-                            painter = painterResource(Res.drawable.image_back_mining),
-                            contentDescription = "image_play_game",
-                            contentScale = ContentScale.Crop
-                        )
-
                         Box(
-                            modifier = Modifier.width(300.dp).height(300.dp),
-                            contentAlignment = Alignment.BottomEnd
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
                         ) {
 
+                            Image(
+                                modifier = Modifier.fillMaxWidth(),
+                                painter = painterResource(Res.drawable.image_back_mining),
+                                contentDescription = "image_play_game",
+                                contentScale = ContentScale.Crop
+                            )
+
                             Box(
-                                modifier = Modifier.fillMaxWidth().padding(25.dp),
-                                contentAlignment = Alignment.Center
+                                modifier = Modifier.width(300.dp).height(300.dp),
+                                contentAlignment = Alignment.BottomEnd
                             ) {
 
-                                Surface(
-                                    modifier = Modifier.size(250.dp),
-                                    shape = CircleShape
+                                Box(
+                                    modifier = Modifier.fillMaxWidth().padding(25.dp),
+                                    contentAlignment = Alignment.Center
                                 ) {
+
+                                    Surface(
+                                        modifier = Modifier.size(250.dp),
+                                        shape = CircleShape
+                                    ) {
+                                        Image(
+                                            painter = painterResource(Res.drawable.test_photo),
+                                            contentDescription = null,
+                                            modifier = Modifier.fillMaxSize(),
+                                            contentScale = ContentScale.Crop
+                                        )
+                                    }
+
                                     Image(
-                                        painter = painterResource(Res.drawable.test_photo),
+                                        modifier = Modifier.width(109.dp).height(109.dp),
+                                        painter = painterResource(Res.drawable.image_back_circle_playlist),
                                         contentDescription = null,
-                                        modifier = Modifier.fillMaxSize(),
                                         contentScale = ContentScale.Crop
                                     )
+
+
+                                    Surface(
+                                        modifier = Modifier.size(68.dp),
+                                        shape = CircleShape
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .height(68.dp)
+                                                .background(center_circle_playlist)
+                                        )
+                                    }
                                 }
 
-                                Image(
-                                    modifier = Modifier.width(109.dp).height(109.dp),
-                                    painter = painterResource(Res.drawable.image_back_circle_playlist),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop
-                                )
+                                if (statusCode.value == 404) {
 
-
-                                Surface(
-                                    modifier = Modifier.size(68.dp),
-                                    shape = CircleShape
-                                ) {
-                                    Box(
+                                    Image(
                                         modifier = Modifier
-                                            .height(68.dp)
-                                            .background(center_circle_playlist)
+                                            .height(86.dp)
+                                            .width(86.dp)
+                                            .padding(bottom = 14.dp, end = 14.dp)
+                                            .clickable {
+                                                scope.launch {
+                                                    postEarnings()
+                                                }
+                                            },
+                                        painter = painterResource(Res.drawable.icon_play_music),
+                                        contentDescription = "imageLine"
                                     )
                                 }
-                            }
 
-                            if (statusCode.value == 404) {
+                                if (statusCode.value == null) {
 
-                                Image(
-                                    modifier = Modifier
-                                        .height(86.dp)
-                                        .width(86.dp)
-                                        .padding(bottom = 14.dp, end = 14.dp)
-                                        .clickable {
-                                            scope.launch {
-                                                postEarnings()
-                                            }
-                                        },
-                                    painter = painterResource(Res.drawable.icon_play_music),
-                                    contentDescription = "imageLine"
-                                )
-                            }
+                                    ProgressBarDemo()
 
-                            if (statusCode.value == null){
-
-                                ProgressBarDemo()
+                                }
 
                             }
 
                         }
-
                     }
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "48534",
+                        style = TextStyle(
+                            fontSize = 32.sp,
+                            lineHeight = 32.sp,
+                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                            fontWeight = FontWeight(400),
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                        )
+                    )
+
                 }
 
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = "48534",
-                    style = TextStyle(
-                        fontSize = 32.sp,
-                        lineHeight = 32.sp,
-                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                        fontWeight = FontWeight(400),
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
+                Spacer(modifier = Modifier.padding(top = 17.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(background_airdrop),
+                    contentAlignment = Alignment.Center
+                ) {
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(vertical = 24.dp, horizontal = 10.dp),
+                        text = "Airdrop: 52:12:56",
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            lineHeight = 16.sp,
+                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                            fontWeight = FontWeight(400),
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                        )
                     )
-                )
-
-            }
-
-            Spacer(modifier = Modifier.padding(top = 17.dp))
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(background_airdrop),
-                contentAlignment = Alignment.Center
-            ) {
-
-                Text(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp, horizontal = 10.dp),
-                    text = "Airdrop: 52:12:56",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 16.sp,
-                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                        fontWeight = FontWeight(400),
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                    )
-                )
-            }
-
-            if (statusCodeAd.value == null) {
+                }
 
                 Spacer(modifier = Modifier.padding(top = 17.dp))
 
@@ -291,74 +307,97 @@ class MiningScreen (
                         contentScale = ContentScale.Crop
                     )
                 }
-            }
 
-            Spacer(modifier = Modifier.padding(vertical = 12.dp))
+                Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                painter = painterResource(Res.drawable.image_line),
-                contentDescription = "imageLine"
-            )
-
-            Spacer(modifier = Modifier.padding(vertical = 12.dp))
-
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = stringResource(Res.string.get_bonuses),
-                style = TextStyle(
-                    fontSize = 22.sp,
-                    lineHeight = 22.sp,
-                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                    fontWeight = FontWeight(800),
-                    color = Color.White,
+                Image(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    painter = painterResource(Res.drawable.image_line),
+                    contentDescription = "imageLine"
                 )
-            )
 
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
-            if (listMusic.value.size == 0) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    text = stringResource(Res.string.get_bonuses),
+                    style = TextStyle(
+                        fontSize = 22.sp,
+                        lineHeight = 22.sp,
+                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                        fontWeight = FontWeight(800),
+                        color = Color.White,
+                    )
+                )
 
-                Box(
-                    modifier = Modifier.fillMaxWidth().height(200.dp).padding(start = 16.dp),
-                    contentAlignment = Alignment.Center){
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-                    ProgressBarTasks()
+                if (listMusic.value.size == 0) {
 
-                }
+                    Box(
+                        modifier = Modifier.fillMaxWidth().height(200.dp).padding(start = 16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
 
-            } else {
+                        ProgressBarTasks()
 
-                Row (
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                    }
 
-                    itemCount.value = 0
+                } else {
 
-                    LazyRow() {
-                        items(listMusic.value) { items: MusicResponse ->
+                    Row(
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
 
-                            if (itemCount.value == 0){
-                                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                        itemCount.value = 0
+
+                        LazyRow() {
+                            items(listMusic.value) { items: MusicResponse ->
+
+                                if (itemCount.value == 0) {
+                                    Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                                }
+
+                                PlaylistItem(items) {
+                                    currentSong.value = items
+                                    playMusic.value = true
+                                }
+
+                                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                                itemCount.value += 1
+
                             }
-
-                            PlaylistItem(items){}
-
-                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-
-                            itemCount.value += 1
-
                         }
                     }
                 }
+
+
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
             }
 
+        }
 
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+        if (playMusic.value == true) {
 
+            Box(
+                modifier = Modifier.fillMaxSize().padding(bottom = 12.dp),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+
+                CurrentMusic(
+                    url = currentSong.value!!.coverURL,
+                    name = currentSong.value!!.name,
+                    author = currentSong.value!!.group,
+                    play = pauseMusic.value
+                ){
+                    pauseMusic.value = !pauseMusic.value
+                }
+            }
         }
 
     }
@@ -378,11 +417,6 @@ class MiningScreen (
         val body = apiRepo.getMusic(page, limit)
         listMusic.value = body
 
-    }
-
-    private suspend fun getAd(){
-        val body = apiRepo.getaAdvertisements()
-        statusCodeAd.value = body.statusCode
     }
 
 }

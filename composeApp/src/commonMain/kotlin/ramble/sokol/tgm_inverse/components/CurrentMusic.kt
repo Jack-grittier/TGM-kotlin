@@ -64,6 +64,7 @@ fun CurrentMusic(
     url: String,
     name: String,
     author: String,
+    play:Boolean,
     onClick: () -> Unit,
 ){
 
