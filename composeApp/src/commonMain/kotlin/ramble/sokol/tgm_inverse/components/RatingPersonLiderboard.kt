@@ -69,13 +69,13 @@ fun RatingPersonLiderboard(
         Spacer(modifier = Modifier.padding(horizontal = 11.dp))
 
         Surface(
-            modifier = Modifier.size(55.dp).background(background_wallet_item),
+            modifier = Modifier.size(55.dp),
             shape = CircleShape
         ) {
             Image(
                 painter = painterResource(Res.drawable.test_photo),
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().background(background_wallet_item),
                 contentScale = ContentScale.Crop
             )
         }

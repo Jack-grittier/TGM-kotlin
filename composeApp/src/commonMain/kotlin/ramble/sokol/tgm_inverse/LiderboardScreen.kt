@@ -94,18 +94,6 @@ class LiderboardScreen(
             contentAlignment = Alignment.TopCenter
         ) {
 
-            if (myPosition.value != null) {
-
-                Box(
-                    modifier = Modifier.fillMaxSize().padding(bottom = 12.dp),
-                    contentAlignment = Alignment.BottomCenter
-                ) {
-
-                    MyRatingLeaderBoard("150", "Penis", "1024")
-
-                }
-            }
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -180,6 +168,21 @@ class LiderboardScreen(
                     }
 
                     Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
+                }
+            }
+
+            if (myPosition.value != null) {
+
+                Box(
+                    modifier = Modifier.fillMaxSize().padding(bottom = 12.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+
+                    MyRatingLeaderBoard(
+                        myPosition.value!!.amount.toString(),
+                        myPosition.value!!.username,
+                        myPosition.value!!.position.toString())
 
                 }
             }
