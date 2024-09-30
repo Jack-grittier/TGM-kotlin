@@ -116,17 +116,17 @@ class MiningScreen (
             mutableStateOf(0)
         }
 
-        statusCode = remember {
-            mutableStateOf(null)
-        }
+//        statusCode = remember {
+//            mutableStateOf(null)
+//        }
 
 //        statusCodeAd = remember {
 //            mutableStateOf(0)
 //        }
 
-        startedEarning = remember {
-            mutableStateOf(false)
-        }
+//        startedEarning = remember {
+//            mutableStateOf(false)
+//        }
 
 //        scope.launch{
 //            getEarnings()

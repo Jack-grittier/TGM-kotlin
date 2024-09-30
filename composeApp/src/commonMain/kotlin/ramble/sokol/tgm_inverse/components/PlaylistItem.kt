@@ -2,6 +2,7 @@ package ramble.sokol.tgm_inverse.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,6 +55,7 @@ import tgminverse.composeapp.generated.resources.test_photo
 @Composable
 fun PlaylistItem(
     items: MusicResponse,
+    onClick: () -> Unit,
 ){
 
     var imageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
@@ -72,7 +74,10 @@ fun PlaylistItem(
     }
 
     Column(
-        modifier = Modifier.width(136.dp),
+        modifier = Modifier.width(136.dp)
+            .clickable {
+                onClick()
+            },
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
