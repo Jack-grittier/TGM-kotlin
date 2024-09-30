@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AdvertisementsEntity(
-    val id: String?,
-    val duration: DurationAdEntity?,
-    val fileURL: String?,
-    val statusCode: Int?,
+    val id: String? = null,
+    val duration: DurationAdEntity? = null,
+    val fileURL: String? = null,
+    val statusCode: Int? = null,
 )

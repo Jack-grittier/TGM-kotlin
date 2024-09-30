@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MusicResponse(
-    val id: Long?,
+    val id: Long? = null,
     val name: String,
     val group: String,
     val url: String,

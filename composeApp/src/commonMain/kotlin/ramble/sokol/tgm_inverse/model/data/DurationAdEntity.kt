@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DurationAdEntity(
-    val start: String?,
-    val end: String?,
+    val start: String? = null,
+    val end: String? = null,
 )
