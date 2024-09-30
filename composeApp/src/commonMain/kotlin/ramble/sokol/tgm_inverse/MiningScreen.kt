@@ -76,7 +76,6 @@ import ramble.sokol.tgm_inverse.theme.background_screens
 import ramble.sokol.tgm_inverse.theme.center_circle_playlist
 import ramble.sokol.tgm_inverse.theme.center_circle_playlist_shadow
 import ramble.sokol.tgm_inverse.theme.color_background_referal
-import ramble.sokol.tgm_inverse.theme.text_navbar
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.get_bonuses
@@ -85,7 +84,6 @@ import tgminverse.composeapp.generated.resources.image_back_circle_playlist
 import tgminverse.composeapp.generated.resources.image_back_mining
 import tgminverse.composeapp.generated.resources.image_line
 import tgminverse.composeapp.generated.resources.image_play_game
-import tgminverse.composeapp.generated.resources.liderboard
 import tgminverse.composeapp.generated.resources.mont_regular
 import tgminverse.composeapp.generated.resources.tasks_navbar
 import tgminverse.composeapp.generated.resources.test_photo
@@ -100,8 +98,7 @@ class MiningScreen (
     private lateinit var listMusic: MutableState<List<MusicResponse>>
     private lateinit var itemCount: MutableState<Int>
     private lateinit var statusCode: MutableState<Int?>
-    //private lateinit var statusCodeAd: MutableState<Int?>
-    private lateinit var testString: MutableState<String?>
+    private lateinit var statusCodeAd: MutableState<Int?>
 
     @Composable
     override fun Content() {
@@ -120,9 +117,9 @@ class MiningScreen (
             mutableStateOf(null)
         }
 
-//        statusCodeAd = remember {
-//            mutableStateOf(0)
-//        }
+        statusCodeAd = remember {
+            mutableStateOf(0)
+        }
 
         startedEarning = remember {
             mutableStateOf(false)
@@ -131,13 +128,13 @@ class MiningScreen (
         scope.launch{
             getEarnings()
             getMusic("1", "25")
-            //getAd()
+            getAd()
         }
 
         Column(
             modifier = modifier
                 .fillMaxSize()
-                //.verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState())
                 .background(background_screens)
                 .windowInsetsPadding(WindowInsets.safeDrawing)
         ){
@@ -237,7 +234,7 @@ class MiningScreen (
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = testString.value.toString(),
+                    text = "48534",
                     style = TextStyle(
                         fontSize = 32.sp,
                         lineHeight = 32.sp,
@@ -275,7 +272,7 @@ class MiningScreen (
                 )
             }
 
-
+            if (statusCodeAd.value == null) {
 
                 Spacer(modifier = Modifier.padding(top = 17.dp))
 
@@ -294,6 +291,7 @@ class MiningScreen (
                         contentScale = ContentScale.Crop
                     )
                 }
+            }
 
             Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
@@ -347,9 +345,7 @@ class MiningScreen (
                                 Spacer(modifier = Modifier.padding(horizontal = 8.dp))
                             }
 
-                            PlaylistItem(items){
-
-                            }
+                            PlaylistItem(items){}
 
                             Spacer(modifier = Modifier.padding(horizontal = 4.dp))
 
@@ -384,19 +380,9 @@ class MiningScreen (
 
     }
 
-//    private suspend fun getAd(){
-//        val body = apiRepo.getaAdvertisements()
-//        testString.value = body.toString()
-//        //statusCodeAd.value = body.statusCode
-//    }
-//
-//    private suspend fun getMusicAd(){
-//        val body = apiRepo.getMusicAdvertisements()
-//    }
-//
-//    private suspend fun getMusicById(id: String){
-//        val body = apiRepo.getMusic(id = id)
-//
-//    }
+    private suspend fun getAd(){
+        val body = apiRepo.getaAdvertisements()
+        statusCodeAd.value = body.statusCode
+    }
 
 }
