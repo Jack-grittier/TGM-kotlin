@@ -299,7 +299,7 @@ class MiningScreen (
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "48534",
+                        text = musicAdUrl.value.toString(),
                         style = TextStyle(
                             fontSize = 32.sp,
                             lineHeight = 32.sp,
@@ -479,14 +479,15 @@ class MiningScreen (
 
     suspend fun getMusicAd(){
         val body = apiRepo.getMusicAdvertisements()
-        if (body.musicId != null){
-            getMusicById(body.musicId)
-        }
+        musicAdUrl.value = body.musicId.toString()
+//        if (body.musicId != null){
+//            getMusicById(body.musicId)
+//        }
     }
 
-    suspend fun getMusicById(id: Long){
-        val body = apiRepo.getMusic(id.toString())
-        musicAdUrl.value = body.url
-    }
+//    suspend fun getMusicById(id: Long){
+//        val body = apiRepo.getMusic(id.toString())
+//        musicAdUrl.value = body.url
+//    }
 
 }
