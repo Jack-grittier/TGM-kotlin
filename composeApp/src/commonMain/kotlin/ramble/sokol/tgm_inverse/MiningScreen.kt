@@ -347,7 +347,7 @@ class MiningScreen (
 
                 if (adUrl.value != null) {
 
-                    Spacer(modifier = Modifier.padding(top = 17.dp))
+                    Spacer(modifier = Modifier.padding(top = 24.dp))
 
                     Box(
                         modifier = Modifier
@@ -358,7 +358,6 @@ class MiningScreen (
                     ) {
 
                         LaunchedEffect(adUrl.value) {
-                            // Загружаем изображение асинхронно
                             val img = window.fetch(adUrl.value)
                                 .await()
                                 .arrayBuffer()
@@ -374,10 +373,10 @@ class MiningScreen (
                             Image(
                                 bitmap = it,
                                 contentDescription = "Loaded image",
-                                modifier = Modifier.size(400.dp)
+                                modifier = Modifier.fillMaxWidth().height(230.dp),
+                                contentScale = ContentScale.Crop
                             )
                         } ?: run {
-                            Text("Loading image...")
                         }
 
 
@@ -434,7 +433,7 @@ class MiningScreen (
                         LazyRow() {
                             items(listMusic.value) { items: MusicResponse ->
 
-                                if (itemCount.value == 0) {
+                                if (listMusic.value.indexOf(items) == 0) {
                                     Spacer(modifier = Modifier.padding(horizontal = 8.dp))
                                 }
 

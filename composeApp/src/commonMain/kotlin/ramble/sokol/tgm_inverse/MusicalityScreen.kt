@@ -337,49 +337,47 @@ class MusicalityScreen(
 
                 }
 
-                Spacer(modifier = Modifier.padding(vertical = 16.dp))
-
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = "Рейтинг друзей",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        lineHeight = 20.sp,
-                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                        fontWeight = FontWeight(400),
-                        color = Color.White,
-                        textAlign = TextAlign.Start,
-                    )
-                )
-
-                Spacer(modifier = Modifier.padding(vertical = 12.dp))
-
                 if (listLeader.value.size != 0){
 
-                Row (
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically ,
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    if (listLeader.value.size>=2) {
-                        val second = listLeader.value[1]
-                        PhotoOtherRating(2, second.username, second.amount.toString())
+                    Spacer(modifier = Modifier.padding(vertical = 16.dp))
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "Рейтинг друзей",
+                        style = TextStyle(
+                            fontSize = 20.sp,
+                            lineHeight = 20.sp,
+                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                            fontWeight = FontWeight(400),
+                            color = Color.White,
+                            textAlign = TextAlign.Start,
+                        )
+                    )
+
+                    Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
+                    Row (
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically ,
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        if (listLeader.value.size>=2) {
+                            val second = listLeader.value[1]
+                            PhotoOtherRating(2, second.username, second.amount.toString())
+                        }
+                        if (listLeader.value.size>=1) {
+                            val first = listLeader.value[0]
+                            PhotoFirstRating(first.username, first.amount.toString())
+                        }
+                        if (listLeader.value.size>=3) {
+                            val third = listLeader.value[2]
+                            PhotoOtherRating(3, third.username, third.amount.toString())
+                        }
+
+
                     }
-                    if (listLeader.value.size>=1) {
-                        val first = listLeader.value[0]
-                        PhotoFirstRating(first.username, first.amount.toString())
-                    }
-                    if (listLeader.value.size>=3) {
-                        val third = listLeader.value[2]
-                        PhotoOtherRating(3, third.username, third.amount.toString())
-                    }
 
-
-                }
-
-
-
-                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
                     if (listLeader.value.size > 3) {
                         val newListLeader = listLeader.value.subList(3, listLeader.value.size)
@@ -392,9 +390,7 @@ class MusicalityScreen(
                             }
                         }
                     }
-
                 }
-
             }
 
             Spacer(modifier = Modifier.padding(vertical = 8.dp))

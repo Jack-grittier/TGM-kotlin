@@ -167,7 +167,7 @@ class LiderboardScreen(
                         }
                     }
 
-                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                    Spacer(modifier = Modifier.padding(vertical = 45.dp))
 
                 }
             }
