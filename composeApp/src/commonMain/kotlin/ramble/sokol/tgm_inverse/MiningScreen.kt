@@ -100,39 +100,39 @@ class MiningScreen (
     private lateinit var listMusic: MutableState<List<MusicResponse>>
     private lateinit var itemCount: MutableState<Int>
     private lateinit var statusCode: MutableState<Int?>
-    //private lateinit var statusCodeAd: MutableState<Int?>
+    private lateinit var statusCodeAd: MutableState<Int?>
     private lateinit var testString: MutableState<String?>
 
     @Composable
     override fun Content() {
 
         apiRepo = ApiRepository()
-        //val scope  = rememberCoroutineScope()
-//        listMusic = remember {
-//            mutableStateOf(listOf())
-//        }
+        val scope  = rememberCoroutineScope()
+        listMusic = remember {
+            mutableStateOf(listOf())
+        }
 
         itemCount = remember {
             mutableStateOf(0)
         }
 
-//        statusCode = remember {
-//            mutableStateOf(null)
-//        }
+        statusCode = remember {
+            mutableStateOf(null)
+        }
 
-//        statusCodeAd = remember {
-//            mutableStateOf(0)
-//        }
+        statusCodeAd = remember {
+            mutableStateOf(0)
+        }
 
-//        startedEarning = remember {
-//            mutableStateOf(false)
-//        }
+        startedEarning = remember {
+            mutableStateOf(false)
+        }
 
-//        scope.launch{
-//            getEarnings()
-//            getMusic("1", "25")
-//            //getAd()
-//        }
+        scope.launch{
+            getEarnings()
+            getMusic("1", "25")
+            getAd()
+        }
 
         Column(
             modifier = modifier
@@ -207,28 +207,28 @@ class MiningScreen (
                                 }
                             }
 
-//                            if (statusCode.value == 404) {
-//
-//                                Image(
-//                                    modifier = Modifier
-//                                        .height(86.dp)
-//                                        .width(86.dp)
-//                                        .padding(bottom = 14.dp, end = 14.dp)
-//                                        .clickable {
-//                                            scope.launch {
-//                                                postEarnings()
-//                                            }
-//                                        },
-//                                    painter = painterResource(Res.drawable.icon_play_music),
-//                                    contentDescription = "imageLine"
-//                                )
-//                            }
-//
-//                            if (statusCode.value == null){
-//
-//                                ProgressBarDemo()
-//
-//                            }
+                            if (statusCode.value == 404) {
+
+                                Image(
+                                    modifier = Modifier
+                                        .height(86.dp)
+                                        .width(86.dp)
+                                        .padding(bottom = 14.dp, end = 14.dp)
+                                        .clickable {
+                                            scope.launch {
+                                                postEarnings()
+                                            }
+                                        },
+                                    painter = painterResource(Res.drawable.icon_play_music),
+                                    contentDescription = "imageLine"
+                                )
+                            }
+
+                            if (statusCode.value == null){
+
+                                ProgressBarDemo()
+
+                            }
 
                         }
 
@@ -275,26 +275,26 @@ class MiningScreen (
                 )
             }
 
-//            if (statusCodeAd.value == null) {
-//
-//                Spacer(modifier = Modifier.padding(top = 17.dp))
-//
-//                Box(
-//                    modifier = Modifier
-//                        .height(228.dp)
-//                        .fillMaxWidth()
-//                        .padding(horizontal = 16.dp)
-//                        .clip(RoundedCornerShape(22.dp))
-//                ) {
-//
-//                    Image(
-//                        painter = painterResource(Res.drawable.test_photo),
-//                        contentDescription = null,
-//                        modifier = Modifier.fillMaxSize(),
-//                        contentScale = ContentScale.Crop
-//                    )
-//                }
-//            }
+            if (statusCodeAd.value == null) {
+
+                Spacer(modifier = Modifier.padding(top = 17.dp))
+
+                Box(
+                    modifier = Modifier
+                        .height(228.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .clip(RoundedCornerShape(22.dp))
+                ) {
+
+                    Image(
+                        painter = painterResource(Res.drawable.test_photo),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
@@ -322,42 +322,44 @@ class MiningScreen (
 
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-//            if (listMusic.value.size == 0) {
-//
-//                Box(
-//                    modifier = Modifier.fillMaxWidth().height(200.dp).padding(start = 16.dp),
-//                    contentAlignment = Alignment.Center){
-//
-//                    ProgressBarTasks()
-//
-//                }
-//
-//            } else {
-//
-//                Row (
-//                    horizontalArrangement = Arrangement.Start,
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//
-//                    itemCount.value = 0
-//
-//                    LazyRow() {
-//                        items(listMusic.value) { items: MusicResponse ->
-//
-//                            if (itemCount.value == 0){
-//                                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
-//                            }
-//
-//                            PlaylistItem(items)
-//
-//                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-//
-//                            itemCount.value += 1
-//
-//                        }
-//                    }
-//                }
-//            }
+            if (listMusic.value.size == 0) {
+
+                Box(
+                    modifier = Modifier.fillMaxWidth().height(200.dp).padding(start = 16.dp),
+                    contentAlignment = Alignment.Center){
+
+                    ProgressBarTasks()
+
+                }
+
+            } else {
+
+                Row (
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    itemCount.value = 0
+
+                    LazyRow() {
+                        items(listMusic.value) { items: MusicResponse ->
+
+                            if (itemCount.value == 0){
+                                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                            }
+
+                            PlaylistItem(items){
+
+                            }
+
+                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                            itemCount.value += 1
+
+                        }
+                    }
+                }
+            }
 
 
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
@@ -391,6 +393,11 @@ class MiningScreen (
 
     private suspend fun getMusicAd(){
         val body = apiRepo.getMusicAdvertisements()
+    }
+
+    private suspend fun getMusicById(id: String){
+        val body = apiRepo.getMusic(id = id)
+
     }
 
 }
