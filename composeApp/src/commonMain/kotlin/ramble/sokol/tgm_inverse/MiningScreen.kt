@@ -212,41 +212,48 @@ class MiningScreen (
                                         shape = CircleShape
                                     ) {
 
-                                        if (musicAdUrl.value == null) {
+                                        Image(
+                                            painter = painterResource(Res.drawable.test_photo),
+                                            contentDescription = null,
+                                            modifier = Modifier.fillMaxSize(),
+                                            contentScale = ContentScale.Crop
+                                        )
 
-                                            Image(
-                                                painter = painterResource(Res.drawable.test_photo),
-                                                contentDescription = null,
-                                                modifier = Modifier.fillMaxSize(),
-                                                contentScale = ContentScale.Crop
-                                            )
-
-                                        }else{
-
-                                            LaunchedEffect(musicAdUrl.value) {
-                                                // Загружаем изображение асинхронно
-                                                val img = window.fetch(musicAdUrl.value)
-                                                    .await()
-                                                    .arrayBuffer()
-                                                    .await()
-                                                    .let {
-                                                        makeFromEncoded(it.toByteArray())
-                                                    }
-                                                    .toComposeImageBitmap()
-                                                imageBitmapMusicAd = img
-                                            }
-
-                                            imageBitmapMusicAd?.let {
-                                                Image(
-                                                    bitmap = it,
-                                                    contentDescription = "Loaded image",
-                                                    modifier = Modifier.size(400.dp)
-                                                )
-                                            } ?: run {
-                                                Text("Loading image...")
-                                            }
-
-                                        }
+//                                        if (musicAdUrl.value == null) {
+//
+//                                            Image(
+//                                                painter = painterResource(Res.drawable.test_photo),
+//                                                contentDescription = null,
+//                                                modifier = Modifier.fillMaxSize(),
+//                                                contentScale = ContentScale.Crop
+//                                            )
+//
+//                                        }else{
+//
+//                                            LaunchedEffect(musicAdUrl.value) {
+//                                                // Загружаем изображение асинхронно
+//                                                val img = window.fetch(musicAdUrl.value)
+//                                                    .await()
+//                                                    .arrayBuffer()
+//                                                    .await()
+//                                                    .let {
+//                                                        makeFromEncoded(it.toByteArray())
+//                                                    }
+//                                                    .toComposeImageBitmap()
+//                                                imageBitmapMusicAd = img
+//                                            }
+//
+//                                            imageBitmapMusicAd?.let {
+//                                                Image(
+//                                                    bitmap = it,
+//                                                    contentDescription = "Loaded image",
+//                                                    modifier = Modifier.size(400.dp)
+//                                                )
+//                                            } ?: run {
+//                                                Text("Loading image...")
+//                                            }
+//
+//                                        }
                                     }
 
                                     Image(
