@@ -100,7 +100,7 @@ class MiningScreen (
     private lateinit var listMusic: MutableState<List<MusicResponse>>
     private lateinit var itemCount: MutableState<Int>
     private lateinit var statusCode: MutableState<Int?>
-    private lateinit var statusCodeAd: MutableState<Int?>
+    //private lateinit var statusCodeAd: MutableState<Int?>
     private lateinit var testString: MutableState<String?>
 
     @Composable
@@ -120,9 +120,9 @@ class MiningScreen (
             mutableStateOf(null)
         }
 
-        statusCodeAd = remember {
-            mutableStateOf(0)
-        }
+//        statusCodeAd = remember {
+//            mutableStateOf(0)
+//        }
 
         startedEarning = remember {
             mutableStateOf(false)
@@ -131,7 +131,7 @@ class MiningScreen (
         scope.launch{
             getEarnings()
             getMusic("1", "25")
-            getAd()
+            //getAd()
         }
 
         Column(
@@ -275,7 +275,7 @@ class MiningScreen (
                 )
             }
 
-            if (statusCodeAd.value == null) {
+
 
                 Spacer(modifier = Modifier.padding(top = 17.dp))
 
@@ -294,7 +294,6 @@ class MiningScreen (
                         contentScale = ContentScale.Crop
                     )
                 }
-            }
 
             Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
@@ -385,19 +384,19 @@ class MiningScreen (
 
     }
 
-    private suspend fun getAd(){
-        val body = apiRepo.getaAdvertisements()
-        testString.value = body.toString()
-        //statusCodeAd.value = body.statusCode
-    }
-
-    private suspend fun getMusicAd(){
-        val body = apiRepo.getMusicAdvertisements()
-    }
-
-    private suspend fun getMusicById(id: String){
-        val body = apiRepo.getMusic(id = id)
-
-    }
+//    private suspend fun getAd(){
+//        val body = apiRepo.getaAdvertisements()
+//        testString.value = body.toString()
+//        //statusCodeAd.value = body.statusCode
+//    }
+//
+//    private suspend fun getMusicAd(){
+//        val body = apiRepo.getMusicAdvertisements()
+//    }
+//
+//    private suspend fun getMusicById(id: String){
+//        val body = apiRepo.getMusic(id = id)
+//
+//    }
 
 }
