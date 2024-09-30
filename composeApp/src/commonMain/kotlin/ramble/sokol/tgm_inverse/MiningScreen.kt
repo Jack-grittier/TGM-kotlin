@@ -36,6 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +47,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -55,12 +58,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import dev.inmo.micro_utils.common.toByteArray
 import dev.inmo.tgbotapi.webapps.webApp
 import kotlinx.browser.document
+import kotlinx.browser.window
+import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.skia.Image.Companion.makeFromEncoded
 import org.w3c.dom.HTMLAudioElement
 import org.w3c.fetch.Body
 import ramble.sokol.tgm_inverse.components.CurrentMusic
@@ -106,6 +113,7 @@ class MiningScreen (
     private lateinit var playMusic: MutableState<Boolean>
     private lateinit var pauseMusic: MutableState<Boolean>
     private lateinit var currentSong: MutableState<MusicResponse?>
+    private lateinit var musicAdUrl: MutableState<String?>
 
     @Composable
     override fun Content() {
@@ -114,6 +122,12 @@ class MiningScreen (
         val scope  = rememberCoroutineScope()
         listMusic = remember {
             mutableStateOf(listOf())
+        }
+
+        var imageBitmapMusicAd by remember { mutableStateOf<ImageBitmap?>(null) }
+
+        musicAdUrl = remember {
+            mutableStateOf(null)
         }
 
         playMusic = remember {
@@ -143,6 +157,7 @@ class MiningScreen (
         scope.launch{
             getEarnings()
             getMusic("1", "25")
+            getMusicAd()
         }
 
         Box(
@@ -196,12 +211,42 @@ class MiningScreen (
                                         modifier = Modifier.size(250.dp),
                                         shape = CircleShape
                                     ) {
-                                        Image(
-                                            painter = painterResource(Res.drawable.test_photo),
-                                            contentDescription = null,
-                                            modifier = Modifier.fillMaxSize(),
-                                            contentScale = ContentScale.Crop
-                                        )
+
+                                        if (musicAdUrl.value == null) {
+
+                                            Image(
+                                                painter = painterResource(Res.drawable.test_photo),
+                                                contentDescription = null,
+                                                modifier = Modifier.fillMaxSize(),
+                                                contentScale = ContentScale.Crop
+                                            )
+
+                                        }else{
+
+                                            LaunchedEffect(musicAdUrl.value) {
+                                                // Загружаем изображение асинхронно
+                                                val img = window.fetch(musicAdUrl.value)
+                                                    .await()
+                                                    .arrayBuffer()
+                                                    .await()
+                                                    .let {
+                                                        makeFromEncoded(it.toByteArray())
+                                                    }
+                                                    .toComposeImageBitmap()
+                                                imageBitmapMusicAd = img
+                                            }
+
+                                            imageBitmapMusicAd?.let {
+                                                Image(
+                                                    bitmap = it,
+                                                    contentDescription = "Loaded image",
+                                                    modifier = Modifier.size(400.dp)
+                                                )
+                                            } ?: run {
+                                                Text("Loading image...")
+                                            }
+
+                                        }
                                     }
 
                                     Image(
@@ -430,6 +475,18 @@ class MiningScreen (
         val body = apiRepo.getMusic(page, limit)
         listMusic.value = body
 
+    }
+
+    suspend fun getMusicAd(){
+        val body = apiRepo.getMusicAdvertisements()
+        if (body.musicId != null){
+            getMusicById(body.musicId)
+        }
+    }
+
+    suspend fun getMusicById(id: Long){
+        val body = apiRepo.getMusic(id.toString())
+        musicAdUrl.value = body.url
     }
 
 }
