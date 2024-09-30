@@ -1,6 +1,7 @@
 package ramble.sokol.tgm_inverse.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,7 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.web.dom.Col
+import ramble.sokol.tgm_inverse.theme.background_wallet_item
 import ramble.sokol.tgm_inverse.theme.color_text_price_rating
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
@@ -67,7 +69,7 @@ fun RatingPersonLiderboard(
         Spacer(modifier = Modifier.padding(horizontal = 11.dp))
 
         Surface(
-            modifier = Modifier.size(55.dp),
+            modifier = Modifier.size(55.dp).background(background_wallet_item),
             shape = CircleShape
         ) {
             Image(

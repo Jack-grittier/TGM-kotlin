@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -191,22 +192,6 @@ class SplashScreen : Screen {
                 contentAlignment = Alignment.Center
             ){
 
-                if (splashIocns.value.size != 0) {
-
-                    Text(
-                        modifier = Modifier.padding(top = 2.dp),
-                        text = splashIocns.value[0].toString(),
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            lineHeight = 15.sp,
-                            fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                            fontWeight = FontWeight(700),
-                            color = Color.White,
-                        )
-                    )
-
-                }
-
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -256,7 +241,7 @@ class SplashScreen : Screen {
                             Image(
                                 bitmap = it,
                                 contentDescription = "Loaded image",
-                                modifier = Modifier.height(45.dp),
+                                modifier = Modifier.height(45.dp).width(120.dp),
                                 contentScale = ContentScale.Crop
                             )
 

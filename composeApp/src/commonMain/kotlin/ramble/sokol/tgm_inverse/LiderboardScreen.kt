@@ -97,7 +97,7 @@ class LiderboardScreen(
             if (myPosition.value != null) {
 
                 Box(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+                    modifier = Modifier.fillMaxSize().padding(bottom = 12.dp),
                     contentAlignment = Alignment.BottomCenter
                 ) {
 
