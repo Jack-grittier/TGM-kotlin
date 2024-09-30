@@ -29,6 +29,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -55,10 +56,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import dev.inmo.tgbotapi.webapps.webApp
+import kotlinx.browser.document
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.w3c.dom.HTMLAudioElement
 import org.w3c.fetch.Body
 import ramble.sokol.tgm_inverse.components.CurrentMusic
 import ramble.sokol.tgm_inverse.components.MyRatingLeaderBoard
@@ -380,25 +383,40 @@ class MiningScreen (
 
             }
 
-        }
+            if (playMusic.value == true) {
 
-        if (playMusic.value == true) {
+                Box(
+                    modifier = Modifier.fillMaxSize().padding(bottom = 24.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
 
-            Box(
-                modifier = Modifier.fillMaxSize().padding(bottom = 12.dp),
-                contentAlignment = Alignment.BottomCenter
-            ) {
+                    val audioElement = remember { document.createElement("audio") as HTMLAudioElement }
 
-                CurrentMusic(
-                    url = currentSong.value!!.coverURL,
-                    name = currentSong.value!!.name,
-                    author = currentSong.value!!.group,
-                    play = pauseMusic.value
-                ){
-                    pauseMusic.value = !pauseMusic.value
+                    audioElement.src = currentSong.value!!.url
+
+                    if (pauseMusic.value) {
+                        audioElement.play()
+                    } else {
+                        audioElement.pause()
+                    }
+
+                    CurrentMusic(
+                        url = currentSong.value!!.coverURL,
+                        name = currentSong.value!!.name,
+                        author = currentSong.value!!.group,
+                        play = pauseMusic.value
+                    ){
+                        pauseMusic.value = !pauseMusic.value
+                    }
                 }
             }
+
         }
+
+    }
+
+    @Composable
+    fun AudioPlayerFromUrl(url: String) {
 
     }
 
