@@ -137,7 +137,7 @@ class MiningScreen (
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                //.verticalScroll(rememberScrollState())
                 .background(background_screens)
                 .windowInsetsPadding(WindowInsets.safeDrawing)
         ){
