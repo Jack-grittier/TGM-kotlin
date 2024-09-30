@@ -181,7 +181,7 @@ class LiderboardScreen(
 
                     MyRatingLeaderBoard(
                         //myPosition.value!!.amount.toString(),
-                        "hdghdshghshgjkhsoavjhjhgshjfhvvnjshdghjkdjfdnjdsfjkds",
+                        myPosition.value!!.amount.toString(),
                         myPosition.value!!.username,
                         myPosition.value!!.position.toString())
 

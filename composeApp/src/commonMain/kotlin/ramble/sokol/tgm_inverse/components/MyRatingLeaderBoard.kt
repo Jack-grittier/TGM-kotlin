@@ -131,6 +131,8 @@ fun MyRatingLeaderBoard(
 
         }
 
+        Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
         Text(
             text = position,
             style = TextStyle(

@@ -146,14 +146,14 @@ class MiningScreen (
             modifier = modifier
                 .fillMaxSize()
                 .background(background_screens)
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                 .windowInsetsPadding(WindowInsets.safeDrawing),
             contentAlignment = Alignment.TopCenter
         ) {
 
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
             ) {
 
                 Box(
