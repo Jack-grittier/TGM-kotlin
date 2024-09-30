@@ -114,6 +114,7 @@ class MiningScreen (
     private lateinit var pauseMusic: MutableState<Boolean>
     private lateinit var currentSong: MutableState<MusicResponse?>
     private lateinit var musicAdUrl: MutableState<String?>
+    private lateinit var adUrl: MutableState<String?>
 
     @Composable
     override fun Content() {
@@ -125,8 +126,13 @@ class MiningScreen (
         }
 
         var imageBitmapMusicAd by remember { mutableStateOf<ImageBitmap?>(null) }
+        var imageBitmapAd by remember { mutableStateOf<ImageBitmap?>(null) }
 
         musicAdUrl = remember {
+            mutableStateOf(null)
+        }
+
+        adUrl = remember {
             mutableStateOf(null)
         }
 
@@ -156,8 +162,9 @@ class MiningScreen (
 
         scope.launch{
             getEarnings()
-            getMusic("1", "25")
             getMusicAd()
+            getAd()
+            getMusic("1", "25")
         }
 
         Box(
@@ -299,7 +306,7 @@ class MiningScreen (
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = musicAdUrl.value.toString(),
+                        text = "23489789",
                         style = TextStyle(
                             fontSize = 32.sp,
                             lineHeight = 32.sp,
@@ -338,22 +345,44 @@ class MiningScreen (
                     )
                 }
 
-                Spacer(modifier = Modifier.padding(top = 17.dp))
+                if (adUrl.value != null) {
 
-                Box(
-                    modifier = Modifier
-                        .height(228.dp)
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .clip(RoundedCornerShape(22.dp))
-                ) {
+                    Spacer(modifier = Modifier.padding(top = 17.dp))
 
-                    Image(
-                        painter = painterResource(Res.drawable.test_photo),
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
+                    Box(
+                        modifier = Modifier
+                            .height(228.dp)
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .clip(RoundedCornerShape(22.dp))
+                    ) {
+
+                        LaunchedEffect(adUrl.value) {
+                            // Загружаем изображение асинхронно
+                            val img = window.fetch(adUrl.value)
+                                .await()
+                                .arrayBuffer()
+                                .await()
+                                .let {
+                                    makeFromEncoded(it.toByteArray())
+                                }
+                                .toComposeImageBitmap()
+                            imageBitmapAd = img
+                        }
+
+                        imageBitmapAd?.let {
+                            Image(
+                                bitmap = it,
+                                contentDescription = "Loaded image",
+                                modifier = Modifier.size(400.dp)
+                            )
+                        } ?: run {
+                            Text("Loading image...")
+                        }
+
+
+                    }
+
                 }
 
                 Spacer(modifier = Modifier.padding(vertical = 12.dp))
@@ -477,9 +506,13 @@ class MiningScreen (
 
     }
 
+    suspend fun getAd(){
+        val body = apiRepo.getaAdvertisements()
+        adUrl.value = body.fileURL
+    }
+
     suspend fun getMusicAd(){
         val body = apiRepo.getMusicAdvertisements()
-        musicAdUrl.value = body.musicId.toString()
         if (body.musicId != null){
             getMusicById(body.musicId)
         }
