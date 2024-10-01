@@ -93,7 +93,7 @@ class TasksScreen(
             getTasks()
         }
 
-        Column(
+        LazyColumn (
             modifier = modifier
                 .fillMaxSize()
                 .background(background_screens)
@@ -101,7 +101,7 @@ class TasksScreen(
                 .windowInsetsPadding(WindowInsets.safeDrawing)
         ){
 
-            Text(
+            item {Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(Res.string.tasks_navbar),
                 style = TextStyle(
@@ -131,43 +131,45 @@ class TasksScreen(
 //                    )
 //                )
 
-                LazyColumn() {
-                    items(listTasksNotCom.value) { tasks: TasksMeEntity ->
-                        TasksPerform(tasks){
-                            window.open(tasks.task.url, "_blank")
-                            scope.launch {
-                                patchTasks(tasks.task.id.toString())
-                                getTasks()
-                            }
-                        }
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
-                    }
+            }
 
-                    items(listTasksPen.value) { tasks: TasksMeEntity ->
-                        if (tasks.task.checkedAt != null){
-                            scope.launch {
-                                patchTasks(tasks.task.id.toString())
-                            }
-                        }
-                        TasksPerformProgress(tasks)
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+           }
+
+            items(listTasksNotCom.value) { tasks: TasksMeEntity ->
+                TasksPerform(tasks){
+                    window.open(tasks.task.url, "_blank")
+                    scope.launch {
+                        patchTasks(tasks.task.id.toString())
+                        getTasks()
                     }
+                }
+                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+            }
+
+            items(listTasksPen.value) { tasks: TasksMeEntity ->
+                if (tasks.task.checkedAt != null){
+                    scope.launch {
+                        patchTasks(tasks.task.id.toString())
+                    }
+                }
+                TasksPerformProgress(tasks)
+                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+            }
 
 //                    items(listTasksComWithout.value) { tasks: TasksMeEntity ->
 //                        TasksGetPayment(tasks)
 //                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
 //                    }
 
-                    items(listTasksCom.value) { tasks: TasksMeEntity ->
-                        TasksDone(tasks)
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
-                    }
+            items(listTasksCom.value) { tasks: TasksMeEntity ->
+                TasksDone(tasks)
+                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+            }
 
-                }
-           }
+            item {
 
-            Spacer(modifier = Modifier.padding(vertical = 4.dp))
-
+                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+            }
         }
 
     }
