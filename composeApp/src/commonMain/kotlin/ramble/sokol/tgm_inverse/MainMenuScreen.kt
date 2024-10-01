@@ -599,7 +599,7 @@ class MainMenuScreen(
     suspend fun getSettings(){
         val body = apiRepo.getSettings(userEntityCreate.initData, "1", "25")
         for (i in body){
-            if (i.key == "Notifications.Wallet"){
+            if (i.key == "ExternalWallet.Unlocked"){
                 walletLock.value = i.value.toBoolean()
             }
         }
