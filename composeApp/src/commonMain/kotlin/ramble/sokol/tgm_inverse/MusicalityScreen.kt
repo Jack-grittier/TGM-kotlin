@@ -3,6 +3,7 @@ package ramble.sokol.tgm_inverse
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -280,9 +281,13 @@ class MusicalityScreen(
                         .height(88.dp)
                         .clip(RoundedCornerShape(26.dp))
                         .background(color_background_referal)
-                        .clickable {
-                            navigator?.push(GameScreen())
-                        },
+                        .clickable(
+                            onClick = {
+                                navigator?.push(GameScreen())
+                            },
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
 

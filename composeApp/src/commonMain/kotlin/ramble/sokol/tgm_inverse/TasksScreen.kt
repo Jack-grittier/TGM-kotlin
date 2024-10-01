@@ -93,12 +93,9 @@ class TasksScreen(
             getTasks()
         }
 
-        val scrollState = rememberScrollState()
-
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
                 .background(background_screens)
                 .padding(top = 24.dp, start = 16.dp, end = 16.dp)
                 .windowInsetsPadding(WindowInsets.safeDrawing)
@@ -134,8 +131,7 @@ class TasksScreen(
 //                    )
 //                )
 
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth()) {
+                LazyColumn() {
                     items(listTasksNotCom.value) { tasks: TasksMeEntity ->
                         TasksPerform(tasks){
                             window.open(tasks.task.url, "_blank")

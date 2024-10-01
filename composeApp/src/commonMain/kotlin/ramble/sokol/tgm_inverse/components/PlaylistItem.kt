@@ -3,6 +3,7 @@ package ramble.sokol.tgm_inverse.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -75,9 +76,11 @@ fun PlaylistItem(
 
     Column(
         modifier = Modifier.width(136.dp)
-            .clickable {
-                onClick()
-            },
+            .clickable(
+                onClick = onClick,
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {

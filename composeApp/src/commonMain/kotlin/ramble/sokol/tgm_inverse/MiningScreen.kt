@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -295,11 +296,15 @@ class MiningScreen (
                                             .height(86.dp)
                                             .width(86.dp)
                                             .padding(bottom = 14.dp, end = 14.dp)
-                                            .clickable {
-                                                scope.launch {
-                                                    postEarnings()
-                                                }
-                                            },
+                                            .clickable(
+                                                onClick = {
+                                                    scope.launch {
+                                                        postEarnings()
+                                                    }
+                                                },
+                                                indication = null,
+                                                interactionSource = remember { MutableInteractionSource() }
+                                            ),
                                         painter = painterResource(Res.drawable.icon_play_music),
                                         contentDescription = "imageLine"
                                     )
@@ -313,12 +318,16 @@ class MiningScreen (
                                             modifier = Modifier
                                                 .height(86.dp)
                                                 .width(86.dp)
-                                                    .padding(bottom = 14.dp, end = 14.dp)
-                                                .clickable {
-                                                    scope.launch {
-                                                        patchEarnings()
-                                                    }
-                                                },
+                                                .padding(bottom = 14.dp, end = 14.dp)
+                                                .clickable(
+                                                    onClick = {
+                                                        scope.launch {
+                                                            patchEarnings()
+                                                        }
+                                                    },
+                                                    indication = null,
+                                                    interactionSource = remember { MutableInteractionSource() }
+                                                ),
                                             painter = painterResource(Res.drawable.icon_finish_mining),
                                             contentDescription = "imageLine"
                                         )

@@ -3,6 +3,7 @@ package ramble.sokol.tgm_inverse.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -159,9 +160,11 @@ fun CurrentMusic(
             modifier = Modifier
                 .height(24.dp)
                 .width(24.dp)
-                .clickable {
-            onClick()
-        },
+                .clickable(
+                onClick = onClick,
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ),
         painter =
         if (play) painterResource(Res.drawable.music_pause)
             else painterResource(Res.drawable.music_play),

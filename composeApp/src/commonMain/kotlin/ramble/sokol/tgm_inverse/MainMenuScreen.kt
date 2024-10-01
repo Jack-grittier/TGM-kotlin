@@ -3,6 +3,7 @@ package ramble.sokol.tgm_inverse
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -520,11 +521,16 @@ class MainMenuScreen(
                 Spacer(modifier = Modifier.padding(start = 6.dp))
 
                 Text(
-                    modifier = Modifier.clickable {
-                        if (statisticLock.value == true) {
-                            navigator?.push(OnBoardingScreen(userEntityCreate, bodyUserCreate))
-                        }
-                    },
+                    modifier = Modifier
+                        .clickable(
+                        onClick = {
+                            if (statisticLock.value == true) {
+                                navigator?.push(OnBoardingScreen(userEntityCreate, bodyUserCreate))
+                            }
+                        },
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ),
                     text = "@${userEntityCreate.username.toString()}",
                     style = TextStyle(
                         fontSize = 16.sp,
@@ -542,11 +548,15 @@ class MainMenuScreen(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(18.dp))
                     .background(background_wallet_item)
-                    .clickable {
-                        if (walletLock.value == true) {
-                            clickSheet.value = 1
-                        }
-                    },
+                    .clickable(
+                        onClick = {
+                            if (walletLock.value == true) {
+                                clickSheet.value = 1
+                            }
+                        },
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ),
                 contentAlignment = Alignment.Center
             ){
 
@@ -572,9 +582,13 @@ class MainMenuScreen(
                         modifier = Modifier
                             .height(8.dp)
                             .padding(horizontal = 8.dp)
-                            .clickable {
-                                clickSheet.value = 1
-                            },
+                            .clickable(
+                                onClick = {
+                                    clickSheet.value = 1
+                                },
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ),
                         painter = painterResource(Res.drawable.icon_line_wallet),
                         contentDescription = "imageLine"
                     )
@@ -583,9 +597,13 @@ class MainMenuScreen(
                         modifier = Modifier
                             .width(48.dp)
                             .padding(bottom = 2.dp)
-                            .clickable {
-                                clickSheet.value = 1
-                            },
+                            .clickable(
+                                onClick = {
+                                    clickSheet.value = 1
+                                },
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ),
                         painter = painterResource(Res.drawable.icon_bb),
                         contentDescription = "+bb"
                     )
