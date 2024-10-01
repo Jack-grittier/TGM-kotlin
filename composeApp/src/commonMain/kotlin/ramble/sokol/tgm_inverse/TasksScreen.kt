@@ -97,11 +97,15 @@ class TasksScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(background_screens)
-                .padding(top = 24.dp, start = 16.dp, end = 16.dp)
+                .padding( start = 16.dp, end = 16.dp)
                 .windowInsetsPadding(WindowInsets.safeDrawing)
         ){
 
-            item {Text(
+            item {
+
+                Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
+                Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(Res.string.tasks_navbar),
                 style = TextStyle(

@@ -110,157 +110,238 @@ class MusicalityScreen(
 
         Toaster(state = toaster, alignment = Alignment.BottomCenter)
 
-        Column(
+        LazyColumn(
             modifier = modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
                 .background(background_screens)
-                .padding(top = 16.dp)
                 .windowInsetsPadding(WindowInsets.safeDrawing)
         ){
 
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                painter = painterResource(Res.drawable.image_line),
-                contentDescription = "imageLine"
-            )
+            item {
 
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                Spacer(modifier = Modifier.padding(top = 16.dp))
 
-            Column(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-
-                Box(
+                Image(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(26.dp))
-                        .background(color_background_referal),
-                    contentAlignment = Alignment.TopCenter
+                        .padding(horizontal = 16.dp),
+                    painter = painterResource(Res.drawable.image_line),
+                    contentDescription = "imageLine"
+                )
+
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    Column(
+
+                    Box(
                         modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 16.dp),
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(26.dp))
+                            .background(color_background_referal),
+                        contentAlignment = Alignment.TopCenter
                     ) {
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
+                        Column(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp, vertical = 16.dp),
+                            verticalArrangement = Arrangement.Top,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
 
-                            Text(
-                                text = "Add a friend and get",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    lineHeight = 16.sp,
-                                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                                    fontWeight = FontWeight(700),
-                                    color = Color.White,
-                                )
-                            )
-
-                            Spacer(modifier = Modifier.padding(horizontal = 3.dp))
-
-                            Text(
-                                text = "+500",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    lineHeight = 16.sp,
-                                    fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                                    fontWeight = FontWeight(400),
-                                    color = color_price_referal,
-                                    textAlign = TextAlign.Start,
-                                )
-                            )
-
-                            Spacer(modifier = Modifier.padding(horizontal = 2.dp))
-
-                            Text(
-                                text = "BB",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    lineHeight = 16.sp,
-                                    fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                                    fontWeight = FontWeight(400),
-                                    color = Color.White,
-                                    textAlign = TextAlign.Start,
-                                )
-                            )
-
-                        }
-
-                        Spacer(modifier = Modifier.padding(vertical = 3.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
-                        ) {
-
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(55.dp)
-                                    .clip(RoundedCornerShape(15.dp))
-                                    .background(background_text_link),
-                                contentAlignment = Alignment.Center
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start
                             ) {
 
                                 Text(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = 16.dp, bottom = 16.dp, start = 17.dp, end = 8.dp),
-                                    //text = "t.me/INVOKE_POSTIDEAS_BOT/tgmapp/startapp=",
-                                    text = "t.me/INVOKE_POSTIDEAS_BOT/tgmapp/startapp=${userEntityCreate.id}",
+                                    text = "Add a friend and get",
                                     style = TextStyle(
                                         fontSize = 16.sp,
                                         lineHeight = 16.sp,
                                         fontFamily = FontFamily(Font(Res.font.mont_regular)),
                                         fontWeight = FontWeight(700),
-                                        color = background_text_link_2,
-                                        textDecoration = TextDecoration.Underline,
-                                        textAlign = TextAlign.Start
-                                    ),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
+                                        color = Color.White,
+                                    )
+                                )
+
+                                Spacer(modifier = Modifier.padding(horizontal = 3.dp))
+
+                                Text(
+                                    text = "+500",
+                                    style = TextStyle(
+                                        fontSize = 16.sp,
+                                        lineHeight = 16.sp,
+                                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                                        fontWeight = FontWeight(400),
+                                        color = color_price_referal,
+                                        textAlign = TextAlign.Start,
+                                    )
+                                )
+
+                                Spacer(modifier = Modifier.padding(horizontal = 2.dp))
+
+                                Text(
+                                    text = "BB",
+                                    style = TextStyle(
+                                        fontSize = 16.sp,
+                                        lineHeight = 16.sp,
+                                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                                        fontWeight = FontWeight(400),
+                                        color = Color.White,
+                                        textAlign = TextAlign.Start,
+                                    )
                                 )
 
                             }
 
-                            Spacer(modifier = Modifier.padding(4.5.dp))
+                            Spacer(modifier = Modifier.padding(vertical = 3.dp))
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(55.dp)
+                                        .clip(RoundedCornerShape(15.dp))
+                                        .background(background_text_link),
+                                    contentAlignment = Alignment.Center
+                                ) {
+
+                                    Text(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(
+                                                top = 16.dp,
+                                                bottom = 16.dp,
+                                                start = 17.dp,
+                                                end = 8.dp
+                                            ),
+                                        //text = "t.me/INVOKE_POSTIDEAS_BOT/tgmapp/startapp=",
+                                        text = "t.me/INVOKE_POSTIDEAS_BOT/tgmapp/startapp=${userEntityCreate.id}",
+                                        style = TextStyle(
+                                            fontSize = 16.sp,
+                                            lineHeight = 16.sp,
+                                            fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                            fontWeight = FontWeight(700),
+                                            color = background_text_link_2,
+                                            textDecoration = TextDecoration.Underline,
+                                            textAlign = TextAlign.Start
+                                        ),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+
+                                }
+
+                                Spacer(modifier = Modifier.padding(4.5.dp))
+
+                                Box(
+                                    modifier = Modifier
+                                        .width(55.dp)
+                                        .height(55.dp)
+                                        .clip(RoundedCornerShape(18.dp))
+                                        .background(background_copy_link)
+                                        .clickable {
+                                            copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=${userEntityCreate.id}")
+                                            //copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=")
+                                            toaster.show(
+                                                message = "Hello world!",
+                                                type = ToastType.Normal,
+                                                duration = 3000.milliseconds
+                                            )
+                                        },
+                                    contentAlignment = Alignment.Center
+                                ) {
+
+
+                                    Image(
+                                        modifier = Modifier.height(25.dp).width(25.dp),
+                                        painter = painterResource(Res.drawable.icon_copy_link),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop
+                                    )
+
+                                }
+
+                            }
+
+                        }
+
+                        Spacer(modifier = Modifier.padding(vertical = 3.dp))
+
+                    }
+
+                    Spacer(modifier = Modifier.padding(vertical = 4.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(88.dp)
+                            .clip(RoundedCornerShape(26.dp))
+                            .background(color_background_referal)
+                            .clickable(
+                                onClick = {
+                                    navigator?.push(GameScreen())
+                                },
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        Image(
+                            modifier = Modifier.fillMaxWidth(),
+                            painter = painterResource(Res.drawable.image_play_game),
+                            contentDescription = "image_play_game",
+                            contentScale = ContentScale.Crop
+                        )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+
+
+                            Text(
+                                text = "Mini-Game",
+                                style = TextStyle(
+                                    fontSize = 16.sp,
+                                    lineHeight = 16.sp,
+                                    fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                                    fontWeight = FontWeight(400),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center,
+                                )
+                            )
+
+                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
 
                             Box(
                                 modifier = Modifier
-                                    .width(55.dp)
-                                    .height(55.dp)
-                                    .clip(RoundedCornerShape(18.dp))
-                                    .background(background_copy_link)
-                                    .clickable {
-                                        copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=${userEntityCreate.id}")
-                                        //copyToClipboard("t.me/INVOKE_POSTIDEAS_BOT/tgmapp?startapp=")
-                                        toaster.show(
-                                            message = "Hello world!",
-                                            type = ToastType.Normal,
-                                            duration = 3000.milliseconds)
-                                    },
+                                    .height(32.dp)
+                                    .width(32.dp)
+                                    .clip(RoundedCornerShape(13.dp))
+                                    .background(color_hello_peterburg),
                                 contentAlignment = Alignment.Center
                             ) {
 
-
                                 Image(
-                                    modifier = Modifier.height(25.dp).width(25.dp),
-                                    painter = painterResource(Res.drawable.icon_copy_link),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop
+                                    modifier = Modifier
+                                        .width(20.dp)
+                                        .height(20.dp),
+                                    painter = painterResource(Res.drawable.icon_arrow_to_game),
+                                    contentDescription = "image_play_game"
                                 )
 
                             }
@@ -269,136 +350,65 @@ class MusicalityScreen(
 
                     }
 
-                    Spacer(modifier = Modifier.padding(vertical = 3.dp))
+                    if (listLeader.value.size != 0) {
 
-                }
-
-                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(88.dp)
-                        .clip(RoundedCornerShape(26.dp))
-                        .background(color_background_referal)
-                        .clickable(
-                            onClick = {
-                                navigator?.push(GameScreen())
-                            },
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-
-                    Image(
-                        modifier = Modifier.fillMaxWidth(),
-                        painter = painterResource(Res.drawable.image_play_game),
-                        contentDescription = "image_play_game",
-                        contentScale = ContentScale.Crop
-                    )
-
-                    Row (
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ){
-
+                        Spacer(modifier = Modifier.padding(vertical = 16.dp))
 
                         Text(
-                            text = "Mini-Game",
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Friends rating",
                             style = TextStyle(
-                                fontSize = 16.sp,
-                                lineHeight = 16.sp,
+                                fontSize = 20.sp,
+                                lineHeight = 20.sp,
                                 fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
                                 fontWeight = FontWeight(400),
                                 color = Color.White,
-                                textAlign = TextAlign.Center,
+                                textAlign = TextAlign.Start,
                             )
                         )
 
-                        Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                        Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
-                        Box(
-                            modifier = Modifier
-                                .height(32.dp)
-                                .width(32.dp)
-                                .clip(RoundedCornerShape(13.dp))
-                                .background(color_hello_peterburg),
-                            contentAlignment = Alignment.Center
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
                         ) {
-
-                            Image(
-                                modifier = Modifier
-                                    .width(20.dp)
-                                    .height(20.dp),
-                                painter = painterResource(Res.drawable.icon_arrow_to_game),
-                                contentDescription = "image_play_game"
-                            )
-
-                        }
-
-                    }
-
-                }
-
-                if (listLeader.value.size != 0){
-
-                    Spacer(modifier = Modifier.padding(vertical = 16.dp))
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = "Friends rating",
-                        style = TextStyle(
-                            fontSize = 20.sp,
-                            lineHeight = 20.sp,
-                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                            fontWeight = FontWeight(400),
-                            color = Color.White,
-                            textAlign = TextAlign.Start,
-                        )
-                    )
-
-                    Spacer(modifier = Modifier.padding(vertical = 12.dp))
-
-                    Row (
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically ,
-                        horizontalArrangement = Arrangement.Center
-                    ){
-                        if (listLeader.value.size>=2) {
-                            val second = listLeader.value[1]
-                            PhotoOtherRating(2, second.username, second.amount.toString())
-                        }
-                        if (listLeader.value.size>=1) {
-                            val first = listLeader.value[0]
-                            PhotoFirstRating(first.username, first.amount.toString())
-                        }
-                        if (listLeader.value.size>=3) {
-                            val third = listLeader.value[2]
-                            PhotoOtherRating(3, third.username, third.amount.toString())
-                        }
-
-
-                    }
-
-                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
-                    if (listLeader.value.size > 3) {
-                        val newListLeader = listLeader.value.subList(3, listLeader.value.size)
-                        LazyColumn() {
-                            items(newListLeader) { leader: LeaderboardReferalEntity ->
-                                RatingPersonMusicality(
-                                    leader.amount.toString(), leader.username
-                                )
-                                Spacer(modifier = Modifier.padding(vertical = 6.dp))
+                            if (listLeader.value.size >= 2) {
+                                val second = listLeader.value[1]
+                                PhotoOtherRating(2, second.username, second.amount.toString())
                             }
+                            if (listLeader.value.size >= 1) {
+                                val first = listLeader.value[0]
+                                PhotoFirstRating(first.username, first.amount.toString())
+                            }
+                            if (listLeader.value.size >= 3) {
+                                val third = listLeader.value[2]
+                                PhotoOtherRating(3, third.username, third.amount.toString())
+                            }
+
+
                         }
+
+                        Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+            if (listLeader.value.size > 3) {
+                val newListLeader = listLeader.value.subList(3, listLeader.value.size)
+                items(newListLeader) { leader: LeaderboardReferalEntity ->
+                    RatingPersonMusicality(
+                        leader.amount.toString(), leader.username
+                    )
+                    Spacer(modifier = Modifier.padding(vertical = 6.dp))
+                }
+            }
+
+            item{
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+            }
 
         }
 

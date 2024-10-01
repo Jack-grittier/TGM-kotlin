@@ -94,11 +94,13 @@ class LiderboardScreen(
             contentAlignment = Alignment.TopCenter
         ) {
 
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     //.verticalScroll(rememberScrollState())
             ) {
+
+                item{
 
                 if (listLeader.value.size == 0) {
 
@@ -153,19 +155,23 @@ class LiderboardScreen(
 
                     Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-                    if (listLeader.value.size > 3) {
-                        val newListLeader = listLeader.value.subList(3, listLeader.value.size)
-                        LazyColumn() {
-                            items(newListLeader) { leader: LeaderBoardEntity ->
-                                RatingPersonLiderboard(
-                                    leader.position.toString(),
-                                    leader.amount.toString(),
-                                    leader.username
-                                )
-                                Spacer(modifier = Modifier.padding(vertical = 4.dp))
-                            }
-                        }
+                }
+
+                }
+
+                if (listLeader.value.size > 3) {
+                    val newListLeader = listLeader.value.subList(3, listLeader.value.size)
+                    items(newListLeader) { leader: LeaderBoardEntity ->
+                        RatingPersonLiderboard(
+                            leader.position.toString(),
+                            leader.amount.toString(),
+                            leader.username
+                        )
+                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
                     }
+                }
+
+                item {
 
                     Spacer(modifier = Modifier.padding(vertical = 45.dp))
 
