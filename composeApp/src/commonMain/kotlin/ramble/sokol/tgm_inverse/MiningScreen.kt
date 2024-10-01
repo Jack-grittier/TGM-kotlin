@@ -115,6 +115,7 @@ class MiningScreen (
     private lateinit var currentSong: MutableState<MusicResponse?>
     private lateinit var musicAdUrl: MutableState<String?>
     private lateinit var adUrl: MutableState<String?>
+    private lateinit var tessText: MutableState<String?>
 
     @Composable
     override fun Content() {
@@ -158,6 +159,10 @@ class MiningScreen (
 
         startedEarning = remember {
             mutableStateOf(false)
+        }
+
+        tessText= remember {
+            mutableStateOf(null)
         }
 
         scope.launch{
@@ -306,7 +311,7 @@ class MiningScreen (
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "23489789",
+                        text = tessText.value.toString(),
                         style = TextStyle(
                             fontSize = 32.sp,
                             lineHeight = 32.sp,
@@ -513,7 +518,8 @@ class MiningScreen (
     suspend fun getMusicAd(){
         val body = apiRepo.getMusicAdvertisements()
         if (body.musicId != null){
-            getMusicById(body.musicId)
+            //getMusicById(body.musicId)
+            tessText.value = body.musicId.toString()
         }
     }
 
