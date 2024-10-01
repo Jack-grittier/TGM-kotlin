@@ -143,7 +143,7 @@ class ApiRepository {
         initData: String,
         page: String,
         limit: String
-    ) : SettingsEntity =
+    ) : List<SettingsEntity> =
         client.get(ApiRoutes.GET_SETTINGS){
             header(HttpHeaders.Authorization, "Bearer ${initData}")
             url {

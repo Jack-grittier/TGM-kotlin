@@ -143,6 +143,7 @@ class MainMenuScreen(
 
         scope.launch{
             getBalance()
+            getSettings()
         }
 
 
@@ -586,6 +587,10 @@ class MainMenuScreen(
     suspend fun getBalance(){
         val body = apiRepo.getBalance(userEntityCreate.initData)
         balance.value = body.balance
+    }
+
+    suspend fun getSettings(){
+        val body = apiRepo.getSettings(userEntityCreate.initData, "1", "25")
     }
 
 }
