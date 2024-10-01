@@ -137,6 +137,7 @@ class TasksScreen(
                             window.open(tasks.task.url, "_blank")
                             scope.launch {
                                 patchTasks(tasks.task.id.toString())
+                                getTasks()
                             }
                         }
                         Spacer(modifier = Modifier.padding(vertical = 4.dp))
@@ -184,7 +185,7 @@ class TasksScreen(
 
     suspend fun patchTasks(id: String){
         val bodyPatch = apiRepo.patchTasks(userEntityCreate.initData, id)
-        if (bodyPatch == "Pending" || bodyPatch == "Completed"){
+        if (bodyPatch == "Completed"){
             getTasks()
         }
     }

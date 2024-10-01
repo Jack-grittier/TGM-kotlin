@@ -64,6 +64,8 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.internal.JSJoda.DateTimeParseException
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -91,6 +93,7 @@ import ramble.sokol.tgm_inverse.theme.color_background_referal
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.get_bonuses
+import tgminverse.composeapp.generated.resources.icon_finish_mining
 import tgminverse.composeapp.generated.resources.icon_play_music
 import tgminverse.composeapp.generated.resources.image_back_circle_playlist
 import tgminverse.composeapp.generated.resources.image_back_mining
@@ -116,6 +119,7 @@ class MiningScreen (
     private lateinit var musicAdUrl: MutableState<String?>
     private lateinit var adUrl: MutableState<String?>
     private lateinit var tessText: MutableState<String?>
+    private lateinit var finishMining: MutableState<Boolean?>
 
     @Composable
     override fun Content() {
@@ -131,6 +135,10 @@ class MiningScreen (
 
         musicAdUrl = remember {
             mutableStateOf(null)
+        }
+
+        finishMining = remember {
+            mutableStateOf(false)
         }
 
         adUrl = remember {
@@ -300,8 +308,27 @@ class MiningScreen (
 
                                 if (statusCode.value == null) {
 
-                                    ProgressBarDemo()
+                                    if (finishMining.value == true){
 
+                                        Image(
+                                            modifier = Modifier
+                                                .height(86.dp)
+                                                .width(86.dp)
+                                                .padding(bottom = 14.dp, end = 14.dp)
+                                                .clickable {
+                                                    scope.launch {
+                                                        patchEarnings()
+                                                    }
+                                                },
+                                            painter = painterResource(Res.drawable.icon_finish_mining),
+                                            contentDescription = "imageLine"
+                                        )
+
+                                    }else {
+
+                                        ProgressBarDemo()
+
+                                    }
                                 }
 
                             }
@@ -493,14 +520,43 @@ class MiningScreen (
 
     }
 
+    fun compareDates(date1: String, date2: String): Int {
+        return try {
+            val instant1 = Instant.parse(date1)
+            val instant2 = Instant.parse(date2)
+            instant1.compareTo(instant2)
+        } catch (e: DateTimeParseException) {
+            0
+        }
+    }
+
+
+
     private suspend fun getEarnings(){
         val body = apiRepo.getEarnings(initData = userEntityCreate.initData)
         statusCode.value = body.statusCode
+        if (statusCode.value == null) {
+            val date1 = body.startedAt.toString()
+            val date2 = body.completedAt.toString()
+
+            val comparisonResult = compareDates(date1, date2)
+
+            when {
+                comparisonResult < 0 -> finishMining.value = false
+                comparisonResult >= 0 -> finishMining.value = true
+            }
+        }
+
     }
 
     private suspend fun postEarnings(){
         val body = apiRepo.postEarnings(initData = userEntityCreate.initData)
         statusCode.value = body.statusCode
+    }
+
+    suspend fun patchEarnings(){
+        val body = apiRepo.patchEarnings(userEntityCreate.initData)
+        getEarnings()
     }
 
     private suspend fun getMusic(page: String, limit: String) {

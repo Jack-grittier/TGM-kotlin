@@ -152,4 +152,11 @@ class ApiRepository {
             }
         }.body()
 
+    suspend fun patchEarnings(
+        initData: String
+    ) : String =
+        client.patch(ApiRoutes.GET_EARNINGS){
+            header(HttpHeaders.Authorization, "Bearer ${initData}")
+        }.body()
+
 }
