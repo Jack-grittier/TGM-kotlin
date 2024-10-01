@@ -157,7 +157,7 @@ class MusicalityScreen(
                         ) {
 
                             Text(
-                                text = "Добавь друга и получи",
+                                text = "Add a friend and get",
                                 style = TextStyle(
                                     fontSize = 16.sp,
                                     lineHeight = 16.sp,
@@ -301,7 +301,7 @@ class MusicalityScreen(
 
 
                         Text(
-                            text = "Мини-игра",
+                            text = "Mini-Game",
                             style = TextStyle(
                                 fontSize = 16.sp,
                                 lineHeight = 16.sp,
@@ -343,7 +343,7 @@ class MusicalityScreen(
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "Рейтинг друзей",
+                        text = "Friends rating",
                         style = TextStyle(
                             fontSize = 20.sp,
                             lineHeight = 20.sp,

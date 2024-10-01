@@ -259,11 +259,10 @@ class MiningScreen (
                                             imageBitmapMusicAd?.let {
                                                 Image(
                                                     bitmap = it,
-                                                    contentDescription = "Loaded image",
+                                                    contentDescription = "",
                                                     modifier = Modifier.size(400.dp)
                                                 )
                                             } ?: run {
-                                                Text("Loading image...")
                                             }
 
                                         }
