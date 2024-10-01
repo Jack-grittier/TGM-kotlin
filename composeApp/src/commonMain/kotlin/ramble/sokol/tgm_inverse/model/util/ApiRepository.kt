@@ -129,13 +129,13 @@ class ApiRepository {
     suspend fun getMusic(
         id: String
     ) : MusicResponse =
-        client.get("${ApiRoutes.GET_MUSIC}/{$id}").body()
+        client.get("${ApiRoutes.GET_MUSIC}/$id").body()
 
     suspend fun patchTasks(
         initData: String,
         id: String
     ) : String =
-        client.patch("${ApiRoutes.GET_TASKS_ME}/{$id}"){
+        client.patch("${ApiRoutes.GET_TASKS_ME}/$id"){
             header(HttpHeaders.Authorization, "Bearer ${initData}")
         }.body()
 

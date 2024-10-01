@@ -10,4 +10,5 @@ data class MusicResponse(
     val url: String,
     val coverURL: String,
     val reward: Long,
+    val duration: Int,
 )
