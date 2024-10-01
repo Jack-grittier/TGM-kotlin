@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 data class TasksMeEntityNew(
     val NotCompleted: List<TasksMeEntity>?,
     val Pending: List<TasksMeEntity>?,
-    val CompletedWithoutReceivingReward: List<TasksMeEntity>?,
+    //val CompletedWithoutReceivingReward: List<TasksMeEntity>?,
     val Completed: List<TasksMeEntity>?,
 )

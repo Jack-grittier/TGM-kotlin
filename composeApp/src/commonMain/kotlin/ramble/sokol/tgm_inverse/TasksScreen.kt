@@ -60,7 +60,7 @@ class TasksScreen(
     private lateinit var listTasks: MutableState<List<TasksMeEntity>>
     private lateinit var listTasksNotCom: MutableState<List<TasksMeEntity>>
     private lateinit var listTasksPen: MutableState<List<TasksMeEntity>>
-    private lateinit var listTasksComWithout: MutableState<List<TasksMeEntity>>
+    //private lateinit var listTasksComWithout: MutableState<List<TasksMeEntity>>
     private lateinit var listTasksCom: MutableState<List<TasksMeEntity>>
     private lateinit var body: MutableState<TasksMeEntityNew?>
 
@@ -75,9 +75,9 @@ class TasksScreen(
         listTasksCom = remember {
             mutableStateOf(listOf())
         }
-        listTasksComWithout = remember {
-            mutableStateOf(listOf())
-        }
+//        listTasksComWithout = remember {
+//            mutableStateOf(listOf())
+//        }
         listTasksNotCom = remember {
             mutableStateOf(listOf())
         }
@@ -135,6 +135,10 @@ class TasksScreen(
                     items(listTasksNotCom.value) { tasks: TasksMeEntity ->
                         TasksPerform(tasks){
                             window.open(tasks.task.url, "_blank")
+                            scope.launch {
+                                patchTasks(tasks.task.id.toString())
+                                getTasks()
+                            }
                         }
                         Spacer(modifier = Modifier.padding(vertical = 4.dp))
                     }
@@ -144,10 +148,10 @@ class TasksScreen(
                         Spacer(modifier = Modifier.padding(vertical = 4.dp))
                     }
 
-                    items(listTasksComWithout.value) { tasks: TasksMeEntity ->
-                        TasksGetPayment(tasks)
-                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
-                    }
+//                    items(listTasksComWithout.value) { tasks: TasksMeEntity ->
+//                        TasksGetPayment(tasks)
+//                        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+//                    }
 
                     items(listTasksCom.value) { tasks: TasksMeEntity ->
                         TasksDone(tasks)
@@ -168,9 +172,14 @@ class TasksScreen(
         body.value = apiRepo.getTasksMe(userEntityCreate.initData)
         listTasksNotCom.value = body.value!!.NotCompleted!!
         listTasksPen.value = body.value!!.Pending!!
-        listTasksComWithout.value = body.value!!.CompletedWithoutReceivingReward!!
+        //listTasksComWithout.value = body.value!!.CompletedWithoutReceivingReward!!
         listTasksCom.value = body.value!!.Completed!!
-        listTasks.value = listTasksCom.value + listTasksPen.value + listTasksNotCom.value + listTasksComWithout.value
+        listTasks.value = listTasksCom.value + listTasksPen.value + listTasksNotCom.value
+        //+ listTasksComWithout.value
+    }
+
+    suspend fun patchTasks(id: String){
+        val bodyPatch = apiRepo.patchTasks(userEntityCreate.initData, id)
     }
 
 }
