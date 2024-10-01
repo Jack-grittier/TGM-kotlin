@@ -17,6 +17,7 @@ import ramble.sokol.tgm_inverse.model.data.LeaderBoardEntity
 import ramble.sokol.tgm_inverse.model.data.LeaderboardReferalEntity
 import ramble.sokol.tgm_inverse.model.data.MusicAdEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
+import ramble.sokol.tgm_inverse.model.data.SettingsEntity
 import ramble.sokol.tgm_inverse.model.data.SplashIconEntity
 import ramble.sokol.tgm_inverse.model.data.StatisticsEntity
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
@@ -136,6 +137,19 @@ class ApiRepository {
     ) : String =
         client.patch("${ApiRoutes.GET_TASKS_ME}/{$id}"){
             header(HttpHeaders.Authorization, "Bearer ${initData}")
+        }.body()
+
+    suspend fun getSettings(
+        initData: String,
+        page: String,
+        limit: String
+    ) : SettingsEntity =
+        client.get(ApiRoutes.GET_SETTINGS){
+            header(HttpHeaders.Authorization, "Bearer ${initData}")
+            url {
+                parameters.append("page", page)
+                parameters.append("limit", limit)
+            }
         }.body()
 
 }

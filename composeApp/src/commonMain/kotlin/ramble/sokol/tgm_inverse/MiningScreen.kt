@@ -518,14 +518,15 @@ class MiningScreen (
     suspend fun getMusicAd(){
         val body = apiRepo.getMusicAdvertisements()
         if (body.musicId != null){
-            //getMusicById(body.musicId)
+            getMusicById(body.musicId)
             tessText.value = body.musicId.toString()
         }
     }
 
     suspend fun getMusicById(id: Long){
         val body = apiRepo.getMusic(id.toString())
-        musicAdUrl.value = body.coverURL
+        tessText.value = body.toString()
+        //musicAdUrl.value = body.coverURL
     }
 
 }
