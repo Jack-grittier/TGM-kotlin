@@ -526,7 +526,7 @@ class MiningScreen (
     suspend fun getMusicById(id: Long){
         val body = apiRepo.getMusic(id.toString())
         tessText.value = body.toString()
-        //musicAdUrl.value = body.coverURL
+        musicAdUrl.value = body.coverURL
     }
 
 }

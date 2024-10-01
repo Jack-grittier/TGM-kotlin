@@ -144,6 +144,9 @@ class TasksScreen(
                     }
 
                     items(listTasksPen.value) { tasks: TasksMeEntity ->
+                        if (tasks.task.checkedAt != null){
+
+                        }
                         TasksPerformProgress(tasks)
                         Spacer(modifier = Modifier.padding(vertical = 4.dp))
                     }
