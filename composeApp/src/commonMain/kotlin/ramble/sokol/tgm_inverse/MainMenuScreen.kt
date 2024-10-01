@@ -121,6 +121,7 @@ class MainMenuScreen(
     private lateinit var balance: MutableState<Long?>
     private lateinit var navigator: Navigator
     private lateinit var walletLock: MutableState<Boolean?>
+    private lateinit var statisticLock: MutableState<Boolean?>
 
     @Composable
     override fun Content() {
@@ -130,6 +131,10 @@ class MainMenuScreen(
 
         balance = remember {
             mutableStateOf(0)
+        }
+
+        statisticLock = remember {
+            mutableStateOf(false)
         }
 
         walletLock = remember {
@@ -516,7 +521,9 @@ class MainMenuScreen(
 
                 Text(
                     modifier = Modifier.clickable {
-                        navigator?.push(OnBoardingScreen(userEntityCreate, bodyUserCreate))
+                        if (statisticLock.value == true) {
+                            navigator?.push(OnBoardingScreen(userEntityCreate, bodyUserCreate))
+                        }
                     },
                     text = "@${userEntityCreate.username.toString()}",
                     style = TextStyle(
@@ -601,6 +608,9 @@ class MainMenuScreen(
         for (i in body){
             if (i.key == "ExternalWallet.Unlocked"){
                 walletLock.value = i.value.toBoolean()
+            }
+            if (i.key == "Statistics.Unlocked"){
+                statisticLock.value = i.value.toBoolean()
             }
         }
     }
