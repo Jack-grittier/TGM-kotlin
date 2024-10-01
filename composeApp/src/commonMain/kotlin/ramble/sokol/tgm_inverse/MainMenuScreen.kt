@@ -120,6 +120,7 @@ class MainMenuScreen(
     private lateinit var apiRepo: ApiRepository
     private lateinit var balance: MutableState<Long?>
     private lateinit var navigator: Navigator
+    private lateinit var walletLock: MutableState<Boolean?>
 
     @Composable
     override fun Content() {
@@ -129,6 +130,10 @@ class MainMenuScreen(
 
         balance = remember {
             mutableStateOf(0)
+        }
+
+        walletLock = remember {
+            mutableStateOf(false)
         }
 
         var selectedItem by rememberSaveable {
@@ -531,7 +536,9 @@ class MainMenuScreen(
                     .clip(RoundedCornerShape(18.dp))
                     .background(background_wallet_item)
                     .clickable {
-                        clickSheet.value = 1
+                        if (walletLock.value == true) {
+                            clickSheet.value = 1
+                        }
                     },
                 contentAlignment = Alignment.Center
             ){
@@ -591,6 +598,11 @@ class MainMenuScreen(
 
     suspend fun getSettings(){
         val body = apiRepo.getSettings(userEntityCreate.initData, "1", "25")
+        for (i in body){
+            if (i.key == "Notifications.Wallet"){
+                walletLock.value = i.value.toBoolean()
+            }
+        }
     }
 
 }

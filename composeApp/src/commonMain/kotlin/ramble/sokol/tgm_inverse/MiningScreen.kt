@@ -314,7 +314,7 @@ class MiningScreen (
                                             modifier = Modifier
                                                 .height(86.dp)
                                                 .width(86.dp)
-                                                .padding(bottom = 14.dp, end = 14.dp)
+                                                    .padding(bottom = 14.dp, end = 14.dp)
                                                 .clickable {
                                                     scope.launch {
                                                         patchEarnings()

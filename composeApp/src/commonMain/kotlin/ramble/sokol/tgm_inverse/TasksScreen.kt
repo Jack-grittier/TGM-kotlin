@@ -177,7 +177,7 @@ class TasksScreen(
         body.value = apiRepo.getTasksMe(userEntityCreate.initData)
         listTasksNotCom.value = body.value!!.NotCompleted!!
         listTasksPen.value = body.value!!.Pending!!
-        //listTasksComWithout.value = body.value!!.CompletedWithoutReceivingReward!!
+        //li    stTasksComWithout.value = body.value!!.CompletedWithoutReceivingReward!!
         listTasksCom.value = body.value!!.Completed!!
         listTasks.value = listTasksCom.value + listTasksPen.value + listTasksNotCom.value
         //+ listTasksComWithout.value
