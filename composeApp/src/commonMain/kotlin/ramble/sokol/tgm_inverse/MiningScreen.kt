@@ -369,13 +369,13 @@ class MiningScreen (
                                         )
 
                                     }else {
-
-                                        ProgressBarDemo(
-                                            currentTime.value,
-                                            completedTimeMining.value,
-                                            startedTimeMining.value
-                                        )
-
+                                        if (currentTime.value != "" && completedTimeMining.value != "" && startedTimeMining.value != "") {
+                                            ProgressBarDemo(
+                                                currentTime.value,
+                                                completedTimeMining.value,
+                                                startedTimeMining.value
+                                            )
+                                        }
                                     }
                                 }
 
@@ -615,7 +615,6 @@ class MiningScreen (
             val date1 = body.startedAt.toString()
             val date2 = body.completedAt.toString()
             val comparisonResult = compareDates(date2, date1)
-
             when {
                 comparisonResult < 0 -> finishMining.value = false
                 comparisonResult >= 0 -> finishMining.value = true
