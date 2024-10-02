@@ -370,11 +370,12 @@ class MiningScreen (
 
                                     }else {
                                         if (currentTime.value != "" && completedTimeMining.value != "" && startedTimeMining.value != "") {
-                                            ProgressBarDemo(
-                                                currentTime.value,
-                                                completedTimeMining.value,
-                                                startedTimeMining.value
-                                            )
+//                                            ProgressBarDemo(
+//                                                currentTime.value,
+//                                                completedTimeMining.value,
+//                                                startedTimeMining.value
+//                                            )
+                                            ProgressBarDemo()
                                         }
                                     }
                                 }
