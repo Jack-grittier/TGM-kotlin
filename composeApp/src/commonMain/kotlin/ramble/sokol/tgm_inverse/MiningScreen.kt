@@ -66,6 +66,7 @@ import io.ktor.client.request.get
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.await
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -109,6 +110,7 @@ import tgminverse.composeapp.generated.resources.image_play_game
 import tgminverse.composeapp.generated.resources.mont_regular
 import tgminverse.composeapp.generated.resources.tasks_navbar
 import tgminverse.composeapp.generated.resources.test_photo
+import kotlin.time.Duration
 
 class MiningScreen (
     val modifier: Modifier,
@@ -128,6 +130,9 @@ class MiningScreen (
     private lateinit var adUrl: MutableState<String?>
     private lateinit var tessText: MutableState<String?>
     private lateinit var finishMining: MutableState<Boolean?>
+    private lateinit var currentTime: MutableState<String>
+    private lateinit var airDropVisible: MutableState<Boolean?>
+    private lateinit var differenceInMillis: MutableState<Long>
 
     @Composable
     override fun Content() {
@@ -143,6 +148,10 @@ class MiningScreen (
 
         musicAdUrl = remember {
             mutableStateOf(null)
+        }
+
+        differenceInMillis = remember {
+            mutableStateOf(0L)
         }
 
         finishMining = remember {
@@ -178,6 +187,14 @@ class MiningScreen (
         }
 
         tessText= remember {
+            mutableStateOf("")
+        }
+
+        airDropVisible = remember {
+            mutableStateOf(false)
+        }
+
+        currentTime = remember {
             mutableStateOf("")
         }
 
@@ -368,30 +385,52 @@ class MiningScreen (
 
                 }
 
-                Spacer(modifier = Modifier.padding(top = 17.dp))
+                if (airDropVisible.value == true) {
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(background_airdrop),
-                    contentAlignment = Alignment.Center
-                ) {
+                    val startInstant = Instant.parse(currentTime.value.toString())
+                    val endInstant = Instant.parse(airDropDate)
 
-                    Text(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(vertical = 24.dp, horizontal = 10.dp),
-                        text = "Airdrop: 52:12:56",
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            lineHeight = 16.sp,
-                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                            fontWeight = FontWeight(400),
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
+                    // Вычисление разницы в миллисекундах
+                    differenceInMillis.value = endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
+
+                    val minutes = (differenceInMillis.value / (1000 * 60)) % 60
+                    val hours = (differenceInMillis.value / (1000 * 60 * 60)) % 24
+                    val days = differenceInMillis.value / (1000 * 60 * 60 * 24)
+
+
+                    LaunchedEffect(Unit) {
+                        while (true) {
+                            differenceInMillis.value -= 1000
+                            delay(1000) // Обновление каждую секунду
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.padding(top = 17.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(background_airdrop),
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(vertical = 24.dp, horizontal = 10.dp),
+                            text = "$days:$hours:$minutes",
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                lineHeight = 16.sp,
+                                fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                                fontWeight = FontWeight(400),
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                            )
                         )
-                    )
+                    }
+
                 }
 
                 if (adUrl.value != null) {
@@ -604,7 +643,16 @@ class MiningScreen (
         // Преобразуем его в локальное время (UTC)
         val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
         // Форматируем строку (например, "YYYY-MM-DD HH:MM:SS")
-        tessText.value = "${utcDateTime.date}T${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}.000Z"
+        currentTime.value = "${utcDateTime.date}T${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}.000Z"
+
+        val comparisonResult = compareDates(airDropDate, currentTime.value!!)
+
+        when {
+            comparisonResult < 0 -> {
+                airDropVisible.value = true
+            }
+            comparisonResult >= 0 -> airDropVisible.value = false
+        }
     }
 
 }
