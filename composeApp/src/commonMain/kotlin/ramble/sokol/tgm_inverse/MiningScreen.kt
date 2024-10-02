@@ -67,8 +67,11 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.internal.JSJoda.DateTimeParseException
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -175,7 +178,7 @@ class MiningScreen (
         }
 
         tessText= remember {
-            mutableStateOf(null)
+            mutableStateOf(getCurrentDateTime())
         }
 
         scope.launch{
@@ -183,7 +186,6 @@ class MiningScreen (
             getMusicAd()
             getAd()
             getMusic("1", "25")
-            fetchCurrentDate()
         }
 
         Box(
@@ -573,10 +575,8 @@ class MiningScreen (
     }
 
     private suspend fun getMusic(page: String, limit: String) {
-
         val body = apiRepo.getMusic(page, limit)
         listMusic.value = body
-
     }
 
     suspend fun getAd(){
@@ -596,19 +596,15 @@ class MiningScreen (
         musicAdUrl.value = body.coverURL
     }
 
-    suspend fun fetchCurrentDate() {
-        val client = ApiClient.client
+    fun getCurrentDateTime(): String {
+        // Получаем текущее время в виде Instant
+        val currentInstant: Instant = Clock.System.now()
 
-        // Здесь вы можете использовать любой API, который возвращает текущее время
-        // Например, https://worldtimeapi.org/api/timezone/Etc/UTC
-        val response: String = client.get("https://worldtimeapi.org/api/timezone/Etc/UTC").toString()
-        client.close()
+        // Преобразуем его в локальную дату и время
+        val currentDateTime = currentInstant.toLocalDateTime(TimeZone.currentSystemDefault())
 
-        // Парсим дату из ответа (предполагаем, что ответ содержит поле "utc_datetime")
-        // Вам нужно будет адаптировать этот код в зависимости от структуры ответа
-        tessText.value = response.substringAfter("\"utc_datetime\":\"").substringBefore("\"")
+        // Форматируем вывод (например, "YYYY-MM-DD HH:mm:ss")
+        return "${currentDateTime.date} ${currentDateTime.hour}:${currentDateTime.minute}:${currentDateTime.second}"
     }
-
-
 
 }
