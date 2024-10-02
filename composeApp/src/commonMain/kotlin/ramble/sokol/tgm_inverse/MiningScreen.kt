@@ -407,7 +407,7 @@ class MiningScreen (
 
                     val formattedTime = "${days.toString().padStart(2, '0')}:" +
                             "${hours.toString().padStart(2, '0')}:" +
-                            "${minutes.toString().padStart(2, '0')}:"
+                            "${minutes.toString().padStart(2, '0')}"
 
                     Spacer(modifier = Modifier.padding(top = 17.dp))
 
@@ -423,7 +423,7 @@ class MiningScreen (
                         Text(
                             modifier = Modifier.fillMaxWidth()
                                 .padding(vertical = 24.dp, horizontal = 10.dp),
-                            text = formattedTime,
+                            text = "Airdrop: $formattedTime",
                             style = TextStyle(
                                 fontSize = 16.sp,
                                 lineHeight = 16.sp,
@@ -598,7 +598,7 @@ class MiningScreen (
         if (statusCode.value == null) {
             val date1 = currentTime.value
             val date2 = body.completedAt.toString()
-            val comparisonResult = compareDates(date2, date1)
+            val comparisonResult = compareDates(date1, date2)
 
             when {
                 comparisonResult < 0 -> finishMining.value = false
