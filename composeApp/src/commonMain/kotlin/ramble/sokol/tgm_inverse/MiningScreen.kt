@@ -133,6 +133,8 @@ class MiningScreen (
     private lateinit var currentTime: MutableState<String>
     private lateinit var airDropVisible: MutableState<Boolean?>
     private lateinit var differenceInMillis: MutableState<Long>
+    private lateinit var completedTimeMining: MutableState<String>
+    private lateinit var startedTimeMining: MutableState<String>
 
     @Composable
     override fun Content() {
@@ -195,6 +197,14 @@ class MiningScreen (
         }
 
         currentTime = remember {
+            mutableStateOf("")
+        }
+
+        completedTimeMining = remember {
+            mutableStateOf("")
+        }
+
+        startedTimeMining = remember {
             mutableStateOf("")
         }
 
@@ -360,7 +370,11 @@ class MiningScreen (
 
                                     }else {
 
-                                        ProgressBarDemo()
+                                        ProgressBarDemo(
+                                            currentTime.value,
+                                            completedTimeMining.value,
+                                            startedTimeMining.value
+                                        )
 
                                     }
                                 }
@@ -596,9 +610,11 @@ class MiningScreen (
         val body = apiRepo.getEarnings(initData = userEntityCreate.initData)
         statusCode.value = body.statusCode
         if (statusCode.value == null) {
+            completedTimeMining.value = body.completedAt.toString()
+            startedTimeMining.value = body.startedAt.toString()
             val date1 = currentTime.value
             val date2 = body.completedAt.toString()
-            val comparisonResult = compareDates(date1, date2)
+            val comparisonResult = compareDates(date2, date1)
 
             when {
                 comparisonResult < 0 -> finishMining.value = false
