@@ -178,8 +178,10 @@ class MiningScreen (
         }
 
         tessText= remember {
-            mutableStateOf(airDropDate)
+            mutableStateOf("")
         }
+
+        getCurrentUtcDateTime()
 
         scope.launch{
             getEarnings()
