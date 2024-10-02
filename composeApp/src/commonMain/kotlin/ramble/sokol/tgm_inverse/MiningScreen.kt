@@ -177,9 +177,9 @@ class MiningScreen (
             mutableStateOf(false)
         }
 
-        tessText= remember {
-            mutableStateOf(getCurrentDateTime())
-        }
+//        tessText= remember {
+//            mutableStateOf(getCurrentDateTime())
+//        }
 
         scope.launch{
             getEarnings()
@@ -594,17 +594,6 @@ class MiningScreen (
     suspend fun getMusicById(id: Long){
         val body = apiRepo.getMusic(id.toString())
         musicAdUrl.value = body.coverURL
-    }
-
-    fun getCurrentDateTime(): String {
-        // Получаем текущее время в виде Instant
-        val currentInstant: Instant = Clock.System.now()
-
-        // Преобразуем его в локальную дату и время
-        val currentDateTime = currentInstant.toLocalDateTime(TimeZone.currentSystemDefault())
-
-        // Форматируем вывод (например, "YYYY-MM-DD HH:mm:ss")
-        return "${currentDateTime.date} ${currentDateTime.hour}:${currentDateTime.minute}:${currentDateTime.second}"
     }
 
 }
