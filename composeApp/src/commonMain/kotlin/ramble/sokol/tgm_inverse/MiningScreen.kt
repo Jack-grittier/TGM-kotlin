@@ -649,9 +649,9 @@ class MiningScreen (
 
         when {
             comparisonResult < 0 -> {
-                airDropVisible.value = true
+                airDropVisible.value = false
             }
-            comparisonResult >= 0 -> airDropVisible.value = false
+            comparisonResult >= 0 -> airDropVisible.value = true
         }
     }
 
