@@ -94,7 +94,7 @@ fun ProgressBarDemo(
     LaunchedEffect(Unit) {
         while (progress < 1f) {
             delay(100) // Задержка для анимации
-            progress += 0.1f // Увеличиваем прогресс
+            progress += 0.01f // Увеличиваем прогресс
         }
     }
 
