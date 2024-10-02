@@ -611,6 +611,7 @@ class MiningScreen (
         val body = apiRepo.getEarnings(initData = userEntityCreate.initData)
         statusCode.value = body.statusCode
         if (statusCode.value == null) {
+            tessText.value = currentTime.value
             completedTimeMining.value = body.completedAt.toString()
             startedTimeMining.value = body.startedAt.toString()
             val date1 = body.startedAt.toString()

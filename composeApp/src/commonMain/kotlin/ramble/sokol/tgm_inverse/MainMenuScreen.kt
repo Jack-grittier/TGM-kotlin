@@ -624,7 +624,9 @@ class MainMenuScreen(
                             .padding(horizontal = 8.dp)
                             .clickable(
                                 onClick = {
-                                    clickSheet.value = 1
+                                    if (walletLock.value == true) {
+                                        clickSheet.value = 1
+                                    }
                                 },
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
@@ -639,7 +641,9 @@ class MainMenuScreen(
                             .padding(bottom = 2.dp)
                             .clickable(
                                 onClick = {
-                                    clickSheet.value = 1
+                                    if (walletLock.value == true) {
+                                        clickSheet.value = 1
+                                    }
                                 },
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
