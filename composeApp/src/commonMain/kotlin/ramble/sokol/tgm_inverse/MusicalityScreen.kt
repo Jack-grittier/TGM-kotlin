@@ -128,7 +128,7 @@ class MusicalityScreen(
             mutableStateOf("")
         }
 
-        getCurrentUtcDateTime()
+        //getCurrentUtcDateTime()
 
         scope.launch {
             getLeader("1", "25")

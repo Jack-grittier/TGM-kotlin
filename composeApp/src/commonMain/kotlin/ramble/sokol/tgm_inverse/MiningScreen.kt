@@ -393,12 +393,12 @@ class MiningScreen (
                     // Вычисление разницы в миллисекундах
                     differenceInMillis.value = endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
 
-                    LaunchedEffect(Unit) {
-                        while (true) {
-                            differenceInMillis.value -= 1000
-                            delay(1000) // Обновление каждую секунду
-                        }
-                    }
+//                    LaunchedEffect(Unit) {
+//                        while (true) {
+//                            differenceInMillis.value -= 1000
+//                            delay(1000) // Обновление каждую секунду
+//                        }
+//                    }
 
 
                     val minutes = (differenceInMillis.value / (1000 * 60)) % 60
