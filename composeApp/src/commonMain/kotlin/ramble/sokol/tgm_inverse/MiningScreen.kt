@@ -371,7 +371,7 @@ class MiningScreen (
                                     }else {
 
 
-                                        ProgressBarDemo(currentTime.value, star.value, compl.value)
+                                        ProgressBarDemo()
 
                                     }
                                 }
@@ -607,9 +607,9 @@ class MiningScreen (
         val body = apiRepo.getEarnings(initData = userEntityCreate.initData)
         statusCode.value = body.statusCode
         if (statusCode.value == null) {
-            val date1 = currentTime.value
+            val date1 = body.startedAt.toString()
             val date2 = body.completedAt.toString()
-            val comparisonResult = compareDates(date2, date1)
+            val comparisonResult = compareDates(date1, date2)
             compl.value = body.completedAt.toString()
             star.value = body.startedAt.toString()
             when {
