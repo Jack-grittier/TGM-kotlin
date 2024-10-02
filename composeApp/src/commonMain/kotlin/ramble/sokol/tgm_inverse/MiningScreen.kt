@@ -61,6 +61,8 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import dev.inmo.micro_utils.common.toByteArray
 import dev.inmo.tgbotapi.webapps.webApp
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.await
@@ -85,6 +87,7 @@ import ramble.sokol.tgm_inverse.model.data.GetEarningsEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
+import ramble.sokol.tgm_inverse.model.util.ApiClient
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_airdrop
 import ramble.sokol.tgm_inverse.theme.background_screens
@@ -106,7 +109,8 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 class MiningScreen (
     val modifier: Modifier,
-    val userEntityCreate: UserEntityCreate
+    val userEntityCreate: UserEntityCreate,
+    val airDropDate: String,
 ) : Screen {
 
     private lateinit var startedEarning: MutableState<Boolean>
@@ -179,6 +183,7 @@ class MiningScreen (
             getMusicAd()
             getAd()
             getMusic("1", "25")
+            fetchCurrentDate()
         }
 
         Box(
@@ -583,14 +588,27 @@ class MiningScreen (
         val body = apiRepo.getMusicAdvertisements()
         if (body.musicId != null){
             getMusicById(body.musicId)
-            tessText.value = body.musicId.toString()
         }
     }
 
     suspend fun getMusicById(id: Long){
         val body = apiRepo.getMusic(id.toString())
-        tessText.value = body.toString()
         musicAdUrl.value = body.coverURL
     }
+
+    suspend fun fetchCurrentDate() {
+        val client = ApiClient.client
+
+        // Здесь вы можете использовать любой API, который возвращает текущее время
+        // Например, https://worldtimeapi.org/api/timezone/Etc/UTC
+        val response: String = client.get("https://worldtimeapi.org/api/timezone/Etc/UTC").toString()
+        client.close()
+
+        // Парсим дату из ответа (предполагаем, что ответ содержит поле "utc_datetime")
+        // Вам нужно будет адаптировать этот код в зависимости от структуры ответа
+        tessText.value = response.substringAfter("\"utc_datetime\":\"").substringBefore("\"")
+    }
+
+
 
 }

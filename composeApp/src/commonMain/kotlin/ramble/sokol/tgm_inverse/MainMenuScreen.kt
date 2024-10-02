@@ -123,6 +123,7 @@ class MainMenuScreen(
     private lateinit var navigator: Navigator
     private lateinit var walletLock: MutableState<Boolean?>
     private lateinit var statisticLock: MutableState<Boolean?>
+    private lateinit var dateAirDrop: MutableState<String?>
 
     @Composable
     override fun Content() {
@@ -140,6 +141,10 @@ class MainMenuScreen(
 
         walletLock = remember {
             mutableStateOf(false)
+        }
+
+        dateAirDrop = remember {
+            mutableStateOf(null)
         }
 
         var selectedItem by rememberSaveable {
@@ -310,7 +315,7 @@ class MainMenuScreen(
         ) { innerPadding ->
             when (selectedItem){
                 0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
-                1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
+                1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding), userEntityCreate, dateAirDrop.value!!))
                 2 -> Navigator(TasksScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
                 3 -> Navigator(LiderboardScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
 //                0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding)))
@@ -624,12 +629,13 @@ class MainMenuScreen(
     suspend fun getSettings(){
         val body = apiRepo.getSettings(userEntityCreate.initData, "1", "25")
         for (i in body){
-            if (i.key == "ExternalWallet.Unlocked"){
-                walletLock.value = i.value.toBoolean()
+
+            when (i.key){
+                "ExternalWallet.Unlocked" -> walletLock.value = i.value.toBoolean()
+                "Statistics.Unlocked" -> statisticLock.value = i.value.toBoolean()
+                "Drop.Date" -> dateAirDrop.value = i.value
             }
-            if (i.key == "Statistics.Unlocked"){
-                statisticLock.value = i.value.toBoolean()
-            }
+
         }
     }
 
