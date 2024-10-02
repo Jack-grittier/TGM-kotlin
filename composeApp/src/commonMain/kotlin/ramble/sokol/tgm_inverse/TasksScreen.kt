@@ -63,6 +63,7 @@ class TasksScreen(
     //private lateinit var listTasksComWithout: MutableState<List<TasksMeEntity>>
     private lateinit var listTasksCom: MutableState<List<TasksMeEntity>>
     private lateinit var body: MutableState<TasksMeEntityNew?>
+    private lateinit var testText: MutableState<String?>
 
     @Composable
     override fun Content() {
@@ -87,6 +88,10 @@ class TasksScreen(
 
         body = remember {
             mutableStateOf(null )
+        }
+
+        testText = remember {
+            mutableStateOf(null)
         }
 
         scope.launch {
@@ -117,6 +122,20 @@ class TasksScreen(
                     textAlign = TextAlign.Start,
                 )
             )
+                Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = testText.value.toString(),
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        lineHeight = 16.sp,
+                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                        fontWeight = FontWeight(400),
+                        color = Color.White,
+                        textAlign = TextAlign.Start,
+                    )
+                )
 
             Spacer(modifier = Modifier.padding(top = 24.dp))
 
@@ -152,6 +171,7 @@ class TasksScreen(
 
             items(listTasksPen.value) { tasks: TasksMeEntity ->
                 if (tasks.task.checkedAt != null){
+                    testText.value = tasks.task.checkedAt
                     scope.launch {
                         patchTasks(tasks.task.id.toString())
                     }
