@@ -46,6 +46,7 @@ import dev.inmo.micro_utils.common.toByteArray
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.readBytes
@@ -54,8 +55,10 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
-import kotlinx.datetime.internal.JSJoda.Clock
-import kotlinx.datetime.internal.JSJoda.Instant
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.web.attributes.AutoComplete.Companion.url
@@ -67,6 +70,7 @@ import org.jetbrains.skia.Image.Companion.makeFromEncoded
 import org.w3c.dom.HTMLAudioElement
 import ramble.sokol.tgm_inverse.components.PlaylistItem
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
+import ramble.sokol.tgm_inverse.model.util.ApiClient
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_splash
 import tgminverse.composeapp.generated.resources.Res
@@ -80,6 +84,7 @@ class TestScreen : Screen {
     private lateinit var apiRepo: ApiRepository
     private lateinit var listMusic: MutableState<List<MusicResponse>>
     private lateinit var getTime: MutableState<String>
+    private lateinit var getTime2: MutableState<String>
 
     @OptIn(ExperimentalEncodingApi::class)
     @Composable
@@ -92,13 +97,18 @@ class TestScreen : Screen {
         }
 
         getTime = remember {
-            mutableStateOf("")
+            mutableStateOf("PEMIS")
         }
 
-//        scope.launch {
-//            getMusic("1", "25")
-//        }
+        getTime2 = remember {
+            mutableStateOf("PEMIS2")
+        }
 
+        scope.launch {
+//            getMusic("1", "25")
+        }
+
+        getCurrentUtcDateTime()
 
         Column (
             modifier = Modifier.fillMaxSize()
@@ -112,7 +122,19 @@ class TestScreen : Screen {
                     lineHeight = 22.sp,
                     fontFamily = FontFamily(Font(Res.font.mont_regular)),
                     fontWeight = FontWeight(800),
-                    color = Color.White,
+                    color = Color.Black,
+                )
+            )
+
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = getTime2.value,
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    lineHeight = 22.sp,
+                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                    fontWeight = FontWeight(800),
+                    color = Color.Black,
                 )
             )
         }
@@ -173,6 +195,19 @@ class TestScreen : Screen {
         listMusic.value = body
 
     }
+
+    fun getCurrentUtcDateTime() {
+        // Получаем текущее время в UTC
+        val currentInstant: Instant = Clock.System.now()
+        // Преобразуем его в локальное время (UTC)
+        val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
+
+        getTime2.value = utcDateTime.toString()
+        // Форматируем строку (например, "YYYY-MM-DD HH:MM:SS")
+        getTime.value = "${utcDateTime.date} ${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}"
+    }
+
+
 
 
 }
