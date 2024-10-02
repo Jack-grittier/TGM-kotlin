@@ -9,5 +9,4 @@ data class TasksEntity(
     val reward: Long,
     val iconURL: String,
     val url: String,
-    val checkedAt: String? = null,
 )

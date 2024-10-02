@@ -170,8 +170,8 @@ class TasksScreen(
             }
 
             items(listTasksPen.value) { tasks: TasksMeEntity ->
-                if (tasks.task.checkedAt != null){
-                    testText.value = tasks.task.checkedAt
+                if (tasks.checkedAt != null){
+                    testText.value = tasks.checkedAt
                     scope.launch {
                         patchTasks(tasks.task.id.toString())
                     }
