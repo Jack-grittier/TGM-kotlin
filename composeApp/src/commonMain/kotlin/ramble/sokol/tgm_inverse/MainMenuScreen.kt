@@ -168,7 +168,7 @@ class MainMenuScreen(
         }
 
 
-        if (dateAirDrop.value != null && dateMiniGame != null) {
+        if (dateAirDrop.value != null && dateMiniGame.value != null) {
 
             Scaffold(
                 modifier = Modifier.background(background_screens),
