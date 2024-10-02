@@ -611,12 +611,12 @@ class MiningScreen (
         val body = apiRepo.getEarnings(initData = userEntityCreate.initData)
         statusCode.value = body.statusCode
         if (statusCode.value == null) {
-            tessText.value = currentTime.value
             completedTimeMining.value = body.completedAt.toString()
             startedTimeMining.value = body.startedAt.toString()
             val date1 = body.startedAt.toString()
             val date2 = body.completedAt.toString()
-            val comparisonResult = compareDates(date2, date1)
+            val comparisonResult = compareDates(date2, currentTime.value)
+            tessText.value = comparisonResult.toString()
             when {
                 comparisonResult < 0 -> finishMining.value = false
                 comparisonResult >= 0 -> finishMining.value = true
