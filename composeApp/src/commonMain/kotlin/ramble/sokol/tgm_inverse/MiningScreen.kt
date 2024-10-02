@@ -113,7 +113,7 @@ import tgminverse.composeapp.generated.resources.test_photo
 class MiningScreen (
     val modifier: Modifier,
     val userEntityCreate: UserEntityCreate,
-    //val airDropDate: String,
+    val airDropDate: String,
 ) : Screen {
 
     private lateinit var startedEarning: MutableState<Boolean>
@@ -177,9 +177,9 @@ class MiningScreen (
             mutableStateOf(false)
         }
 
-//        tessText= remember {
-//            mutableStateOf(getCurrentDateTime())
-//        }
+        tessText= remember {
+            mutableStateOf(airDropDate)
+        }
 
         scope.launch{
             getEarnings()

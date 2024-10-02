@@ -315,7 +315,7 @@ class MainMenuScreen(
         ) { innerPadding ->
             when (selectedItem){
                 0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
-                1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
+                1 -> Navigator(MiningScreen(modifier = Modifier.padding(innerPadding), userEntityCreate, dateAirDrop.value!!))
                 2 -> Navigator(TasksScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
                 3 -> Navigator(LiderboardScreen(modifier = Modifier.padding(innerPadding), userEntityCreate))
 //                0 -> Navigator(MusicalityScreen(modifier = Modifier.padding(innerPadding)))
@@ -633,7 +633,7 @@ class MainMenuScreen(
             when (i.key){
                 "ExternalWallet.Unlocked" -> walletLock.value = i.value.toBoolean()
                 "Statistics.Unlocked" -> statisticLock.value = i.value.toBoolean()
-                //"Drop.Date" -> dateAirDrop.value = i.value
+                "Drop.Date" -> dateAirDrop.value = i.value
             }
 
         }

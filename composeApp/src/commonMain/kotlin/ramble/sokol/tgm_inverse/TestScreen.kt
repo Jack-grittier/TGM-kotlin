@@ -54,7 +54,10 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
+import kotlinx.datetime.internal.JSJoda.Clock
+import kotlinx.datetime.internal.JSJoda.Instant
 import org.jetbrains.compose.resources.Font
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.web.attributes.AutoComplete.Companion.url
 import org.jetbrains.compose.web.attributes.alt
 import org.jetbrains.compose.web.dom.Div
@@ -67,6 +70,7 @@ import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_splash
 import tgminverse.composeapp.generated.resources.Res
+import tgminverse.composeapp.generated.resources.get_bonuses
 import tgminverse.composeapp.generated.resources.mont_regular
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -75,6 +79,7 @@ class TestScreen : Screen {
 
     private lateinit var apiRepo: ApiRepository
     private lateinit var listMusic: MutableState<List<MusicResponse>>
+    private lateinit var getTime: MutableState<String>
 
     @OptIn(ExperimentalEncodingApi::class)
     @Composable
@@ -86,38 +91,30 @@ class TestScreen : Screen {
             mutableStateOf(listOf())
         }
 
-        scope.launch {
-            getMusic("1", "25")
+        getTime = remember {
+            mutableStateOf("")
         }
+
+//        scope.launch {
+//            getMusic("1", "25")
+//        }
+
 
         Column (
             modifier = Modifier.fillMaxSize()
         ) {
 
-            ImageFromUrl("https://miniopridegroup.postideas.store/main/8814ad5a-aa03-46db-87fa-4731b9e99987")
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            AudioPlayerFromUrl("https://miniopridegroup.postideas.store/main/d3483186-91e4-4a09-8e99-fe445da9ac25")
-
-            Row (
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                if (listMusic.value.size != 0) {
-
-                    LazyRow() {
-                        items(listMusic.value) { items: MusicResponse ->
-
-                            ImageFromUrl(items.coverURL)
-
-                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-
-                        }
-                    }
-                }
-            }
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = getTime.value,
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    lineHeight = 22.sp,
+                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                    fontWeight = FontWeight(800),
+                    color = Color.White,
+                )
+            )
         }
     }
 
