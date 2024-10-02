@@ -27,6 +27,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,7 +53,13 @@ import com.dokar.sonner.ToastType
 import com.dokar.sonner.Toaster
 import com.dokar.sonner.rememberToasterState
 import kotlinx.browser.window
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.internal.JSJoda.DateTimeParseException
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -73,6 +80,7 @@ import ramble.sokol.tgm_inverse.theme.background_wallet_item
 import ramble.sokol.tgm_inverse.theme.color_background_referal
 import ramble.sokol.tgm_inverse.theme.color_hello_peterburg
 import ramble.sokol.tgm_inverse.theme.color_price_referal
+import ramble.sokol.tgm_inverse.theme.text_mini_game_block
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.icon_active
@@ -86,11 +94,15 @@ import kotlin.time.Duration.Companion.milliseconds
 
 class MusicalityScreen(
     val modifier: Modifier,
-    val userEntityCreate: UserEntityCreate
+    val userEntityCreate: UserEntityCreate,
+    val dateMiniGame: String
 ) : Screen {
 
     private lateinit var apiRepo: ApiRepository
     private lateinit var listLeader: MutableState<List<LeaderboardReferalEntity>>
+    private lateinit var currentTime: MutableState<String>
+    private lateinit var miniGameTextVisible: MutableState<Boolean?>
+    private lateinit var differenceInMillis: MutableState<Long>
 
     @Composable
     override fun Content() {
@@ -103,6 +115,20 @@ class MusicalityScreen(
         listLeader = remember {
             mutableStateOf(listOf())
         }
+
+        differenceInMillis = remember {
+            mutableStateOf(0L)
+        }
+
+        miniGameTextVisible = remember {
+            mutableStateOf(false)
+        }
+
+        currentTime = remember {
+            mutableStateOf("")
+        }
+
+        getCurrentUtcDateTime()
 
         scope.launch {
             getLeader("1", "25")
@@ -291,7 +317,9 @@ class MusicalityScreen(
                             .background(color_background_referal)
                             .clickable(
                                 onClick = {
-                                    navigator?.push(GameScreen())
+                                    if (miniGameTextVisible.value == false) {
+                                        navigator?.push(GameScreen())
+                                    }
                                 },
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
@@ -306,43 +334,106 @@ class MusicalityScreen(
                             contentScale = ContentScale.Crop
                         )
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
+                        if (miniGameTextVisible.value == true){
+
+                            val startInstant = Instant.parse(currentTime.value.toString())
+                            val endInstant = Instant.parse(dateMiniGame)
+
+                            // Вычисление разницы в миллисекундах
+                            differenceInMillis.value = endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
+
+                            LaunchedEffect(Unit) {
+                                while (true) {
+                                    differenceInMillis.value -= 1000
+                                    delay(1000) // Обновление каждую секунду
+                                }
+                            }
 
 
-                            Text(
-                                text = "Mini-Game",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    lineHeight = 16.sp,
-                                    fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                                    fontWeight = FontWeight(400),
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center,
-                                )
-                            )
+                            val minutes = (differenceInMillis.value / (1000 * 60)) % 60
+                            val hours = (differenceInMillis.value / (1000 * 60 * 60)) % 24
+                            val days = differenceInMillis.value / (1000 * 60 * 60 * 24)
 
-                            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                            val formattedTime = "${days.toString().padStart(2, '0')}:" +
+                                    "${hours.toString().padStart(2, '0')}:" +
+                                    "${minutes.toString().padStart(2, '0')}:"
 
-                            Box(
-                                modifier = Modifier
-                                    .height(32.dp)
-                                    .width(32.dp)
-                                    .clip(RoundedCornerShape(13.dp))
-                                    .background(color_hello_peterburg),
-                                contentAlignment = Alignment.Center
+
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 
-                                Image(
-                                    modifier = Modifier
-                                        .width(20.dp)
-                                        .height(20.dp),
-                                    painter = painterResource(Res.drawable.icon_arrow_to_game),
-                                    contentDescription = "image_play_game"
+                                Text(
+                                    text = "Mini-Game:",
+                                    style = TextStyle(
+                                        fontSize = 16.sp,
+                                        lineHeight = 16.sp,
+                                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                                        fontWeight = FontWeight(400),
+                                        color = text_mini_game_block,
+                                        textAlign = TextAlign.Center,
+                                    )
                                 )
+
+                                Spacer(modifier = Modifier.padding(vertical = 2.dp))
+
+                                Text(
+                                    text = formattedTime,
+                                    style = TextStyle(
+                                        fontSize = 16.sp,
+                                        lineHeight = 16.sp,
+                                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                                        fontWeight = FontWeight(400),
+                                        color = Color.White,
+                                        textAlign = TextAlign.Center,
+                                    )
+                                )
+
+                            }
+
+                        }else {
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+
+
+                                Text(
+                                    text = "Mini-Game",
+                                    style = TextStyle(
+                                        fontSize = 16.sp,
+                                        lineHeight = 16.sp,
+                                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                                        fontWeight = FontWeight(400),
+                                        color = Color.White,
+                                        textAlign = TextAlign.Center,
+                                    )
+                                )
+
+                                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                                Box(
+                                    modifier = Modifier
+                                        .height(32.dp)
+                                        .width(32.dp)
+                                        .clip(RoundedCornerShape(13.dp))
+                                        .background(color_hello_peterburg),
+                                    contentAlignment = Alignment.Center
+                                ) {
+
+                                    Image(
+                                        modifier = Modifier
+                                            .width(20.dp)
+                                            .height(20.dp),
+                                        painter = painterResource(Res.drawable.icon_arrow_to_game),
+                                        contentDescription = "image_play_game"
+                                    )
+
+                                }
 
                             }
 
@@ -425,6 +516,34 @@ class MusicalityScreen(
     private suspend fun getLeader(page: String, limit: String){
         val body = apiRepo.getLeaderBoardReferal(page = page, limit = limit, initData = userEntityCreate.initData)
         listLeader.value = body
+    }
+
+    fun getCurrentUtcDateTime() {
+        // Получаем текущее время в UTC
+        val currentInstant: Instant = Clock.System.now()
+        // Преобразуем его в локальное время (UTC)
+        val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
+        // Форматируем строку (например, "YYYY-MM-DD HH:MM:SS")
+        currentTime.value = "${utcDateTime.date}T${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}.000Z"
+
+        val comparisonResult = compareDates(dateMiniGame, currentTime.value!!)
+
+        when {
+            comparisonResult < 0 -> {
+                miniGameTextVisible.value = false
+            }
+            comparisonResult >= 0 -> miniGameTextVisible.value = true
+        }
+    }
+
+    fun compareDates(date1: String, date2: String): Int {
+        return try {
+            val instant1 = Instant.parse(date1)
+            val instant2 = Instant.parse(date2)
+            instant1.compareTo(instant2)
+        } catch (e: DateTimeParseException) {
+            0
+        }
     }
 
 }

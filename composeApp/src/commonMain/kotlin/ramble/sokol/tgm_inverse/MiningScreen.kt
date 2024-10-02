@@ -393,17 +393,21 @@ class MiningScreen (
                     // Вычисление разницы в миллисекундах
                     differenceInMillis.value = endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
 
-                    val minutes = (differenceInMillis.value / (1000 * 60)) % 60
-                    val hours = (differenceInMillis.value / (1000 * 60 * 60)) % 24
-                    val days = differenceInMillis.value / (1000 * 60 * 60 * 24)
-
-
                     LaunchedEffect(Unit) {
                         while (true) {
                             differenceInMillis.value -= 1000
                             delay(1000) // Обновление каждую секунду
                         }
                     }
+
+
+                    val minutes = (differenceInMillis.value / (1000 * 60)) % 60
+                    val hours = (differenceInMillis.value / (1000 * 60 * 60)) % 24
+                    val days = differenceInMillis.value / (1000 * 60 * 60 * 24)
+
+                    val formattedTime = "${days.toString().padStart(2, '0')}:" +
+                            "${hours.toString().padStart(2, '0')}:" +
+                            "${minutes.toString().padStart(2, '0')}:"
 
                     Spacer(modifier = Modifier.padding(top = 17.dp))
 
@@ -419,7 +423,7 @@ class MiningScreen (
                         Text(
                             modifier = Modifier.fillMaxWidth()
                                 .padding(vertical = 24.dp, horizontal = 10.dp),
-                            text = "$days:$hours:$minutes",
+                            text = formattedTime,
                             style = TextStyle(
                                 fontSize = 16.sp,
                                 lineHeight = 16.sp,

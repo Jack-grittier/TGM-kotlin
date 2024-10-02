@@ -124,6 +124,7 @@ class MainMenuScreen(
     private lateinit var walletLock: MutableState<Boolean?>
     private lateinit var statisticLock: MutableState<Boolean?>
     private lateinit var dateAirDrop: MutableState<String?>
+    private lateinit var dateMiniGame: MutableState<String?>
 
     @Composable
     override fun Content() {
@@ -147,6 +148,10 @@ class MainMenuScreen(
             mutableStateOf(null)
         }
 
+        dateMiniGame = remember {
+            mutableStateOf(null)
+        }
+
         var selectedItem by rememberSaveable {
             mutableIntStateOf(1)
         }
@@ -163,7 +168,7 @@ class MainMenuScreen(
         }
 
 
-        if (dateAirDrop.value != null) {
+        if (dateAirDrop.value != null && dateMiniGame != null) {
 
             Scaffold(
                 modifier = Modifier.background(background_screens),
@@ -319,7 +324,8 @@ class MainMenuScreen(
                     0 -> Navigator(
                         MusicalityScreen(
                             modifier = Modifier.padding(innerPadding),
-                            userEntityCreate
+                            userEntityCreate,
+                            dateMiniGame.value!!
                         )
                     )
 
@@ -662,6 +668,7 @@ class MainMenuScreen(
                 "ExternalWallet.Unlocked" -> walletLock.value = i.value.toBoolean()
                 "Statistics.Unlocked" -> statisticLock.value = i.value.toBoolean()
                 "Drop.Date" -> dateAirDrop.value = i.value
+                "MiniGame.OpenDate" -> dateMiniGame.value = i.value
             }
 
         }
