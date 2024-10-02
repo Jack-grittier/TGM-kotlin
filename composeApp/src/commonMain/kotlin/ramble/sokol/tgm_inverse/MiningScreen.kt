@@ -369,14 +369,16 @@ class MiningScreen (
                                         )
 
                                     }else {
-                                        if (currentTime.value != "" && completedTimeMining.value != "" && startedTimeMining.value != "") {
-//                                            ProgressBarDemo(
-//                                                currentTime.value,
-//                                                completedTimeMining.value,
-//                                                startedTimeMining.value
-//                                            )
-                                            ProgressBarDemo()
-                                        }
+//                                        if (currentTime.value != "" && completedTimeMining.value != "" && startedTimeMining.value != "") {
+////                                            ProgressBarDemo(
+////                                                currentTime.value,
+////                                                completedTimeMining.value,
+////                                                startedTimeMining.value
+////                                            )
+//
+//                                        }
+                                        tessText.value = completedTimeMining.value + startedTimeMining.value + currentTime.value
+                                        ProgressBarDemo()
                                     }
                                 }
 
@@ -615,7 +617,7 @@ class MiningScreen (
             startedTimeMining.value = body.startedAt.toString()
             val date1 = body.startedAt.toString()
             val date2 = body.completedAt.toString()
-            val comparisonResult = compareDates(date2, currentTime.value)
+            val comparisonResult = compareDates(currentTime.value, date1)
             tessText.value = comparisonResult.toString()
             when {
                 comparisonResult < 0 -> finishMining.value = false
