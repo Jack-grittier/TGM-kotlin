@@ -342,12 +342,12 @@ class MusicalityScreen(
                             // Вычисление разницы в миллисекундах
                             differenceInMillis.value = endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
 
-//                            LaunchedEffect(Unit) {
-//                                while (true) {
-//                                    differenceInMillis.value -= 1000
-//                                    delay(1000) // Обновление каждую секунду
-//                                }
-//                            }
+                            LaunchedEffect(Unit) {
+                                while (true) {
+                                    differenceInMillis.value -= 1000
+                                    delay(1000) // Обновление каждую секунду
+                                }
+                            }
 
 
                             val minutes = (differenceInMillis.value / (1000 * 60)) % 60
@@ -356,7 +356,7 @@ class MusicalityScreen(
 
                             val formattedTime = "${days.toString().padStart(2, '0')}:" +
                                     "${hours.toString().padStart(2, '0')}:" +
-                                    "${minutes.toString().padStart(2, '0')}"
+                                    "${minutes.toString().padStart(2, '0')}:"
 
 
                             Column(

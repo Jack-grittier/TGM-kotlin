@@ -133,8 +133,6 @@ class MiningScreen (
     private lateinit var currentTime: MutableState<String>
     private lateinit var airDropVisible: MutableState<Boolean?>
     private lateinit var differenceInMillis: MutableState<Long>
-    private lateinit var compl: MutableState<String>
-    private lateinit var star: MutableState<String>
 
     @Composable
     override fun Content() {
@@ -197,14 +195,6 @@ class MiningScreen (
         }
 
         currentTime = remember {
-            mutableStateOf("")
-        }
-
-        compl = remember {
-            mutableStateOf("")
-        }
-
-        star = remember {
             mutableStateOf("")
         }
 
@@ -370,7 +360,6 @@ class MiningScreen (
 
                                     }else {
 
-
                                         ProgressBarDemo()
 
                                     }
@@ -404,12 +393,12 @@ class MiningScreen (
                     // Вычисление разницы в миллисекундах
                     differenceInMillis.value = endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
 
-//                    LaunchedEffect(Unit) {
-//                        while (true) {
-//                            differenceInMillis.value -= 1000
-//                            delay(1000) // Обновление каждую секунду
-//                        }
-//                    }
+                    LaunchedEffect(Unit) {
+                        while (true) {
+                            differenceInMillis.value -= 1000
+                            delay(1000) // Обновление каждую секунду
+                        }
+                    }
 
 
                     val minutes = (differenceInMillis.value / (1000 * 60)) % 60
@@ -418,7 +407,7 @@ class MiningScreen (
 
                     val formattedTime = "${days.toString().padStart(2, '0')}:" +
                             "${hours.toString().padStart(2, '0')}:" +
-                            "${minutes.toString().padStart(2, '0')}"
+                            "${minutes.toString().padStart(2, '0')}:"
 
                     Spacer(modifier = Modifier.padding(top = 17.dp))
 
@@ -609,9 +598,9 @@ class MiningScreen (
         if (statusCode.value == null) {
             val date1 = body.startedAt.toString()
             val date2 = body.completedAt.toString()
+
             val comparisonResult = compareDates(date1, date2)
-            compl.value = body.completedAt.toString()
-            star.value = body.startedAt.toString()
+
             when {
                 comparisonResult < 0 -> finishMining.value = false
                 comparisonResult >= 0 -> finishMining.value = true

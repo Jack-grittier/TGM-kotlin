@@ -562,14 +562,14 @@ class MainMenuScreen(
                 Text(
                     modifier = Modifier
                         .clickable(
-                        onClick = {
-                            if (statisticLock.value == true) {
-                                navigator?.push(OnBoardingScreen(userEntityCreate, bodyUserCreate))
-                            }
-                        },
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ),
+                            onClick = {
+                                if (statisticLock.value == true) {
+                                    navigator?.push(OnBoardingScreen(userEntityCreate, bodyUserCreate))
+                                }
+                            },
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ),
                     text = "@${userEntityCreate.username.toString()}",
                     style = TextStyle(
                         fontSize = 16.sp,
