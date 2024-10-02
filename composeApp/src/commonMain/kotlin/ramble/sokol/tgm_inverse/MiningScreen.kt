@@ -612,7 +612,7 @@ class MiningScreen (
         if (statusCode.value == null) {
             completedTimeMining.value = body.completedAt.toString()
             startedTimeMining.value = body.startedAt.toString()
-            val date1 = currentTime.value
+            val date1 = body.startedAt.toString()
             val date2 = body.completedAt.toString()
             val comparisonResult = compareDates(date2, date1)
 
