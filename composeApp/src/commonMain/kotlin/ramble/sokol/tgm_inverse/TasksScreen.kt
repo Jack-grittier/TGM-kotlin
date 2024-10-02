@@ -111,22 +111,8 @@ class TasksScreen(
                 Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
                 Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(Res.string.tasks_navbar),
-                style = TextStyle(
-                    fontSize = 24.sp,
-                    lineHeight = 16.sp,
-                    fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                    fontWeight = FontWeight(400),
-                    color = Color.White,
-                    textAlign = TextAlign.Start,
-                )
-            )
-                Spacer(modifier = Modifier.padding(vertical = 12.dp))
-
-                Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = testText.value.toString(),
+                    text = stringResource(Res.string.tasks_navbar),
                     style = TextStyle(
                         fontSize = 24.sp,
                         lineHeight = 16.sp,
@@ -171,7 +157,6 @@ class TasksScreen(
 
             items(listTasksPen.value) { tasks: TasksMeEntity ->
                 if (tasks.checkedAt != null){
-                    testText.value = tasks.checkedAt
                     scope.launch {
                         patchTasks(tasks.task.id.toString())
                     }
