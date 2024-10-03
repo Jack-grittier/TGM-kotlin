@@ -208,7 +208,7 @@ class MiningScreen (
             mutableStateOf("")
         }
 
-        //getCurrentUtcDateTime()
+        getCurrentUtcDateTime()
 
         scope.launch{
             //getEarnings()

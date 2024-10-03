@@ -519,11 +519,8 @@ class MusicalityScreen(
     }
 
     fun getCurrentUtcDateTime() {
-        // Получаем текущее время в UTC
         val currentInstant: Instant = Clock.System.now()
-        // Преобразуем его в локальное время (UTC)
         val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
-        // Форматируем строку (например, "YYYY-MM-DD HH:MM:SS")
         currentTime.value = "${utcDateTime.date}T${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}.000Z"
 
         val comparisonResult = compareDates(dateMiniGame, currentTime.value!!)
