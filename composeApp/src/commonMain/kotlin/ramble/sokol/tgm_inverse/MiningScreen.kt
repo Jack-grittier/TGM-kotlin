@@ -211,7 +211,7 @@ class MiningScreen (
         getCurrentUtcDateTime()
 
         scope.launch{
-            getEarnings()
+            //getEarnings()
             getMusicAd()
             getAd()
             getMusic("1", "25")
