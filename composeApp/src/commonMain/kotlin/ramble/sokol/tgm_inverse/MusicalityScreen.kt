@@ -357,8 +357,9 @@ class MusicalityScreen(
                             val startInstant = Instant.parse(currentTime.value.toString())
                             val endInstant = Instant.parse(dateMiniGame)
 
+                            val diff = endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
                             // Вычисление разницы в миллисекундах
-                            differenceInMillis.value = endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
+                            differenceInMillis.value = diff
 
                             LaunchedEffect(Unit) {
                                 while (true) {
