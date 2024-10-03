@@ -130,10 +130,8 @@ class MusicalityScreen(
         }
 
         currentTime = remember {
-            mutableStateOf("")
+            mutableStateOf(getCurrentUtcDateTime())
         }
-
-        getCurrentUtcDateTime()
 
         scope.launch {
             getLeader("1", "25")
@@ -537,12 +535,12 @@ class MusicalityScreen(
         listLeader.value = body
     }
 
-    fun getCurrentUtcDateTime() {
+    fun getCurrentUtcDateTime() : String {
         val currentInstant: Instant = Clock.System.now()
         val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
-        currentTime.value = "${utcDateTime.date}T${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}.000Z"
+        val currentTimeThis = "${utcDateTime.date}T${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}.000Z"
 
-        val comparisonResult = compareDates(dateMiniGame, currentTime.value!!)
+        val comparisonResult = compareDates(dateMiniGame, currentTimeThis)
         testText.value = comparisonResult.toString()
         when {
             comparisonResult < 0 -> {
@@ -550,6 +548,7 @@ class MusicalityScreen(
             }
             comparisonResult >= 0 -> miniGameTextVisible.value = true
         }
+        return currentTimeThis
     }
 
     fun compareDates(date1: String, date2: String): Int {
