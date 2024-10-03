@@ -152,7 +152,7 @@ class MusicalityScreen(
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = testText.value,
+                    text = differenceInMillis.value.toString(),
                     style = TextStyle(
                         fontSize = 15.sp,
                         lineHeight = 20.sp,
@@ -360,12 +360,12 @@ class MusicalityScreen(
                             // Вычисление разницы в миллисекундах
                             differenceInMillis.value = endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
 
-//                            LaunchedEffect(Unit) {
-//                                while (true) {
-//                                    differenceInMillis.value -= 1000
-//                                    delay(1000) // Обновление каждую секунду
-//                                }
-//                            }
+                            LaunchedEffect(Unit) {
+                                while (true) {
+                                    differenceInMillis.value -= 1000
+                                    delay(1000)
+                                }
+                            }
 
 
                             val minutes = (differenceInMillis.value / (1000 * 60)) % 60
