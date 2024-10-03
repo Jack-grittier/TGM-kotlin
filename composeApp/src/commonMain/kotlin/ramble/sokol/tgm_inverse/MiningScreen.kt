@@ -208,7 +208,7 @@ class MiningScreen (
             mutableStateOf("")
         }
 
-        getCurrentUtcDateTime()
+        //getCurrentUtcDateTime()
 
         scope.launch{
             //getEarnings()
@@ -377,7 +377,7 @@ class MiningScreen (
 ////                                            )
 //
 //                                        }
-                                        tessText.value = completedTimeMining.value + startedTimeMining.value + currentTime.value
+                                        //tessText.value = completedTimeMining.value + startedTimeMining.value + currentTime.value
                                         ProgressBarDemo()
                                     }
                                 }
