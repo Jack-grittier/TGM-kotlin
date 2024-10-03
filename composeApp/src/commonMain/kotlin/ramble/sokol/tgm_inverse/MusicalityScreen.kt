@@ -103,6 +103,7 @@ class MusicalityScreen(
     private lateinit var currentTime: MutableState<String>
     private lateinit var miniGameTextVisible: MutableState<Boolean?>
     private lateinit var differenceInMillis: MutableState<Long>
+    private lateinit var testText: MutableState<String>
 
     @Composable
     override fun Content() {
@@ -114,6 +115,10 @@ class MusicalityScreen(
         val scope  = rememberCoroutineScope()
         listLeader = remember {
             mutableStateOf(listOf())
+        }
+
+        testText = remember {
+            mutableStateOf("")
         }
 
         differenceInMillis = remember {
@@ -128,7 +133,7 @@ class MusicalityScreen(
             mutableStateOf("")
         }
 
-        //getCurrentUtcDateTime()
+        getCurrentUtcDateTime()
 
         scope.launch {
             getLeader("1", "25")
@@ -144,6 +149,19 @@ class MusicalityScreen(
         ){
 
             item {
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = testText.value,
+                    style = TextStyle(
+                        fontSize = 15.sp,
+                        lineHeight = 20.sp,
+                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                        fontWeight = FontWeight(400),
+                        color = Color.White,
+                        textAlign = TextAlign.Start,
+                    )
+                )
 
                 Spacer(modifier = Modifier.padding(top = 16.dp))
 
@@ -524,7 +542,7 @@ class MusicalityScreen(
         currentTime.value = "${utcDateTime.date}T${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}.000Z"
 
         val comparisonResult = compareDates(dateMiniGame, currentTime.value!!)
-
+        testText.value = comparisonResult.toString()
         when {
             comparisonResult < 0 -> {
                 miniGameTextVisible.value = false
