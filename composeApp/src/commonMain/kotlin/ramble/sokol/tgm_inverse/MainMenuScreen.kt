@@ -334,7 +334,8 @@ class MainMenuScreen(
                         MiningScreen(
                             modifier = Modifier.padding(innerPadding),
                             userEntityCreate,
-                            dateAirDrop.value!!
+                            dateAirDrop.value!!,
+                            balance.value!!
                         )
                     )
 

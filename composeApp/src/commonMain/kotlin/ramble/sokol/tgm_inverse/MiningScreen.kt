@@ -116,6 +116,7 @@ class MiningScreen (
     val modifier: Modifier,
     val userEntityCreate: UserEntityCreate,
     val airDropDate: String,
+    val balance: Long,
 ) : Screen {
 
     private lateinit var startedEarning: MutableState<Boolean>
@@ -402,7 +403,7 @@ class MiningScreen (
 
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = if (statusCode.value == 404) "Start"
+                            text = if (statusCode.value == 404) balance.toString()
                             else if (finishMining.value == true) "1000"
                             else {
                                 currentReward.value.toString()
@@ -641,13 +642,16 @@ class MiningScreen (
             startedTimeMining.value = body.startedAt.toString()
             val startInstant = Instant.parse(body.startedAt.toString())
             val complInstant = Instant.parse(body.completedAt.toString())
+            val currentS = Instant.parse(currentTime.value)
             val differenceInMillis = complInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
+            val differenceInMillis2 = complInstant.toEpochMilliseconds() - currentS.toEpochMilliseconds()
+            val seconds2 = (differenceInMillis2 / 1000) / 60
             val seconds = (differenceInMillis.toFloat() / 1000) / 60
-            currentReward.value = (rewardMining.value!! / (seconds)).toLong()
+            val currentProgress =  rewardMining.value!! - (rewardMining.value!! *seconds2/seconds)
+            currentReward.value =currentProgress.toLong()
             val date2 = body.completedAt.toString()
             val date1 = currentTime.value
             val comparisonResult = compareDates(date1, date2)
-            tessText.value = comparisonResult.toString()
             when {
                 comparisonResult < 0 -> finishMining.value = false
                 comparisonResult >= 0 -> finishMining.value = true

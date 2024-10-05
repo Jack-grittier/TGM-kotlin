@@ -538,7 +538,7 @@ class MusicalityScreen(
     fun getCurrentUtcDateTime() : String {
         val currentInstant: Instant = Clock.System.now()
         val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
-        val currentTimeThis = "${utcDateTime.date}T${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}.000Z"
+        val currentTimeThis = "${utcDateTime.date}T${utcDateTime.hour.toString().padStart(2, '0')}:${utcDateTime.minute.toString().padStart(2, '0')}:${utcDateTime.second.toString().padStart(2, '0')}.000Z"
 
         val comparisonResult = compareDates(dateMiniGame, currentTimeThis)
         testText.value = comparisonResult.toString()

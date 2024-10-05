@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -33,6 +34,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
@@ -84,6 +86,7 @@ import ramble.sokol.tgm_inverse.components.PlaylistItem
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.util.ApiClient
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
+import ramble.sokol.tgm_inverse.theme.background_airdrop
 import ramble.sokol.tgm_inverse.theme.background_splash
 import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
@@ -114,17 +117,28 @@ class TestScreen : Screen {
     private lateinit var testText: MutableState<String?>
     private lateinit var rewardMining: MutableState<Long?>
     private lateinit var currentReward: MutableState<Long>
+    private lateinit var airDropVisible: MutableState<Boolean?>
+    private lateinit var differenceInMillisAir: MutableState<Long>
+
+    val airDropDate = "2024-10-30T19:00:00.000Z"
 
     @OptIn(ExperimentalEncodingApi::class)
     @Composable
     override fun Content() {
 
-
-
         apiRepo = ApiRepository()
         scope  = rememberCoroutineScope()
         listMusic = remember {
             mutableStateOf(listOf())
+        }
+
+        differenceInMillisAir = remember {
+            mutableStateOf(0L)
+        }
+
+
+        airDropVisible = remember {
+            mutableStateOf(false)
         }
 
         testText = remember {
@@ -442,6 +456,60 @@ class TestScreen : Screen {
                 )
 
             }
+
+            if (airDropVisible.value == true) {
+
+                val startInstant = Instant.parse(currentTime.value.toString())
+                val endInstant = Instant.parse(airDropDate)
+
+                // Вычисление разницы в миллисекундах
+                differenceInMillisAir.value =
+                    endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
+
+                //                    LaunchedEffect(Unit) {
+                //                        while (true) {
+                //                            differenceInMillis.value -= 1000
+                //                            delay(1000) // Обновление каждую секунду
+                //                        }
+                //                    }
+
+
+                val minutes = (differenceInMillisAir.value / (1000 * 60)) % 60
+                val hours = (differenceInMillisAir.value / (1000 * 60 * 60)) % 24
+                val days = differenceInMillisAir.value / (1000 * 60 * 60 * 24)
+
+                val formattedTime = "${days.toString().padStart(2, '0')}:" +
+                        "${hours.toString().padStart(2, '0')}:" +
+                        "${minutes.toString().padStart(2, '0')}"
+
+                Spacer(modifier = Modifier.padding(top = 17.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(background_airdrop),
+                    contentAlignment = Alignment.Center
+                ) {
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(vertical = 24.dp, horizontal = 10.dp),
+                        text = "Airdrop: $formattedTime",
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            lineHeight = 16.sp,
+                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                            fontWeight = FontWeight(400),
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                        )
+                    )
+                }
+
+            }
+
         }
 
     }
@@ -523,10 +591,14 @@ class TestScreen : Screen {
             startedTimeMining.value = body.startedAt.toString()
             val startInstant = Instant.parse(body.startedAt.toString())
             val complInstant = Instant.parse(body.completedAt.toString())
+            val currentS = Instant.parse(currentTime.value)
             val differenceInMillis = complInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
+            val differenceInMillis2 = complInstant.toEpochMilliseconds() - currentS.toEpochMilliseconds()
+            val seconds2 = (differenceInMillis2 / 1000) / 60
             val seconds = (differenceInMillis.toFloat() / 1000) / 60
+            val currentProgress =  rewardMining.value!! - (rewardMining.value!! *seconds2/seconds)
             testText.value = differenceInMillis.toString()
-            currentReward.value = (rewardMining.value!! / (seconds)).toLong()
+            currentReward.value =currentProgress.toLong()
             val date2 = body.completedAt.toString()
             val date1 = currentTime.value
             val comparisonResult = compareDates(date1, date2)
@@ -545,6 +617,15 @@ class TestScreen : Screen {
         val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
         // Форматируем строку (например, "YYYY-MM-DD HH:MM:SS")
         currentTime.value = "${utcDateTime.date}T${utcDateTime.hour.toString().padStart(2, '0')}:${utcDateTime.minute.toString().padStart(2, '0')}:${utcDateTime.second.toString().padStart(2, '0')}.000Z"
+
+        val comparisonResult = compareDates(airDropDate, currentTime.value!!)
+
+        when {
+            comparisonResult < 0 -> {
+                airDropVisible.value = false
+            }
+            comparisonResult >= 0 -> airDropVisible.value = true
+        }
     }
 
     private suspend fun postEarnings(){
