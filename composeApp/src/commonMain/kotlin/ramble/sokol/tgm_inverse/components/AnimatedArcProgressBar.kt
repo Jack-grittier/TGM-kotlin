@@ -43,44 +43,41 @@ fun AnimatedArcProgressBar(progress: Float) {
 }
 
 //
-//@Composable
-//fun ProgressBarDemo(
-//    current: String,
-//    compl: String,
-//    start: String
-//) {
-//
-//    var progress by remember { mutableStateOf(0f) }
-//    val animatedProgress by animateFloatAsState(targetValue = progress)
-//    val startInstant = Instant.parse(start)
-//    val complInstant = Instant.parse(compl)
-//    val currentInstant = Instant.parse(current)
-//
-//    // Вычисление разницы в миллисекундах
-//    val differenceInMillis = complInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
-//    val seconds = (differenceInMillis / 1000) % 60
-//
-//    val currentProcent = (complInstant.toEpochMilliseconds() - currentInstant.toEpochMilliseconds())
-//    val seconds2 = (currentProcent / 1000) % 60
-//    val currentProgress = 100*seconds2/seconds
-//    progress += currentProgress
-//
-//    val progressPlus = 100 / seconds
-//
-//    LaunchedEffect(Unit) {
-//        while (progress < 1f) {
-//            delay(100) // Задержка для анимации
-//            progress += progressPlus // Увеличиваем прогресс
-//        }
-//    }
-//
-//    Box(
-//        modifier = Modifier.fillMaxWidth(),
-//        contentAlignment = Alignment.BottomCenter // Центрируем прогресс-бар снизу
-//    ) {
-//        AnimatedArcProgressBar(animatedProgress)
-//    }
-//}
+@Composable
+fun ProgressBarDemo(
+    current: String,
+    compl: String,
+    start: String
+) {
+
+
+    val startInstant = Instant.parse(start)
+    val complInstant = Instant.parse(compl)
+    val currentInstant = Instant.parse(current)
+    val differenceInMillis = complInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
+    val seconds = (differenceInMillis.toFloat() / 1000)
+    val currentProcent = (complInstant.toEpochMilliseconds() - currentInstant.toEpochMilliseconds())
+    val seconds2 = (currentProcent / 1000)
+    val currentProgress = 1 - (1*seconds2/seconds)
+    var progress by remember { mutableStateOf(currentProgress) }
+    val animatedProgress by animateFloatAsState(targetValue = progress)
+
+    val progressPlus = 1 / seconds
+
+    LaunchedEffect(Unit) {
+        while (progress < 1f) {
+            delay(1000) // Задержка для анимации
+            progress += progressPlus // Увеличиваем прогресс
+        }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.BottomCenter // Центрируем прогресс-бар снизу
+    ) {
+        AnimatedArcProgressBar(animatedProgress)
+    }
+}
 
 @Composable
 fun ProgressBarDemo(
@@ -106,3 +103,28 @@ fun ProgressBarDemo(
     }
 }
 
+@Composable
+fun ProgressBarDemo2(
+    currentProgress: Float,
+    seconds: Float
+) {
+
+    var progress by remember { mutableStateOf(currentProgress) }
+    val animatedProgress by animateFloatAsState(targetValue = progress)
+
+    val progressPlus = 1 / seconds
+
+    LaunchedEffect(Unit) {
+        while (progress < 1f) {
+            delay(1000) // Задержка для анимации
+            progress += progressPlus // Увеличиваем прогресс
+        }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.BottomCenter // Центрируем прогресс-бар снизу
+    ) {
+        AnimatedArcProgressBar(animatedProgress)
+    }
+}

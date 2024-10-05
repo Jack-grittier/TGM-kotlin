@@ -1,5 +1,7 @@
 package ramble.sokol.tgm_inverse
 
+import ProgressBarDemo
+import ProgressBarDemo2
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -68,6 +70,7 @@ import org.jetbrains.compose.web.dom.Img
 import org.jetbrains.skia.Image
 import org.jetbrains.skia.Image.Companion.makeFromEncoded
 import org.w3c.dom.HTMLAudioElement
+import ramble.sokol.tgm_inverse.components.CurrentMusic
 import ramble.sokol.tgm_inverse.components.PlaylistItem
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.util.ApiClient
@@ -83,12 +86,17 @@ class TestScreen : Screen {
 
     private lateinit var apiRepo: ApiRepository
     private lateinit var listMusic: MutableState<List<MusicResponse>>
-    private lateinit var getTime: MutableState<String>
-    private lateinit var getTime2: MutableState<String>
+//    private lateinit var getTime: MutableState<String>
+//    private lateinit var getTime2: MutableState<String>
+    private lateinit var isPlaying: MutableState<Boolean>
+    private lateinit var currentSong: MutableState<MusicResponse?>
+    private lateinit var isVisible: MutableState<Boolean>
 
     @OptIn(ExperimentalEncodingApi::class)
     @Composable
     override fun Content() {
+
+
 
         apiRepo = ApiRepository()
         val scope  = rememberCoroutineScope()
@@ -96,48 +104,138 @@ class TestScreen : Screen {
             mutableStateOf(listOf())
         }
 
-        getTime = remember {
-            mutableStateOf("PEMIS")
+        isPlaying = remember {
+            mutableStateOf(false)
         }
 
-        getTime2 = remember {
-            mutableStateOf("PEMIS2")
+        isVisible = remember {
+            mutableStateOf(false)
         }
 
-        scope.launch {
+        currentSong = remember {
+            mutableStateOf(null)
+        }
+
+//        var audioElement = remember { document.createElement("audio") as HTMLAudioElement }
+//
+////        getTime = remember {
+////            mutableStateOf("PEMIS")
+////        }
+////
+////        getTime2 = remember {
+////            mutableStateOf("PEMIS2")
+////        }
+//
+//        fun playSong(url: String) {
+//            if (audioElement != null) {
+//                audioElement?.pause()
+//            }
+//
+//            audioElement = org.w3c.dom.Audio(url).apply {
+//                play()
+//                onended = {
+//                }
+//            }
+//
+//            isPlaying.value = true
+//        }
+//
+//        fun pauseSong() {
+//            audioElement?.pause()
+//            isPlaying.value = false
+//        }
+//
+//
+//        scope.launch {
 //            getMusic("1", "25")
-        }
+//        }
+//
+//        //getCurrentUtcDateTime()
+//
+//        Column (
+//            modifier = Modifier.fillMaxSize()
+//        ) {
+//
+////            Text(
+////                modifier = Modifier.padding(horizontal = 16.dp),
+////                text = getTime.value,
+////                style = TextStyle(
+////                    fontSize = 22.sp,
+////                    lineHeight = 22.sp,
+////                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+////                    fontWeight = FontWeight(800),
+////                    color = Color.Black,
+////                )
+////            )
+////
+////            Text(
+////                modifier = Modifier.padding(horizontal = 16.dp),
+////                text = getTime2.value,
+////                style = TextStyle(
+////                    fontSize = 22.sp,
+////                    lineHeight = 22.sp,
+////                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+////                    fontWeight = FontWeight(800),
+////                    color = Color.Black,
+////                )
+////            )
+//
+//            LazyRow() {
+//                items(listMusic.value) { items: MusicResponse ->
+//
+//                    if (listMusic.value.indexOf(items) == 0) {
+//                        Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+//                    }
+//
+//                    PlaylistItem(items) {
+//                        currentSong.value = items
+//                        isPlaying.value = true
+//                        isVisible.value = true
+//                    }
+//
+//                    Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+//
+//                }
+//            }
+//
+//            if (isVisible.value == true) {
+//
+//                Box(
+//                    modifier = Modifier.fillMaxSize().padding(bottom = 24.dp, start = 8.dp, end = 8.dp),
+//                    contentAlignment = Alignment.BottomCenter
+//                ) {
+//
+//                    audioElement.src = currentSong.value!!.url
+//
+//                    if (isPlaying.value) {
+//                        audioElement.play()
+//                    } else {
+//                        audioElement.pause()
+//                    }
+//
+//                    CurrentMusic(
+//                        url = currentSong.value!!.coverURL,
+//                        name = currentSong.value!!.name,
+//                        author = currentSong.value!!.group,
+//                        play = isPlaying.value
+//                    ){
+//                        if (isPlaying.value) (pauseSong()) else audioElement?.play()
+//                    }
+//                }
+//            }
+//
+//        }
 
-        getCurrentUtcDateTime()
-
-        Column (
-            modifier = Modifier.fillMaxSize()
+        Column(
+            modifier = Modifier.fillMaxSize().background(background_splash)
         ) {
 
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = getTime.value,
-                style = TextStyle(
-                    fontSize = 22.sp,
-                    lineHeight = 22.sp,
-                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                    fontWeight = FontWeight(800),
-                    color = Color.Black,
-                )
-            )
+            ProgressBarDemo(start = "2024-10-03T06:24:16.533Z", compl = "2024-10-03T07:24:16.532Z", current = "2024-10-03T07:24:00.532Z")
 
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = getTime2.value,
-                style = TextStyle(
-                    fontSize = 22.sp,
-                    lineHeight = 22.sp,
-                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                    fontWeight = FontWeight(800),
-                    color = Color.Black,
-                )
-            )
+
         }
+
+
     }
 
 
@@ -196,16 +294,16 @@ class TestScreen : Screen {
 
     }
 
-    fun getCurrentUtcDateTime() {
-        // Получаем текущее время в UTC
-        val currentInstant: Instant = Clock.System.now()
-        // Преобразуем его в локальное время (UTC)
-        val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
-
-        getTime2.value = utcDateTime.toString()
-        // Форматируем строку (например, "YYYY-MM-DD HH:MM:SS")
-        getTime.value = "${utcDateTime.date} ${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}"
-    }
+//    fun getCurrentUtcDateTime() {
+//        // Получаем текущее время в UTC
+//        val currentInstant: Instant = Clock.System.now()
+//        // Преобразуем его в локальное время (UTC)
+//        val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
+//
+//        getTime2.value = utcDateTime.toString()
+//        // Форматируем строку (например, "YYYY-MM-DD HH:MM:SS")
+//        getTime.value = "${utcDateTime.date} ${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}"
+//    }
 
 
 

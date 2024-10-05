@@ -7,7 +7,7 @@ data class MusicResponse(
     val id: Long? = null,
     val name: String,
     val group: String,
-    val url: String,
+    var url: String,
     val coverURL: String,
     val reward: Long,
     val duration: Int,
