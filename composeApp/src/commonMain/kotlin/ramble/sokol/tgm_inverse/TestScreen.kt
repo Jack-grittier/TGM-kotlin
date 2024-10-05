@@ -40,6 +40,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -59,6 +60,7 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -83,6 +85,7 @@ import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.util.ApiClient
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_splash
+import tgminverse.composeapp.generated.resources.PressStart2P_Regular
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.get_bonuses
 import tgminverse.composeapp.generated.resources.icon_finish_mining
@@ -109,6 +112,8 @@ class TestScreen : Screen {
     private lateinit var finish: MutableState<Boolean>
     private lateinit var scope: CoroutineScope
     private lateinit var testText: MutableState<String?>
+    private lateinit var rewardMining: MutableState<Long?>
+    private lateinit var currentReward: MutableState<Long>
 
     @OptIn(ExperimentalEncodingApi::class)
     @Composable
@@ -124,6 +129,14 @@ class TestScreen : Screen {
 
         testText = remember {
             mutableStateOf(null)
+        }
+
+        rewardMining = remember {
+            mutableStateOf(null)
+        }
+
+        currentReward = remember {
+            mutableStateOf(0)
         }
 
         finish = remember {
@@ -400,13 +413,33 @@ class TestScreen : Screen {
                         )
 
                     } else {
+
                         ProgressBarDemo(
                             start = startedTimeMining.value,
                             compl = completedTimeMining.value,
                             current = currentTime.value
                         )
+
                     }
                 }
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text =
+                    if (statusCode.value == 404) "Start"
+                    else if (finishMining.value == true) "1000"
+                    else {
+                        currentReward.value.toString()
+                    },
+                    style = TextStyle(
+                        fontSize = 32.sp,
+                        lineHeight = 32.sp,
+                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                        fontWeight = FontWeight(400),
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                    )
+                )
 
             }
         }
@@ -485,12 +518,18 @@ class TestScreen : Screen {
         statusCode.value = body.statusCode
         testText.value = body.toString()
         if (body.statusCode == null) {
+            rewardMining.value = body.reward!!.toLong()
             completedTimeMining.value = body.completedAt.toString()
             startedTimeMining.value = body.startedAt.toString()
+            val startInstant = Instant.parse(body.startedAt.toString())
+            val complInstant = Instant.parse(body.completedAt.toString())
+            val differenceInMillis = complInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
+            val seconds = (differenceInMillis.toFloat() / 1000) / 60
+            testText.value = differenceInMillis.toString()
+            currentReward.value = (rewardMining.value!! / (seconds)).toLong()
             val date2 = body.completedAt.toString()
             val date1 = currentTime.value
             val comparisonResult = compareDates(date1, date2)
-            testText.value = comparisonResult.toString()
             when {
                 comparisonResult < 0 -> finishMining.value = false
                 comparisonResult >= 0 -> finishMining.value = true

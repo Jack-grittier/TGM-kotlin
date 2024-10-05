@@ -136,6 +136,8 @@ class MiningScreen (
     private lateinit var completedTimeMining: MutableState<String>
     private lateinit var startedTimeMining: MutableState<String>
     private lateinit var finish: MutableState<Boolean>
+    private lateinit var rewardMining: MutableState<Long?>
+    private lateinit var currentReward: MutableState<Long>
 
     @Composable
     override fun Content() {
@@ -155,6 +157,14 @@ class MiningScreen (
 
         finish = remember {
             mutableStateOf(false)
+        }
+
+        rewardMining = remember {
+            mutableStateOf(null)
+        }
+
+        currentReward = remember {
+            mutableStateOf(0)
         }
 
         differenceInMillis = remember {
@@ -392,7 +402,11 @@ class MiningScreen (
 
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = tessText.value.toString(),
+                            text = if (statusCode.value == 404) "Start"
+                            else if (finishMining.value == true) "1000"
+                            else {
+                                currentReward.value.toString()
+                            },
                             style = TextStyle(
                                 fontSize = 32.sp,
                                 lineHeight = 32.sp,
@@ -622,8 +636,14 @@ class MiningScreen (
         val body = apiRepo.getEarnings(initData = userEntityCreate.initData)
         statusCode.value = body.statusCode
         if (body.statusCode == null) {
+            rewardMining.value = body.reward!!.toLong()
             completedTimeMining.value = body.completedAt.toString()
             startedTimeMining.value = body.startedAt.toString()
+            val startInstant = Instant.parse(body.startedAt.toString())
+            val complInstant = Instant.parse(body.completedAt.toString())
+            val differenceInMillis = complInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
+            val seconds = (differenceInMillis.toFloat() / 1000) / 60
+            currentReward.value = (rewardMining.value!! / (seconds)).toLong()
             val date2 = body.completedAt.toString()
             val date1 = currentTime.value
             val comparisonResult = compareDates(date1, date2)
