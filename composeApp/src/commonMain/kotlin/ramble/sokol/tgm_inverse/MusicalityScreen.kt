@@ -148,21 +148,6 @@ class MusicalityScreen(
 
             item {
 
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = differenceInMillis.value.toString(),
-                    style = TextStyle(
-                        fontSize = 15.sp,
-                        lineHeight = 20.sp,
-                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                        fontWeight = FontWeight(400),
-                        color = Color.White,
-                        textAlign = TextAlign.Start,
-                    )
-                )
-
-                Spacer(modifier = Modifier.padding(top = 16.dp))
-
                 Image(
                     modifier = Modifier
                         .fillMaxWidth()

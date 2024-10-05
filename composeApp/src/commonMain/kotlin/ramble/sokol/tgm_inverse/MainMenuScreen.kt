@@ -67,6 +67,7 @@ import com.skydoves.flexible.bottomsheet.material.FlexibleBottomSheet
 import com.skydoves.flexible.core.FlexibleSheetSize
 import com.skydoves.flexible.core.FlexibleSheetValue
 import com.skydoves.flexible.core.rememberFlexibleBottomSheetState
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.inmo.tgbotapi.webapps.WebAppUser
 import dev.inmo.tgbotapi.webapps.webApp
 import io.kamel.image.KamelImage
@@ -160,6 +161,8 @@ class MainMenuScreen(
         if (clickSheet.value == 1) {
             bottomSheet()
         }
+
+        val viewModel = MusicViewModel()
 
         navigator = LocalNavigator.current!!
 
@@ -335,7 +338,8 @@ class MainMenuScreen(
                             modifier = Modifier.padding(innerPadding),
                             userEntityCreate,
                             dateAirDrop.value!!,
-                            balance.value!!
+                            balance.value!!,
+                            viewModel
                         )
                     )
 

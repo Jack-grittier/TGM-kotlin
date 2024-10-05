@@ -117,6 +117,7 @@ class MiningScreen (
     val userEntityCreate: UserEntityCreate,
     val airDropDate: String,
     val balance: Long,
+    val viewModel: MusicViewModel
 ) : Screen {
 
     private lateinit var startedEarning: MutableState<Boolean>
@@ -233,6 +234,11 @@ class MiningScreen (
             getMusic("1", "25")
             finish.value = true
         }
+
+        if (!viewModel.isMusicPlaying()) {
+            playMusic.value = true
+        }
+
 
         Box(
             modifier = modifier
@@ -586,6 +592,8 @@ class MiningScreen (
                 }
 
                 if (playMusic.value == true) {
+
+                    viewModel.playMusic()
 
                     Box(
                         modifier = Modifier.fillMaxSize()
