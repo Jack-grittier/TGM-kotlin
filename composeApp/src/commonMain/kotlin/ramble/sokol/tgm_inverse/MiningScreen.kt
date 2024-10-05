@@ -419,58 +419,58 @@ class MiningScreen (
 
                     }
 
-                    if (airDropVisible.value == true) {
+                        if (airDropVisible.value == true) {
 
-                        val startInstant = Instant.parse(currentTime.value.toString())
-                        val endInstant = Instant.parse(airDropDate)
+                            val startInstant = Instant.parse(currentTime.value.toString())
+                            val endInstant = Instant.parse(airDropDate)
 
-                        // Вычисление разницы в миллисекундах
-                        differenceInMillis.value =
-                            endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
+                            // Вычисление разницы в миллисекундах
+                            differenceInMillis.value =
+                                endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
 
-//                    LaunchedEffect(Unit) {
-//                        while (true) {
-//                            differenceInMillis.value -= 1000
-//                            delay(1000) // Обновление каждую секунду
-//                        }
-//                    }
+    //                    LaunchedEffect(Unit) {
+    //                        while (true) {
+    //                            differenceInMillis.value -= 1000
+    //                            delay(1000) // Обновление каждую секунду
+    //                        }
+    //                    }
 
 
-                        val minutes = (differenceInMillis.value / (1000 * 60)) % 60
-                        val hours = (differenceInMillis.value / (1000 * 60 * 60)) % 24
-                        val days = differenceInMillis.value / (1000 * 60 * 60 * 24)
+                            val minutes = (differenceInMillis.value / (1000 * 60)) % 60
+                            val hours = (differenceInMillis.value / (1000 * 60 * 60)) % 24
+                            val days = differenceInMillis.value / (1000 * 60 * 60 * 24)
 
-                        val formattedTime = "${days.toString().padStart(2, '0')}:" +
-                                "${hours.toString().padStart(2, '0')}:" +
-                                "${minutes.toString().padStart(2, '0')}"
+                            val formattedTime = "${days.toString().padStart(2, '0')}:" +
+                                    "${hours.toString().padStart(2, '0')}:" +
+                                    "${minutes.toString().padStart(2, '0')}"
 
-                        Spacer(modifier = Modifier.padding(top = 17.dp))
+                            Spacer(modifier = Modifier.padding(top = 17.dp))
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(background_airdrop),
-                            contentAlignment = Alignment.Center
-                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(background_airdrop),
+                                contentAlignment = Alignment.Center
+                            ) {
 
-                            Text(
-                                modifier = Modifier.fillMaxWidth()
-                                    .padding(vertical = 24.dp, horizontal = 10.dp),
-                                text = "Airdrop: $formattedTime",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    lineHeight = 16.sp,
-                                    fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                                    fontWeight = FontWeight(400),
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center,
+                                Text(
+                                    modifier = Modifier.fillMaxWidth()
+                                        .padding(vertical = 24.dp, horizontal = 10.dp),
+                                    text = "Airdrop: $formattedTime",
+                                    style = TextStyle(
+                                        fontSize = 16.sp,
+                                        lineHeight = 16.sp,
+                                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                                        fontWeight = FontWeight(400),
+                                        color = Color.White,
+                                        textAlign = TextAlign.Center,
+                                    )
                                 )
-                            )
-                        }
+                            }
 
-                    }
+                        }
 
                     if (adUrl.value != null) {
 
