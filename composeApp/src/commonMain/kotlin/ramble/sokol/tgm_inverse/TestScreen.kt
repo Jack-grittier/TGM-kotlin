@@ -4,6 +4,8 @@ import ProgressBarDemo
 import ProgressBarDemo2
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,20 +57,25 @@ import io.ktor.client.statement.readBytes
 import korlibs.encoding.toBase64
 import kotlinx.browser.document
 import kotlinx.browser.window
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.internal.JSJoda.DateTimeParseException
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.Font
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.web.attributes.AutoComplete.Companion.url
 import org.jetbrains.compose.web.attributes.alt
+import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Img
 import org.jetbrains.skia.Image
 import org.jetbrains.skia.Image.Companion.makeFromEncoded
+import org.koin.core.module._scopedInstanceFactory
 import org.w3c.dom.HTMLAudioElement
 import ramble.sokol.tgm_inverse.components.CurrentMusic
 import ramble.sokol.tgm_inverse.components.PlaylistItem
@@ -78,6 +85,8 @@ import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_splash
 import tgminverse.composeapp.generated.resources.Res
 import tgminverse.composeapp.generated.resources.get_bonuses
+import tgminverse.composeapp.generated.resources.icon_finish_mining
+import tgminverse.composeapp.generated.resources.icon_play_music
 import tgminverse.composeapp.generated.resources.mont_regular
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -92,6 +101,15 @@ class TestScreen : Screen {
     private lateinit var currentSong: MutableState<MusicResponse?>
     private lateinit var isVisible: MutableState<Boolean>
 
+    private lateinit var completedTimeMining: MutableState<String>
+    private lateinit var startedTimeMining: MutableState<String>
+    private lateinit var finishMining: MutableState<Boolean?>
+    private lateinit var currentTime: MutableState<String>
+    private lateinit var statusCode: MutableState<Int?>
+    private lateinit var finish: MutableState<Boolean>
+    private lateinit var scope: CoroutineScope
+    private lateinit var testText: MutableState<String?>
+
     @OptIn(ExperimentalEncodingApi::class)
     @Composable
     override fun Content() {
@@ -99,9 +117,43 @@ class TestScreen : Screen {
 
 
         apiRepo = ApiRepository()
-        val scope  = rememberCoroutineScope()
+        scope  = rememberCoroutineScope()
         listMusic = remember {
             mutableStateOf(listOf())
+        }
+
+        testText = remember {
+            mutableStateOf(null)
+        }
+
+        finish = remember {
+            mutableStateOf(false)
+        }
+
+        finishMining = remember {
+            mutableStateOf(false)
+        }
+
+        currentTime = remember {
+            mutableStateOf("")
+        }
+
+        completedTimeMining = remember {
+            mutableStateOf("")
+        }
+
+        startedTimeMining = remember {
+            mutableStateOf("")
+        }
+
+        statusCode = remember {
+            mutableStateOf(null)
+        }
+
+        getCurrentUtcDateTime()
+
+        scope.launch{
+            getEarnings()
         }
 
         isPlaying = remember {
@@ -230,11 +282,134 @@ class TestScreen : Screen {
             modifier = Modifier.fillMaxSize().background(background_splash)
         ) {
 
-            ProgressBarDemo(start = "2024-10-03T06:24:16.533Z", compl = "2024-10-03T07:24:16.532Z", current = "2024-10-03T07:24:00.532Z")
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = finishMining.value.toString(),
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    lineHeight = 22.sp,
+                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                    fontWeight = FontWeight(800),
+                    color = Color.White,
+                )
+            )
 
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = currentTime.value.toString(),
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    lineHeight = 22.sp,
+                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                    fontWeight = FontWeight(800),
+                    color = Color.White,
+                )
+            )
 
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = statusCode.value.toString(),
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    lineHeight = 22.sp,
+                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                    fontWeight = FontWeight(800),
+                    color = Color.White,
+                )
+            )
+
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = completedTimeMining.value.toString(),
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    lineHeight = 22.sp,
+                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                    fontWeight = FontWeight(800),
+                    color = Color.White,
+                )
+            )
+
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = startedTimeMining.value.toString(),
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    lineHeight = 22.sp,
+                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                    fontWeight = FontWeight(800),
+                    color = Color.White,
+                )
+            )
+
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = testText.value.toString(),
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    lineHeight = 22.sp,
+                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                    fontWeight = FontWeight(800),
+                    color = Color.White,
+                )
+            )
+
+            if (finish.value == true) {
+
+                if (statusCode.value == 404) {
+
+                    Image(
+                        modifier = Modifier
+                            .height(86.dp)
+                            .width(86.dp)
+                            .padding(bottom = 14.dp, end = 14.dp)
+                            .clickable(
+                                onClick = {
+                                    scope.launch {
+                                        postEarnings()
+                                    }
+                                },
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ),
+                        painter = painterResource(Res.drawable.icon_play_music),
+                        contentDescription = "imageLine"
+                    )
+                }
+
+                if (statusCode.value == null) {
+
+                    if (finishMining.value == true) {
+
+                        Image(
+                            modifier = Modifier
+                                .height(86.dp)
+                                .width(86.dp)
+                                .padding(bottom = 14.dp, end = 14.dp)
+                                .clickable(
+                                    onClick = {
+                                        scope.launch {
+                                            patchEarnings()
+                                        }
+                                    },
+                                    indication = null,
+                                    interactionSource = remember { MutableInteractionSource() }
+                                ),
+                            painter = painterResource(Res.drawable.icon_finish_mining),
+                            contentDescription = "imageLine"
+                        )
+
+                    } else {
+                        ProgressBarDemo(
+                            start = startedTimeMining.value,
+                            compl = completedTimeMining.value,
+                            current = currentTime.value
+                        )
+                    }
+                }
+
+            }
         }
-
 
     }
 
@@ -288,24 +463,59 @@ class TestScreen : Screen {
 
 
     private suspend fun getMusic(page: String, limit: String) {
-
         val body = apiRepo.getMusic(page, limit)
         listMusic.value = body
 
     }
 
-//    fun getCurrentUtcDateTime() {
-//        // Получаем текущее время в UTC
-//        val currentInstant: Instant = Clock.System.now()
-//        // Преобразуем его в локальное время (UTC)
-//        val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
-//
-//        getTime2.value = utcDateTime.toString()
-//        // Форматируем строку (например, "YYYY-MM-DD HH:MM:SS")
-//        getTime.value = "${utcDateTime.date} ${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}"
-//    }
+    fun compareDates(date1: String, date2: String): Int {
+        return try {
+            val instant1 = Instant.parse(date1)
+            val instant2 = Instant.parse(date2)
+            instant1.compareTo(instant2)
+        } catch (e: DateTimeParseException) {
+            0
+        }
+    }
 
 
 
+    private suspend fun getEarnings(){
+        val body = apiRepo.getEarnings(initData = "query_id=AAEXG48VAwAAABcbjxWiXQe1&user=%7B%22id%22%3A6804151063%2C%22first_name%22%3A%22%D0%90%D1%80%D1%82%D1%91%D0%BC%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22RambleNeTOT%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1724088134&hash=a87fd616ea66d7832f5ace4da0be88ae3e7538d63ad3459a559da2fc191028e6")
+        statusCode.value = body.statusCode
+        testText.value = body.toString()
+        if (body.statusCode == null) {
+            completedTimeMining.value = body.completedAt.toString()
+            startedTimeMining.value = body.startedAt.toString()
+            val date2 = body.completedAt.toString()
+            val date1 = currentTime.value
+            val comparisonResult = compareDates(date1, date2)
+            testText.value = comparisonResult.toString()
+            when {
+                comparisonResult < 0 -> finishMining.value = false
+                comparisonResult >= 0 -> finishMining.value = true
+            }
+        }
+        finish.value = true
+    }
+
+    fun getCurrentUtcDateTime() {
+        // Получаем текущее время в UTC
+        val currentInstant: Instant = Clock.System.now()
+        // Преобразуем его в локальное время (UTC)
+        val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
+        // Форматируем строку (например, "YYYY-MM-DD HH:MM:SS")
+        currentTime.value = "${utcDateTime.date}T${utcDateTime.hour.toString().padStart(2, '0')}:${utcDateTime.minute.toString().padStart(2, '0')}:${utcDateTime.second.toString().padStart(2, '0')}.000Z"
+    }
+
+    private suspend fun postEarnings(){
+        val body = apiRepo.postEarnings(initData = "query_id=AAEXG48VAwAAABcbjxWiXQe1&user=%7B%22id%22%3A6804151063%2C%22first_name%22%3A%22%D0%90%D1%80%D1%82%D1%91%D0%BC%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22RambleNeTOT%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1724088134&hash=a87fd616ea66d7832f5ace4da0be88ae3e7538d63ad3459a559da2fc191028e6")
+        getEarnings()
+    }
+
+    suspend fun patchEarnings(){
+        val body = apiRepo.patchEarnings(initData = "query_id=AAEXG48VAwAAABcbjxWiXQe1&user=%7B%22id%22%3A6804151063%2C%22first_name%22%3A%22%D0%90%D1%80%D1%82%D1%91%D0%BC%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22RambleNeTOT%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1724088134&hash=a87fd616ea66d7832f5ace4da0be88ae3e7538d63ad3459a559da2fc191028e6")
+        getEarnings()
+    }
 
 }

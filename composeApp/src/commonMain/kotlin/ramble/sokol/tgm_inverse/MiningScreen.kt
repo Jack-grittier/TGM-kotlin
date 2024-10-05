@@ -612,11 +612,12 @@ class MiningScreen (
     private suspend fun getEarnings(){
         val body = apiRepo.getEarnings(initData = userEntityCreate.initData)
         statusCode.value = body.statusCode
-        if (statusCode.value == null) {
+        if (body.statusCode == null) {
             completedTimeMining.value = body.completedAt.toString()
             startedTimeMining.value = body.startedAt.toString()
             val date2 = body.completedAt.toString()
-            val comparisonResult = compareDates(currentTime.value, date2)
+            val date1 = currentTime.value
+            val comparisonResult = compareDates(date1, date2)
             tessText.value = comparisonResult.toString()
             when {
                 comparisonResult < 0 -> finishMining.value = false
@@ -664,7 +665,7 @@ class MiningScreen (
         // Преобразуем его в локальное время (UTC)
         val utcDateTime = currentInstant.toLocalDateTime(TimeZone.UTC)
         // Форматируем строку (например, "YYYY-MM-DD HH:MM:SS")
-        currentTime.value = "${utcDateTime.date}T${utcDateTime.hour}:${utcDateTime.minute}:${utcDateTime.second}.000Z"
+        currentTime.value = "${utcDateTime.date}T${utcDateTime.hour.toString().padStart(2, '0')}:${utcDateTime.minute.toString().padStart(2, '0')}:${utcDateTime.second.toString().padStart(2, '0')}.000Z"
 
         val comparisonResult = compareDates(airDropDate, currentTime.value!!)
 
