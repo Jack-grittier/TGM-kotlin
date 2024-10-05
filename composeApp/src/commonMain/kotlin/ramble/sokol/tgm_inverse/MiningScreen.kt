@@ -408,7 +408,7 @@ class MiningScreen (
                         }
 
                         Text(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
                             text = if (statusCode.value == 404) balance.toString()
                             else if (finishMining.value == true) "1000"
                             else {
