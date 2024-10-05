@@ -407,24 +407,24 @@ class MiningScreen (
                             }
                         }
 
-                        Text(
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
-                            text = if (statusCode.value == 404) balance.toString()
-                            else if (finishMining.value == true) "1000"
-                            else {
-                                currentReward.value.toString()
-                            },
-                            style = TextStyle(
-                                fontSize = 32.sp,
-                                lineHeight = 32.sp,
-                                fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                                fontWeight = FontWeight(400),
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                            )
-                        )
-
                     }
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+                        text = if (statusCode.value == 404) balance.toString()
+                        else if (finishMining.value == true) "1000"
+                        else {
+                            currentReward.value.toString()
+                        },
+                        style = TextStyle(
+                            fontSize = 32.sp,
+                            lineHeight = 32.sp,
+                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                            fontWeight = FontWeight(400),
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                        )
+                    )
 
                         if (airDropVisible.value == true) {
 
