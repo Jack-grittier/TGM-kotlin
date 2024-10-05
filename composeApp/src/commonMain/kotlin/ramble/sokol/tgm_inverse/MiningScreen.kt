@@ -235,9 +235,9 @@ class MiningScreen (
             finish.value = true
         }
 
-        if (!viewModel.isMusicPlaying()) {
-            playMusic.value = true
-        }
+//        if (!viewModel.isMusicPlaying()) {
+//            playMusic.value = true
+//        }
 
 
         Box(
