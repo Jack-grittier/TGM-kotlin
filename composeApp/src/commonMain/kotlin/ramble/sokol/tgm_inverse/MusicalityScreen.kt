@@ -137,8 +137,6 @@ class MusicalityScreen(
             getLeader("1", "25")
         }
 
-        Toaster(state = toaster, alignment = Alignment.BottomCenter)
-
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
@@ -147,6 +145,8 @@ class MusicalityScreen(
         ){
 
             item {
+
+                Spacer(modifier = Modifier.padding(top = 16.dp))
 
                 Image(
                     modifier = Modifier
@@ -344,12 +344,12 @@ class MusicalityScreen(
                             // Вычисление разницы в миллисекундах
                             differenceInMillis.value = diff
 
-                            LaunchedEffect(Unit) {
-                                while (true) {
-                                    differenceInMillis.value -= 1000
-                                    delay(1000)
-                                }
-                            }
+//                            LaunchedEffect(Unit) {
+//                                while (true) {
+//                                    differenceInMillis.value -= 1000
+//                                    delay(1000)
+//                                }
+//                            }
 
 
                             val minutes = (differenceInMillis.value / (1000 * 60)) % 60
