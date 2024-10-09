@@ -339,6 +339,7 @@ class MainMenuScreen(
                             userEntityCreate,
                             dateAirDrop.value!!,
                             balance.value!!,
+                            bodyUserCreate,
                             viewModel
                         )
                     )

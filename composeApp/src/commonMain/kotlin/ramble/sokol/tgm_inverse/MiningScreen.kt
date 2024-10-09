@@ -59,6 +59,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import dev.inmo.micro_utils.common.toByteArray
 import dev.inmo.tgbotapi.webapps.webApp
 import io.ktor.client.HttpClient
@@ -91,6 +93,7 @@ import ramble.sokol.tgm_inverse.model.data.GetEarningsEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreateResponse
 import ramble.sokol.tgm_inverse.model.util.ApiClient
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_airdrop
@@ -117,6 +120,7 @@ class MiningScreen (
     val userEntityCreate: UserEntityCreate,
     val airDropDate: String,
     val balance: Long,
+    val bodyUserCreate: UserEntityCreateResponse,
     val viewModel: MusicViewModel
 ) : Screen {
 
@@ -140,6 +144,7 @@ class MiningScreen (
     private lateinit var finish: MutableState<Boolean>
     private lateinit var rewardMining: MutableState<Long?>
     private lateinit var currentReward: MutableState<Long>
+    private lateinit var navigator: Navigator
 
     @Composable
     override fun Content() {
@@ -224,6 +229,8 @@ class MiningScreen (
         startedTimeMining = remember {
             mutableStateOf("")
         }
+
+        navigator = LocalNavigator.current!!
 
         getCurrentUtcDateTime()
 
@@ -384,6 +391,7 @@ class MiningScreen (
                                                         onClick = {
                                                             scope.launch {
                                                                 patchEarnings()
+                                                                navigator?.push(MainMenuScreen(userEntityCreate, bodyUserCreate))
                                                             }
                                                         },
                                                         indication = null,
