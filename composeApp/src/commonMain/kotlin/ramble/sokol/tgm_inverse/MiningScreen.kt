@@ -616,7 +616,8 @@ class MiningScreen (
                             url = currentSong.value!!.coverURL,
                             name = currentSong.value!!.name,
                             author = currentSong.value!!.group,
-                            play = pauseMusic.value
+                            play = pauseMusic.value,
+                            duration = currentSong.value!!.duration
                         ) {
                             pauseMusic.value = !pauseMusic.value
                         }

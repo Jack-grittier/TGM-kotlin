@@ -67,6 +67,7 @@ fun CurrentMusic(
     name: String,
     author: String,
     play:Boolean,
+    duration: Int,
     onClick: () -> Unit,
 ){
 
@@ -142,7 +143,7 @@ fun CurrentMusic(
                 Spacer(modifier = Modifier.padding(top = 8.dp))
 
                 Text(
-                    text = author,
+                    text = "${author} | ${getTime(duration)}",
                     style = TextStyle(
                         fontSize = 10.sp,
                         lineHeight = 13.sp,
@@ -174,4 +175,18 @@ fun CurrentMusic(
 
     }
 
+}
+
+fun getTime(seconds: Int) : String{
+// Вычисляем минуты и секунды
+    val minutes = seconds / 60
+    val remainingSeconds = seconds % 60
+
+    // Преобразуем в строку с ведущими нулями
+    val timeString = StringBuilder()
+        .append(if (minutes < 10) "0$minutes" else minutes.toString())
+        .append(":")
+        .append(if (remainingSeconds < 10) "0$remainingSeconds" else remainingSeconds.toString())
+
+    return timeString.toString()
 }
