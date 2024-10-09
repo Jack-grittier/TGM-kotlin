@@ -145,6 +145,7 @@ class MiningScreen (
     private lateinit var rewardMining: MutableState<Long?>
     private lateinit var currentReward: MutableState<Long>
     private lateinit var navigator: Navigator
+    private lateinit var countRewardMinute: MutableState<Long>
 
     @Composable
     override fun Content() {
@@ -160,6 +161,10 @@ class MiningScreen (
 
         musicAdUrl = remember {
             mutableStateOf(null)
+        }
+
+        countRewardMinute = remember {
+            mutableStateOf(0L)
         }
 
         finish = remember {
@@ -402,6 +407,14 @@ class MiningScreen (
                                             )
 
                                         } else {
+
+                                            LaunchedEffect(Unit) {
+                                                while (currentReward.value < rewardMining.value!!) {
+                                                    delay(countRewardMinute.value)
+                                                    currentReward.value += 1
+                                                }
+                                            }
+
                                             ProgressBarDemo(
                                                 start = startedTimeMining.value,
                                                 compl = completedTimeMining.value,
@@ -666,6 +679,7 @@ class MiningScreen (
             val seconds = (differenceInMillis.toFloat() / 1000) / 60
             val currentProgress =  rewardMining.value!! - (rewardMining.value!! *seconds2/seconds)
             currentReward.value =currentProgress.toLong()
+            countRewardMinute.value = (differenceInMillis/1000)/rewardMining.value!!
             val date2 = body.completedAt.toString()
             val date1 = currentTime.value
             val comparisonResult = compareDates(date1, date2)
