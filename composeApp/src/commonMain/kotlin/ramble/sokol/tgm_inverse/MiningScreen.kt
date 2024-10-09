@@ -396,7 +396,7 @@ class MiningScreen (
                                                         onClick = {
                                                             scope.launch {
                                                                 patchEarnings()
-                                                                navigator?.push(MainMenuScreen(userEntityCreate, bodyUserCreate))
+                                                                //navigator?.push(MainMenuScreen(userEntityCreate, bodyUserCreate))
                                                             }
                                                         },
                                                         indication = null,
