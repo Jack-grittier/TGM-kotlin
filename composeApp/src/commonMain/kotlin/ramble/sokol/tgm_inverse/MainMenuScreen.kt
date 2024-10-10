@@ -127,6 +127,7 @@ class MainMenuScreen(
     private lateinit var statisticLock: MutableState<Boolean?>
     private lateinit var dateAirDrop: MutableState<String?>
     private lateinit var dateMiniGame: MutableState<String?>
+    private lateinit var testText: MutableState<String>
 
     @Composable
     override fun Content() {
@@ -153,6 +154,9 @@ class MainMenuScreen(
         dateMiniGame = remember {
             mutableStateOf(null)
         }
+        testText = remember {
+            mutableStateOf("")
+        }
 
         var selectedItem by rememberSaveable {
             mutableIntStateOf(1)
@@ -163,6 +167,8 @@ class MainMenuScreen(
         }
 
         val viewModel = MusicViewModel()
+
+        testText.value = viewModel.isMusicPlaying().toString()
 
         navigator = LocalNavigator.current!!
 
@@ -325,6 +331,7 @@ class MainMenuScreen(
                 }
             ) { innerPadding ->
                 when (selectedItem) {
+
                     0 -> Navigator(
                         MusicalityScreen(
                             modifier = Modifier.padding(innerPadding),
@@ -369,8 +376,19 @@ class MainMenuScreen(
 
     }
 
+    inline fun <reified T : Any> jsObject(builder: T.() -> Unit): T =
+        (js("{}") as T).apply(builder)
+
     @Composable
     fun bottomSheet(){
+
+//        val options = jsObject<TonConnectUIOptions>{
+//            manifestUrl = ""
+//        }
+//
+//        val tonConnectUI = TonConnectUI(options)
+//        tonConnectUI.renderWalletSelector("#wallet-selector")
+
         val scope = rememberCoroutineScope()
         val sheetState = rememberFlexibleBottomSheetState(
             flexibleSheetSize = FlexibleSheetSize(fullyExpanded = 0.9f),
@@ -577,7 +595,8 @@ class MainMenuScreen(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
                         ),
-                    text = "@${userEntityCreate.username.toString()}",
+                    //text = "@${userEntityCreate.username.toString()}",
+                    text = testText.value,
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,

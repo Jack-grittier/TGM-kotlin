@@ -235,6 +235,8 @@ class MiningScreen (
             mutableStateOf("")
         }
 
+        tessText.value = viewModel.isMusicPlaying().toString()
+
         navigator = LocalNavigator.current!!
 
         getCurrentUtcDateTime()
@@ -267,6 +269,20 @@ class MiningScreen (
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
                 ) {
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(vertical = 24.dp, horizontal = 10.dp),
+                        text = tessText.value.toString(),
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            lineHeight = 16.sp,
+                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                            fontWeight = FontWeight(400),
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                        )
+                    )
 
                     Box(
                         modifier = Modifier.fillMaxWidth(),
@@ -408,12 +424,12 @@ class MiningScreen (
 
                                         } else {
 
-                                            LaunchedEffect(Unit) {
-                                                while (currentReward.value < rewardMining.value!!) {
-                                                    delay(countRewardMinute.value)
-                                                    currentReward.value += 1
-                                                }
-                                            }
+//                                            LaunchedEffect(Unit) {
+//                                                while (currentReward.value < rewardMining.value!!) {
+//                                                    delay(countRewardMinute.value)
+//                                                    currentReward.value += 1
+//                                                }
+//                                            }
 
                                             ProgressBarDemo(
                                                 start = startedTimeMining.value,
@@ -640,6 +656,7 @@ class MiningScreen (
                             play = pauseMusic.value,
                             duration = currentSong.value!!.duration
                         ) {
+                            viewModel.isMusicPlaying()
                             pauseMusic.value = !pauseMusic.value
                         }
                     }

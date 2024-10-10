@@ -54,6 +54,7 @@ kotlin {
             implementation(compose.html.core)
             implementation(libs.ktor.client.js)
             implementation(libs.tg.api)
+            //implementation(npm("@tonconnect/ui", "0.2.7"))
         }
 
     }
