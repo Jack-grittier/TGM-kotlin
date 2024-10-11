@@ -235,6 +235,8 @@ class MiningScreen (
             mutableStateOf("")
         }
 
+        playMusic.value = viewModel.isMusicPlaying()
+
         tessText.value = viewModel.isMusicPlaying().toString()
 
         navigator = LocalNavigator.current!!
