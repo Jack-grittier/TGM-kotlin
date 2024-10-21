@@ -59,6 +59,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.stack.popUntil
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import dev.inmo.micro_utils.common.toByteArray
@@ -89,6 +90,8 @@ import ramble.sokol.tgm_inverse.components.TasksDone
 import ramble.sokol.tgm_inverse.components.TasksGetPayment
 import ramble.sokol.tgm_inverse.components.TasksPerform
 import ramble.sokol.tgm_inverse.components.TasksPerformProgress
+import ramble.sokol.tgm_inverse.components.TextAirdrop
+import ramble.sokol.tgm_inverse.components.TextReward
 import ramble.sokol.tgm_inverse.model.data.GetEarningsEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
@@ -146,6 +149,7 @@ class MiningScreen (
     private lateinit var currentReward: MutableState<Long>
     private lateinit var navigator: Navigator
     private lateinit var countRewardMinute: MutableState<Long>
+    private lateinit var comparisonResult: MutableState<Int>
 
     @Composable
     override fun Content() {
@@ -235,6 +239,10 @@ class MiningScreen (
             mutableStateOf("")
         }
 
+        comparisonResult = remember {
+            mutableStateOf(-1)
+        }
+
         playMusic.value = viewModel.isMusicPlaying()
 
         tessText.value = viewModel.isMusicPlaying().toString()
@@ -290,6 +298,56 @@ class MiningScreen (
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.BottomCenter
                     ) {
+
+                        if (statusCode.value == 404){
+                            Text(
+                                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+                                text = balance.toString(),
+                                style = TextStyle(
+                                    fontSize = 32.sp,
+                                    lineHeight = 32.sp,
+                                    fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                                    fontWeight = FontWeight(400),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center,
+                                )
+                            )
+                        }else if (finishMining.value == true){
+                            Text(
+                                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+                                text = rewardMining.value.toString(),
+                                style = TextStyle(
+                                    fontSize = 32.sp,
+                                    lineHeight = 32.sp,
+                                    fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                                    fontWeight = FontWeight(400),
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center,
+                                )
+                            )
+                        }else {
+
+//                            Text(
+//                                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+//                                text = currentReward.value.toString(),
+//                                style = TextStyle(
+//                                    fontSize = 32.sp,
+//                                    lineHeight = 32.sp,
+//                                    fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+//                                    fontWeight = FontWeight(400),
+//                                    color = Color.White,
+//                                    textAlign = TextAlign.Center,
+//                                )
+//                            )
+
+                            TextReward(
+                                start = startedTimeMining.value,
+                                compl = completedTimeMining.value,
+                                current = currentTime.value,
+                                rewardMining = rewardMining.value!!
+                            )
+
+                        }
 
                         Column(
                             modifier = Modifier.fillMaxWidth(),
@@ -414,7 +472,7 @@ class MiningScreen (
                                                         onClick = {
                                                             scope.launch {
                                                                 patchEarnings()
-                                                                //navigator?.push(MainMenuScreen(userEntityCreate, bodyUserCreate))
+                                                                //navigator.replace(LoadingScreen(userEntityCreate, bodyUserCreate))
                                                             }
                                                         },
                                                         indication = null,
@@ -448,47 +506,7 @@ class MiningScreen (
 
                     }
 
-                    Text(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
-                        text = if (statusCode.value == 404) balance.toString()
-                        else if (finishMining.value == true) "1000"
-                        else {
-                            currentReward.value.toString()
-                        },
-                        style = TextStyle(
-                            fontSize = 32.sp,
-                            lineHeight = 32.sp,
-                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                            fontWeight = FontWeight(400),
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                        )
-                    )
-
                         if (airDropVisible.value == true) {
-
-                            val startInstant = Instant.parse(currentTime.value.toString())
-                            val endInstant = Instant.parse(airDropDate)
-
-                            // Вычисление разницы в миллисекундах
-                            differenceInMillis.value =
-                                endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
-
-    //                    LaunchedEffect(Unit) {
-    //                        while (true) {
-    //                            differenceInMillis.value -= 1000
-    //                            delay(1000) // Обновление каждую секунду
-    //                        }
-    //                    }
-
-
-                            val minutes = (differenceInMillis.value / (1000 * 60)) % 60
-                            val hours = (differenceInMillis.value / (1000 * 60 * 60)) % 24
-                            val days = differenceInMillis.value / (1000 * 60 * 60 * 24)
-
-                            val formattedTime = "${days.toString().padStart(2, '0')}:" +
-                                    "${hours.toString().padStart(2, '0')}:" +
-                                    "${minutes.toString().padStart(2, '0')}"
 
                             Spacer(modifier = Modifier.padding(top = 17.dp))
 
@@ -501,18 +519,9 @@ class MiningScreen (
                                 contentAlignment = Alignment.Center
                             ) {
 
-                                Text(
-                                    modifier = Modifier.fillMaxWidth()
-                                        .padding(vertical = 24.dp, horizontal = 10.dp),
-                                    text = "Airdrop: $formattedTime",
-                                    style = TextStyle(
-                                        fontSize = 16.sp,
-                                        lineHeight = 16.sp,
-                                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                                        fontWeight = FontWeight(400),
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center,
-                                    )
+                                TextAirdrop(
+                                    compl = airDropDate,
+                                    current = currentTime.value
                                 )
                             }
 
@@ -689,22 +698,10 @@ class MiningScreen (
             rewardMining.value = body.reward!!.toLong()
             completedTimeMining.value = body.completedAt.toString()
             startedTimeMining.value = body.startedAt.toString()
-            val startInstant = Instant.parse(body.startedAt.toString())
-            val complInstant = Instant.parse(body.completedAt.toString())
-            val currentS = Instant.parse(currentTime.value)
-            val differenceInMillis = complInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
-            val differenceInMillis2 = complInstant.toEpochMilliseconds() - currentS.toEpochMilliseconds()
-            val seconds2 = (differenceInMillis2 / 1000) / 60
-            val seconds = (differenceInMillis.toFloat() / 1000) / 60
-            val currentProgress =  rewardMining.value!! - (rewardMining.value!! *seconds2/seconds)
-            currentReward.value =currentProgress.toLong()
-            countRewardMinute.value = (differenceInMillis/1000)/rewardMining.value!!
-            val date2 = body.completedAt.toString()
-            val date1 = currentTime.value
-            val comparisonResult = compareDates(date1, date2)
+            comparisonResult.value = compareDates(currentTime.value, completedTimeMining.value)
             when {
-                comparisonResult < 0 -> finishMining.value = false
-                comparisonResult >= 0 -> finishMining.value = true
+                comparisonResult.value < 0 -> finishMining.value = false
+                comparisonResult.value >= 0 -> finishMining.value = true
             }
         }
 

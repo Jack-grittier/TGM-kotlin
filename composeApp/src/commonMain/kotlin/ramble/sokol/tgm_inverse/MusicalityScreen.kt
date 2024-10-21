@@ -68,6 +68,8 @@ import ramble.sokol.tgm_inverse.components.PhotoFirstRating
 import ramble.sokol.tgm_inverse.components.PhotoOtherRating
 import ramble.sokol.tgm_inverse.components.RatingPersonLiderboard
 import ramble.sokol.tgm_inverse.components.RatingPersonMusicality
+import ramble.sokol.tgm_inverse.components.TextAirdrop
+import ramble.sokol.tgm_inverse.components.TextGame
 import ramble.sokol.tgm_inverse.model.data.LeaderBoardEntity
 import ramble.sokol.tgm_inverse.model.data.LeaderboardReferalEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
@@ -337,30 +339,6 @@ class MusicalityScreen(
 
                         if (miniGameTextVisible.value == true){
 
-                            val startInstant = Instant.parse(currentTime.value.toString())
-                            val endInstant = Instant.parse(dateMiniGame)
-
-                            val diff = endInstant.toEpochMilliseconds() - startInstant.toEpochMilliseconds()
-                            // Вычисление разницы в миллисекундах
-                            differenceInMillis.value = diff
-
-//                            LaunchedEffect(Unit) {
-//                                while (true) {
-//                                    differenceInMillis.value -= 1000
-//                                    delay(1000)
-//                                }
-//                            }
-
-
-                            val minutes = (differenceInMillis.value / (1000 * 60)) % 60
-                            val hours = (differenceInMillis.value / (1000 * 60 * 60)) % 24
-                            val days = differenceInMillis.value / (1000 * 60 * 60 * 24)
-
-                            val formattedTime = "${days.toString().padStart(2, '0')}:" +
-                                    "${hours.toString().padStart(2, '0')}:" +
-                                    "${minutes.toString().padStart(2, '0')}"
-
-
                             Column(
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalArrangement = Arrangement.Center,
@@ -381,16 +359,9 @@ class MusicalityScreen(
 
                                 Spacer(modifier = Modifier.padding(vertical = 2.dp))
 
-                                Text(
-                                    text = formattedTime,
-                                    style = TextStyle(
-                                        fontSize = 16.sp,
-                                        lineHeight = 16.sp,
-                                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                                        fontWeight = FontWeight(400),
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center,
-                                    )
+                                TextGame(
+                                    compl = dateMiniGame,
+                                    current = currentTime.value
                                 )
 
                             }

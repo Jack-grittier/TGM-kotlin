@@ -221,6 +221,7 @@ class GameScreen : Screen {
                                     backgroundClick = if (lastPosition.value == 1) true else false
                                 ) {
                                     lastPosition.value = nextPosition.value
+                                    startPosition.value = 0
                                     nextPosition.value = getRandomNumber(lastPosition.value)
                                 }
                             }
@@ -281,6 +282,7 @@ class GameScreen : Screen {
                                 backgroundClick = if (lastPosition.value == 2) true else false
                             ) {
                                 lastPosition.value = nextPosition.value
+                                startPosition.value = 0
                                 nextPosition.value = getRandomNumber(lastPosition.value)
                             }
                         }
@@ -340,6 +342,7 @@ class GameScreen : Screen {
                                 backgroundClick = if (lastPosition.value == 3) true else false
                             ) {
                                 lastPosition.value = nextPosition.value
+                                startPosition.value = 0
                                 nextPosition.value = getRandomNumber(lastPosition.value)
                             }
                         }
@@ -400,6 +403,7 @@ class GameScreen : Screen {
                                 backgroundClick = if (lastPosition.value == 4) true else false
                             ) {
                                 lastPosition.value = nextPosition.value
+                                startPosition.value = 0 
                                 nextPosition.value = getRandomNumber(lastPosition.value)
                             }
                         }

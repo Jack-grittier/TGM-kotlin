@@ -116,7 +116,7 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 class MainMenuScreen(
     val userEntityCreate: UserEntityCreate,
-    val bodyUserCreate: UserEntityCreateResponse,
+    val bodyUserCreate: UserEntityCreateResponse
 ) : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
