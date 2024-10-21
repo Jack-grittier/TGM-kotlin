@@ -340,7 +340,7 @@ class MiningScreen (
 //                                )
 //                            )
 
-                            TextReward(
+                            finishMining.value = TextReward(
                                 start = startedTimeMining.value,
                                 compl = completedTimeMining.value,
                                 current = currentTime.value,

@@ -29,7 +29,7 @@ fun TextReward(
     compl: String,
     start: String,
     rewardMining: Long
-){
+) : Boolean{
 
     val complInstant = Instant.parse(compl)
     val currentInstant = Instant.parse(current)
@@ -66,4 +66,9 @@ fun TextReward(
         )
     )
 
+    if (currentProgress < 1000){
+        return false
+    }else{
+        return true
+    }
 }
