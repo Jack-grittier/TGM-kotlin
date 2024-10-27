@@ -48,8 +48,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.dokar.sonner.ToastType
 import com.dokar.sonner.Toaster
 import com.dokar.sonner.rememberToasterState
@@ -75,6 +78,7 @@ import ramble.sokol.tgm_inverse.components.TextToast
 import ramble.sokol.tgm_inverse.model.data.LeaderBoardEntity
 import ramble.sokol.tgm_inverse.model.data.LeaderboardReferalEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreateResponse
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_copy_link
 import ramble.sokol.tgm_inverse.theme.background_screens
@@ -99,7 +103,8 @@ import kotlin.time.Duration.Companion.milliseconds
 class MusicalityScreen(
     val modifier: Modifier,
     val userEntityCreate: UserEntityCreate,
-    val dateMiniGame: String
+    val dateMiniGame: String,
+    val bodyUserCreate: UserEntityCreateResponse,
 ) : Screen {
 
     private lateinit var apiRepo: ApiRepository
@@ -110,12 +115,11 @@ class MusicalityScreen(
     private lateinit var testText: MutableState<String>
     private lateinit var clickCopy: MutableState<Boolean>
 
+    @OptIn(InternalVoyagerApi::class)
     @Composable
     override fun Content() {
 
-        val navigator = LocalNavigator.current
-        val toaster = rememberToasterState()
-
+        val navigator = LocalNavigator.currentOrThrow
         apiRepo = ApiRepository()
         val scope  = rememberCoroutineScope()
         listLeader = remember {
@@ -337,7 +341,7 @@ class MusicalityScreen(
                                 .clickable(
                                     onClick = {
                                         if (miniGameTextVisible.value == false) {
-                                            navigator?.push(GameScreen())
+                                            navigator.parent?.push(GameScreen())
                                         }
                                     },
                                     indication = null,

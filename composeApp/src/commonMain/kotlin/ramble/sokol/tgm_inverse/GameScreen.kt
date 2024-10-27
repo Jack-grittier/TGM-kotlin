@@ -24,9 +24,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,12 +43,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import kotlinx.browser.document
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
+import org.w3c.dom.HTMLAudioElement
 import ramble.sokol.tgm_inverse.components.ButtonExitGame
 import ramble.sokol.tgm_inverse.components.GameBlockActive
 import ramble.sokol.tgm_inverse.components.ProgressGame
+import ramble.sokol.tgm_inverse.model.data.MusicResponse
+import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_color_collect
 import ramble.sokol.tgm_inverse.theme.background_line_game
 import ramble.sokol.tgm_inverse.theme.background_progress_game
@@ -80,9 +87,48 @@ class GameScreen : Screen {
     private val startPosition = mutableStateOf(getRandomNumber())
     private val lastPosition = mutableStateOf(0)
     private val nextPosition = mutableStateOf(0)
+    private lateinit var apiRepo: ApiRepository
+    private lateinit var musicGame: MutableState<MusicResponse?>
+    private lateinit var musicPlay: MutableState<Boolean>
+    private lateinit var gameFinish: MutableState<Boolean>
+    private lateinit var audioElement: MutableState<HTMLAudioElement?>
+    private lateinit var currentTimeMusic: MutableState<Double>
+    private lateinit var finishRequests: MutableState<Boolean>
 
     @Composable
     override fun Content() {
+
+        apiRepo = ApiRepository()
+        val scope  = rememberCoroutineScope()
+
+        finishRequests = remember {
+            mutableStateOf(false)
+        }
+
+        musicGame = remember {
+            mutableStateOf(null)
+        }
+
+        musicPlay = remember {
+            mutableStateOf(false)
+        }
+
+        gameFinish = remember {
+            mutableStateOf(false)
+        }
+
+        audioElement = remember {
+            mutableStateOf(null)
+        }
+
+        currentTimeMusic = remember {
+            mutableStateOf(0.0)
+        }
+
+        scope.launch {
+            getMusicGame()
+            finishRequests.value = true
+        }
 
         var speed = mutableStateOf(0.1f)
 
@@ -156,62 +202,104 @@ class GameScreen : Screen {
             }
         }
 
+        if (musicPlay.value == true) {
 
-        Box(
-            modifier = Modifier.fillMaxSize()
-                .background(background_screens),
-            contentAlignment = Alignment.Center
-        ){
+            LaunchedEffect(musicGame) {
+                if (musicGame != null) {
+                    // Останавливаем текущую песню, если она есть
+                    audioElement.value?.pause()
+                    audioElement.value?.currentTime = 0.0
 
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                painter = painterResource(Res.drawable.image_center_line),
-                contentDescription = null
-            )
+                    audioElement.value = document.createElement("audio") as HTMLAudioElement
+                    audioElement.value!!.src = musicGame.value!!.url
 
-            Row(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ){
+                    audioElement.value!!.ontimeupdate = {
+                        audioElement.value!!.currentTime?.let {
+                            currentTimeMusic.value = it
+                        }
+                    }
 
-                Box(
+                    audioElement.value!!.onended = {
+                        // Действия при окончании песни (например, переход к следующей)
+                    }
+
+                    if (musicPlay.value) {
+                        audioElement.value!!.play()
+                    }
+                }
+            }
+
+
+            LaunchedEffect(musicPlay.value) {
+                if (audioElement != null) {
+                    if (musicPlay.value) {
+                        audioElement.value!!.play()
+                    } else {
+                        audioElement.value!!.pause()
+                    }
+                }
+            }
+
+        }
+
+        if (finishRequests.value == true) {
+
+            Box(
+                modifier = Modifier.fillMaxSize()
+                    .background(background_screens),
+                contentAlignment = Alignment.Center
+            ) {
+
+                Image(
                     modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)
+                        .fillMaxWidth(),
+                    painter = painterResource(Res.drawable.image_center_line),
+                    contentDescription = null
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
 
-                    if (startPosition.value == 1) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f)
+                    ) {
 
-                        Box(
-                            modifier = Modifier.fillMaxHeight(),
-                            contentAlignment = Alignment.Center
-                        ) {
+                        if (startPosition.value == 1) {
 
                             Box(
-                                modifier = Modifier.offset(y = animatedOffsetY)
+                                modifier = Modifier.fillMaxHeight(),
+                                contentAlignment = Alignment.Center
                             ) {
-                                GameBlockActive(
-                                    startActive = if (lastPosition.value == 1 && nextPosition.value != 1) false else true,
-                                    backgroundClick = if (lastPosition.value == 1 && nextPosition.value != 1) true else false
+
+                                Box(
+                                    modifier = Modifier.offset(y = animatedOffsetY)
                                 ) {
-                                    offsetY = 1000.dp
-                                    lastPosition.value = startPosition.value
-                                    nextPosition.value = getRandomNumber(lastPosition.value)
-                                    when (nextPosition.value){
-                                        2 -> isBoxVisible2 = false
-                                        3 -> isBoxVisible3 = false
-                                        4 -> isBoxVisible4 = false
+                                    GameBlockActive(
+                                        startActive = if (lastPosition.value == 1 && nextPosition.value != 1) false else true,
+                                        backgroundClick = if (lastPosition.value == 1 && nextPosition.value != 1) true else false
+                                    ) {
+                                        musicPlay.value = true
+                                        offsetY = 1000.dp
+                                        lastPosition.value = startPosition.value
+                                        nextPosition.value = getRandomNumber(lastPosition.value)
+                                        when (nextPosition.value) {
+                                            2 -> isBoxVisible2 = false
+                                            3 -> isBoxVisible3 = false
+                                            4 -> isBoxVisible4 = false
+                                        }
                                     }
                                 }
                             }
+
                         }
 
-                    }
-
-                    if (nextPosition.value == 1) {
+                        if (nextPosition.value == 1) {
 
                             Box(
                                 modifier = Modifier.offset(y = boxOffsetY)
@@ -226,398 +314,411 @@ class GameScreen : Screen {
                                 }
                             }
 
-                    }
-
-                }
-
-                Image(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(1.dp),
-                    painter = painterResource(Res.drawable.image_verticall_line_game),
-                    contentDescription = null
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)
-                ) {
-
-                    if (startPosition.value == 2) {
-
-                        Box(
-                            modifier = Modifier.fillMaxHeight(),
-                            contentAlignment = Alignment.Center
-                        ) {
-
-                            Box(
-                                modifier = Modifier.offset(y = animatedOffsetY)
-                            ) {
-                                GameBlockActive(
-                                    startActive = if (lastPosition.value == 2 && nextPosition.value != 2) false else true,
-                                    backgroundClick = if (lastPosition.value == 2 && nextPosition.value != 2) true else false
-                                ) {
-                                    offsetY = 1000.dp
-                                    lastPosition.value = startPosition.value
-                                    nextPosition.value = getRandomNumber(lastPosition.value)
-                                    when (nextPosition.value){
-                                        1 -> isBoxVisible = false
-                                        3 -> isBoxVisible3 = false
-                                        4 -> isBoxVisible4 = false
-                                    }
-                                }
-                            }
                         }
 
                     }
 
-                    if (nextPosition.value == 2) {
-
-                        Box(
-                            modifier = Modifier.offset(y = boxOffsetY2)
-                        ) {
-                            GameBlockActive(
-                                startActive = if (lastPosition.value == 2) false else true,
-                                backgroundClick = if (lastPosition.value == 2) true else false
-                            ) {
-                                lastPosition.value = nextPosition.value
-                                startPosition.value = 0
-                                nextPosition.value = getRandomNumber(lastPosition.value)
-                            }
-                        }
-
-                    }
-
-                }
-
-                Image(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(1.dp),
-                    painter = painterResource(Res.drawable.image_verticall_line_game),
-                    contentDescription = null
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)
-                ) {
-
-                    if (startPosition.value == 3) {
-
-                        Box(
-                            modifier = Modifier.fillMaxHeight(),
-                            contentAlignment = Alignment.Center
-                        ) {
-
-                            Box(
-                                modifier = Modifier.offset(y = animatedOffsetY)
-                            ) {
-                                GameBlockActive(startActive = if (lastPosition.value == 3 && nextPosition.value != 3) false else true,
-                                    backgroundClick = if (lastPosition.value == 3 && nextPosition.value != 3) true else false
-                                ) {
-                                    offsetY = 1000.dp
-                                    lastPosition.value = startPosition.value
-                                    nextPosition.value = getRandomNumber(lastPosition.value)
-                                    when (nextPosition.value){
-                                        1 -> isBoxVisible = false
-                                        2 -> isBoxVisible2 = false
-                                        4 -> isBoxVisible4 = false
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-
-                    if (nextPosition.value == 3) {
-
-                        Box(
-                            modifier = Modifier.offset(y = boxOffsetY3)
-                        ) {
-                            GameBlockActive(
-                                startActive = if (lastPosition.value == 3) false else true,
-                                backgroundClick = if (lastPosition.value == 3) true else false
-                            ) {
-                                lastPosition.value = nextPosition.value
-                                startPosition.value = 0
-                                nextPosition.value = getRandomNumber(lastPosition.value)
-                            }
-                        }
-
-                    }
-
-                }
-
-                Image(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(1.dp),
-                    painter = painterResource(Res.drawable.image_verticall_line_game),
-                    contentDescription = null
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)
-                ) {
-
-                    if (startPosition.value == 4) {
-
-                        Box(
-                            modifier = Modifier.fillMaxHeight(),
-                            contentAlignment = Alignment.Center
-                        ) {
-
-                            Box(
-                                modifier = Modifier.offset(y = animatedOffsetY)
-                            ) {
-                                GameBlockActive(
-                                    startActive = if (lastPosition.value == 4 && nextPosition.value != 4) false else true,
-                                    backgroundClick = if (lastPosition.value == 4 && nextPosition.value != 4) true else false
-                                ) {
-                                    offsetY = 1000.dp
-                                    lastPosition.value = startPosition.value
-                                    nextPosition.value = getRandomNumber(lastPosition.value)
-                                    when (nextPosition.value){
-                                        1 -> isBoxVisible = false
-                                        2 -> isBoxVisible2 = false
-                                        3 -> isBoxVisible3 = false
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-
-                    if (nextPosition.value == 4) {
-
-                        Box(
-                            modifier = Modifier.offset(y = boxOffsetY4)
-                        ) {
-                            GameBlockActive(
-                                startActive = if (lastPosition.value == 4) false else true,
-                                backgroundClick = if (lastPosition.value == 4) true else false
-                            ) {
-                                lastPosition.value = nextPosition.value
-                                startPosition.value = 0 
-                                nextPosition.value = getRandomNumber(lastPosition.value)
-                            }
-                        }
-
-                    }
-
-                }
-
-
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = 11.dp, horizontal = 20.dp),
-                contentAlignment = Alignment.TopCenter
-            ){
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(103.dp)
-                        .clip(RoundedCornerShape(topStart = 120.dp, topEnd = 120.dp, bottomEnd = 19.dp, bottomStart = 19.dp))
-                        .background(color_hello_peterburg),
-                    contentAlignment = Alignment.TopCenter
-                ){
-
-                    Column (
+                    Image(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp),
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ){
+                            .fillMaxHeight()
+                            .width(1.dp),
+                        painter = painterResource(Res.drawable.image_verticall_line_game),
+                        contentDescription = null
+                    )
 
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(background_reward_game),
-                            contentAlignment = Alignment.Center
-                        ){
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f)
+                    ) {
 
-                            Row (
-                                modifier = Modifier
-                                    .padding(horizontal = 15.dp, vertical = 12.dp),
-                                horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically
-                            ){
+                        if (startPosition.value == 2) {
 
-                                Text(
-                                    text = "500",
-                                    style = TextStyle(
-                                        fontSize = 12.sp,
-                                        lineHeight = 12.sp,
-                                        fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                                        fontWeight = FontWeight(400),
-                                        color = Color.White,
-                                        textAlign = TextAlign.Center,
-                                    )
-                                )
-
-                                Spacer(modifier = Modifier.padding(horizontal = 2.dp))
-
-                                Image(
-                                    modifier = Modifier.width(24.dp),
-                                    painter = painterResource(Res.drawable.icon_bb_game),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop
-                                )
-
-                            }
-
-                        }
-
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                        ){
-
-                            Box(modifier = Modifier.padding(horizontal = 42.dp)) {
-
-                                ProgressGame(progress)
-
-                            }
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(start = 40.dp, end = 25.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
+                            Box(
+                                modifier = Modifier.fillMaxHeight(),
+                                contentAlignment = Alignment.Center
                             ) {
 
                                 Box(
+                                    modifier = Modifier.offset(y = animatedOffsetY)
+                                ) {
+                                    GameBlockActive(
+                                        startActive = if (lastPosition.value == 2 && nextPosition.value != 2) false else true,
+                                        backgroundClick = if (lastPosition.value == 2 && nextPosition.value != 2) true else false
+                                    ) {
+                                        musicPlay.value = true
+                                        offsetY = 1000.dp
+                                        lastPosition.value = startPosition.value
+                                        nextPosition.value = getRandomNumber(lastPosition.value)
+                                        when (nextPosition.value) {
+                                            1 -> isBoxVisible = false
+                                            3 -> isBoxVisible3 = false
+                                            4 -> isBoxVisible4 = false
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+
+                        if (nextPosition.value == 2) {
+
+                            Box(
+                                modifier = Modifier.offset(y = boxOffsetY2)
+                            ) {
+                                GameBlockActive(
+                                    startActive = if (lastPosition.value == 2) false else true,
+                                    backgroundClick = if (lastPosition.value == 2) true else false
+                                ) {
+                                    lastPosition.value = nextPosition.value
+                                    startPosition.value = 0
+                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    Image(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(1.dp),
+                        painter = painterResource(Res.drawable.image_verticall_line_game),
+                        contentDescription = null
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f)
+                    ) {
+
+                        if (startPosition.value == 3) {
+
+                            Box(
+                                modifier = Modifier.fillMaxHeight(),
+                                contentAlignment = Alignment.Center
+                            ) {
+
+                                Box(
+                                    modifier = Modifier.offset(y = animatedOffsetY)
+                                ) {
+                                    GameBlockActive(
+                                        startActive = if (lastPosition.value == 3 && nextPosition.value != 3) false else true,
+                                        backgroundClick = if (lastPosition.value == 3 && nextPosition.value != 3) true else false
+                                    ) {
+                                        musicPlay.value = true
+                                        offsetY = 1000.dp
+                                        lastPosition.value = startPosition.value
+                                        nextPosition.value = getRandomNumber(lastPosition.value)
+                                        when (nextPosition.value) {
+                                            1 -> isBoxVisible = false
+                                            2 -> isBoxVisible2 = false
+                                            4 -> isBoxVisible4 = false
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+
+                        if (nextPosition.value == 3) {
+
+                            Box(
+                                modifier = Modifier.offset(y = boxOffsetY3)
+                            ) {
+                                GameBlockActive(
+                                    startActive = if (lastPosition.value == 3) false else true,
+                                    backgroundClick = if (lastPosition.value == 3) true else false
+                                ) {
+                                    lastPosition.value = nextPosition.value
+                                    startPosition.value = 0
+                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    Image(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(1.dp),
+                        painter = painterResource(Res.drawable.image_verticall_line_game),
+                        contentDescription = null
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f)
+                    ) {
+
+                        if (startPosition.value == 4) {
+
+                            Box(
+                                modifier = Modifier.fillMaxHeight(),
+                                contentAlignment = Alignment.Center
+                            ) {
+
+                                Box(
+                                    modifier = Modifier.offset(y = animatedOffsetY)
+                                ) {
+                                    GameBlockActive(
+                                        startActive = if (lastPosition.value == 4 && nextPosition.value != 4) false else true,
+                                        backgroundClick = if (lastPosition.value == 4 && nextPosition.value != 4) true else false
+                                    ) {
+                                        musicPlay.value = true
+                                        offsetY = 1000.dp
+                                        lastPosition.value = startPosition.value
+                                        nextPosition.value = getRandomNumber(lastPosition.value)
+                                        when (nextPosition.value) {
+                                            1 -> isBoxVisible = false
+                                            2 -> isBoxVisible2 = false
+                                            3 -> isBoxVisible3 = false
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+
+                        if (nextPosition.value == 4) {
+
+                            Box(
+                                modifier = Modifier.offset(y = boxOffsetY4)
+                            ) {
+                                GameBlockActive(
+                                    startActive = if (lastPosition.value == 4) false else true,
+                                    backgroundClick = if (lastPosition.value == 4) true else false
+                                ) {
+                                    lastPosition.value = nextPosition.value
+                                    startPosition.value = 0
+                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                }
+                            }
+
+                        }
+
+                    }
+
+
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 11.dp, horizontal = 20.dp),
+                    contentAlignment = Alignment.TopCenter
+                ) {
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(103.dp)
+                            .clip(
+                                RoundedCornerShape(
+                                    topStart = 120.dp,
+                                    topEnd = 120.dp,
+                                    bottomEnd = 19.dp,
+                                    bottomStart = 19.dp
+                                )
+                            )
+                            .background(color_hello_peterburg),
+                        contentAlignment = Alignment.TopCenter
+                    ) {
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 10.dp),
+                            verticalArrangement = Arrangement.Top,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .background(background_reward_game),
+                                contentAlignment = Alignment.Center
+                            ) {
+
+                                Row(
                                     modifier = Modifier
-                                        .width(9.dp)
-                                        .height(9.dp)
-                                        .clip(RoundedCornerShape(25.dp))
-                                        .background(background_progress_game)
-                                )
+                                        .padding(horizontal = 15.dp, vertical = 12.dp),
+                                    horizontalArrangement = Arrangement.Center,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
 
-                                Image(
-                                    painter = painterResource(
-                                        if (progress >= 0.32f) Res.drawable.icon_star_1_true
-                                        else Res.drawable.icon_star_1
-                                    ),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop
-                                )
+                                    Text(
+                                        text = "500",
+                                        style = TextStyle(
+                                            fontSize = 12.sp,
+                                            lineHeight = 12.sp,
+                                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
+                                            fontWeight = FontWeight(400),
+                                            color = Color.White,
+                                            textAlign = TextAlign.Center,
+                                        )
+                                    )
 
-                                Image(
-                                    painter = painterResource(
-                                        if (progress >= 0.63f) Res.drawable.icon_star_2_true
-                                        else Res.drawable.icon_star_2
-                                    ),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop,
-                                )
+                                    Spacer(modifier = Modifier.padding(horizontal = 2.dp))
 
-                                Image(
-                                    painter = painterResource(
-                                        if (progress >= 0.99f) Res.drawable.icon_star_3_true
-                                        else Res.drawable.icon_star_3
-                                    ),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop
-                                )
+                                    Image(
+                                        modifier = Modifier.width(24.dp),
+                                        painter = painterResource(Res.drawable.icon_bb_game),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop
+                                    )
+
+                                }
 
                             }
 
+                            Box(
+                                modifier = Modifier.fillMaxWidth(),
+                                contentAlignment = Alignment.Center
+                            ) {
 
+                                Box(modifier = Modifier.padding(horizontal = 42.dp)) {
+
+                                    ProgressGame(progress)
+
+                                }
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth()
+                                        .padding(start = 40.dp, end = 25.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+
+                                    Box(
+                                        modifier = Modifier
+                                            .width(9.dp)
+                                            .height(9.dp)
+                                            .clip(RoundedCornerShape(25.dp))
+                                            .background(background_progress_game)
+                                    )
+
+                                    Image(
+                                        painter = painterResource(
+                                            if (progress >= 0.32f) Res.drawable.icon_star_1_true
+                                            else Res.drawable.icon_star_1
+                                        ),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop
+                                    )
+
+                                    Image(
+                                        painter = painterResource(
+                                            if (progress >= 0.63f) Res.drawable.icon_star_2_true
+                                            else Res.drawable.icon_star_2
+                                        ),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop,
+                                    )
+
+                                    Image(
+                                        painter = painterResource(
+                                            if (progress >= 0.99f) Res.drawable.icon_star_3_true
+                                            else Res.drawable.icon_star_3
+                                        ),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop
+                                    )
+
+                                }
+
+
+                            }
 
                         }
 
-                    }
 
-
-
-                    Image(
-                        modifier = Modifier.fillMaxWidth(),
-                        painter = painterResource(Res.drawable.image_back_game),
-                        contentDescription = "image_game",
-                        contentScale = ContentScale.Crop
-                    )
-
-                }
-
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = 32.dp, horizontal = 20.dp),
-                contentAlignment = Alignment.BottomCenter
-            ){
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-
-                    Row (
-                        modifier = Modifier.weight(1f),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
 
                         Image(
-                            modifier = Modifier.height(24.dp).width(24.dp),
-                            painter = painterResource(Res.drawable.icon_music_game),
-                            contentDescription = null,
+                            modifier = Modifier.fillMaxWidth(),
+                            painter = painterResource(Res.drawable.image_back_game),
+                            contentDescription = "image_game",
                             contentScale = ContentScale.Crop
                         )
 
-                        Column(
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.Start
-                        ){
+                    }
 
-                            Text(
-                                text = "Song:",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    lineHeight = 16.sp,
-                                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                                    fontWeight = FontWeight(700),
-                                    color = background_color_collect,
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 32.dp, horizontal = 20.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+
+                        Row(
+                            modifier = Modifier.weight(1f),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+
+                            Image(
+                                modifier = Modifier.height(24.dp).width(24.dp),
+                                painter = painterResource(Res.drawable.icon_music_game),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop
+                            )
+
+                            Column(
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.Start
+                            ) {
+
+                                Text(
+                                    text = "Song:",
+                                    style = TextStyle(
+                                        fontSize = 16.sp,
+                                        lineHeight = 16.sp,
+                                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                        fontWeight = FontWeight(700),
+                                        color = background_color_collect,
+                                    )
                                 )
-                            )
 
-                            Spacer(modifier = Modifier.padding(vertical = 2.dp))
+                                Spacer(modifier = Modifier.padding(vertical = 2.dp))
 
-                            Text(
-                                text = "Tuda syuda millionerrrrrrrrrrrfjhkhdsghhfkg",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    lineHeight = 16.sp,
-                                    fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                                    fontWeight = FontWeight(700),
-                                    color = background_color_collect,
-                                ),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
+                                Text(
+                                    text = musicGame.value!!.name,
+                                    style = TextStyle(
+                                        fontSize = 16.sp,
+                                        lineHeight = 16.sp,
+                                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                        fontWeight = FontWeight(700),
+                                        color = background_color_collect,
+                                    ),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
 
+
+                            }
 
                         }
 
-                    }
+                        Box(modifier = Modifier.weight(0.7f)) {
 
-                    Box(modifier = Modifier.weight(0.7f)) {
+                            ButtonExitGame("Выйти") {
 
-                        ButtonExitGame("Выйти") {
+                            }
 
                         }
 
@@ -626,9 +727,7 @@ class GameScreen : Screen {
                 }
 
             }
-
         }
-
     }
 
     fun getRandomNumber() : Int{
@@ -641,5 +740,9 @@ class GameScreen : Screen {
         return numbers[Random.nextInt(numbers.size)]
     }
 
+    suspend fun getMusicGame(){
+        val body = apiRepo.getMusicGame()
+        musicGame.value = body
+    }
 
 }

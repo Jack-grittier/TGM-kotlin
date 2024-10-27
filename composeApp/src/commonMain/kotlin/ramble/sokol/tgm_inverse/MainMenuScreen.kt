@@ -134,6 +134,7 @@ class MainMenuScreen(
 
         apiRepo = ApiRepository()
         val scope  = rememberCoroutineScope()
+        val appState = remember { mutableStateOf<AppState>(AppState.Initial) }
 
         balance = remember {
             mutableStateOf(0)
@@ -336,7 +337,8 @@ class MainMenuScreen(
                         MusicalityScreen(
                             modifier = Modifier.padding(innerPadding),
                             userEntityCreate,
-                            dateMiniGame.value!!
+                            dateMiniGame.value!!,
+                            bodyUserCreate
                         )
                     )
 
@@ -347,7 +349,8 @@ class MainMenuScreen(
                             dateAirDrop.value!!,
                             balance.value!!,
                             bodyUserCreate,
-                            viewModel
+                            viewModel,
+                            appState
                         )
                     )
 

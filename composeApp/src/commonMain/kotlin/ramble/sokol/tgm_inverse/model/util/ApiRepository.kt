@@ -159,4 +159,7 @@ class ApiRepository {
             header(HttpHeaders.Authorization, "Bearer ${initData}")
         }.body()
 
+    suspend fun getMusicGame() : MusicResponse =
+        client.get(ApiRoutes.GET_RANDOM_MUSIC_GAME).body()
+
 }

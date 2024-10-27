@@ -124,7 +124,8 @@ class MiningScreen (
     val airDropDate: String,
     val balance: Long,
     val bodyUserCreate: UserEntityCreateResponse,
-    val viewModel: MusicViewModel
+    val viewModel: MusicViewModel,
+    val appState: MutableState<AppState>
 ) : Screen {
 
     private lateinit var startedEarning: MutableState<Boolean>
@@ -150,6 +151,9 @@ class MiningScreen (
     private lateinit var navigator: Navigator
     private lateinit var countRewardMinute: MutableState<Long>
     private lateinit var comparisonResult: MutableState<Int>
+    private lateinit var audioElement: MutableState<HTMLAudioElement?>
+    private lateinit var currentTimeMusic: MutableState<Double>
+
 
     @Composable
     override fun Content() {
@@ -162,6 +166,15 @@ class MiningScreen (
 
         var imageBitmapMusicAd by remember { mutableStateOf<ImageBitmap?>(null) }
         var imageBitmapAd by remember { mutableStateOf<ImageBitmap?>(null) }
+
+
+        audioElement = remember {
+            mutableStateOf(null)
+        }
+
+        currentTimeMusic = remember {
+            mutableStateOf(0.0)
+        }
 
         musicAdUrl = remember {
             mutableStateOf(null)
@@ -243,7 +256,7 @@ class MiningScreen (
             mutableStateOf(-1)
         }
 
-        playMusic.value = viewModel.isMusicPlaying()
+        //playMusic.value = viewModel.isMusicPlaying()
 
         tessText.value = viewModel.isMusicPlaying().toString()
 
@@ -472,9 +485,10 @@ class MiningScreen (
                                                         onClick = {
                                                             scope.launch {
                                                                 patchEarnings()
+//                                                                appState.value = AppState.Updated(appState.value.som + currentReward.value)
                                                                 //navigator.replace(LoadingScreen(userEntityCreate, bodyUserCreate))
                                                             }
-                                                        },
+                                                         },
                                                         indication = null,
                                                         interactionSource = remember { MutableInteractionSource() }
                                                     ),
@@ -623,6 +637,7 @@ class MiningScreen (
                                     PlaylistItem(items) {
                                         currentSong.value = items
                                         playMusic.value = true
+                                        pauseMusic.value = true
                                     }
 
                                     Spacer(modifier = Modifier.padding(horizontal = 4.dp))
@@ -649,16 +664,42 @@ class MiningScreen (
                         contentAlignment = Alignment.BottomCenter
                     ) {
 
-                        val audioElement =
-                            remember { document.createElement("audio") as HTMLAudioElement }
+                        LaunchedEffect(currentSong.value) {
+                            if (currentSong.value != null) {
+                                // Останавливаем текущую песню, если она есть
+                                audioElement.value?.pause()
+                                audioElement.value?.currentTime = 0.0
 
-                        audioElement.src = currentSong.value!!.url
+                                audioElement.value = document.createElement("audio") as HTMLAudioElement
+                                audioElement.value!!.src = currentSong.value!!.url
 
-                        if (pauseMusic.value) {
-                            audioElement.play()
-                        } else {
-                            audioElement.pause()
+                                audioElement.value!!.ontimeupdate = {
+                                    audioElement.value!!.currentTime?.let {
+                                        currentTimeMusic.value = it
+                                    }
+                                }
+
+                                audioElement.value!!.onended = {
+                                    // Действия при окончании песни (например, переход к следующей)
+                                }
+
+                                if (pauseMusic.value) {
+                                    audioElement.value!!.play()
+                                }
+                            }
                         }
+
+
+                        LaunchedEffect(pauseMusic.value) {
+                            if (audioElement != null) {
+                                if (pauseMusic.value) {
+                                    audioElement.value!!.play()
+                                } else {
+                                    audioElement.value!!.pause()
+                                }
+                            }
+                        }
+
 
                         CurrentMusic(
                             url = currentSong.value!!.coverURL,
