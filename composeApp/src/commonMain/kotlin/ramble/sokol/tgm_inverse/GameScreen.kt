@@ -43,6 +43,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.browser.document
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -53,6 +55,8 @@ import ramble.sokol.tgm_inverse.components.ButtonExitGame
 import ramble.sokol.tgm_inverse.components.GameBlockActive
 import ramble.sokol.tgm_inverse.components.ProgressGame
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
+import ramble.sokol.tgm_inverse.model.data.UserEntityCreateResponse
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
 import ramble.sokol.tgm_inverse.theme.background_color_collect
 import ramble.sokol.tgm_inverse.theme.background_line_game
@@ -82,7 +86,10 @@ import tgminverse.composeapp.generated.resources.image_verticall_line_game
 import tgminverse.composeapp.generated.resources.mont_regular
 import kotlin.random.Random
 
-class GameScreen : Screen {
+class GameScreen(
+    val userEntityCreate: UserEntityCreate,
+    val bodyUserCreate: UserEntityCreateResponse
+) : Screen {
 
     private val startPosition = mutableStateOf(getRandomNumber())
     private val lastPosition = mutableStateOf(0)
@@ -94,6 +101,8 @@ class GameScreen : Screen {
     private lateinit var audioElement: MutableState<HTMLAudioElement?>
     private lateinit var currentTimeMusic: MutableState<Double>
     private lateinit var finishRequests: MutableState<Boolean>
+    private lateinit var navigator: Navigator
+    private lateinit var musicName: MutableState<String?>
 
     @Composable
     override fun Content() {
@@ -101,8 +110,14 @@ class GameScreen : Screen {
         apiRepo = ApiRepository()
         val scope  = rememberCoroutineScope()
 
+        navigator = LocalNavigator.current!!
+
         finishRequests = remember {
             mutableStateOf(false)
+        }
+
+        musicName = remember {
+            mutableStateOf(null)
         }
 
         musicGame = remember {
@@ -697,7 +712,7 @@ class GameScreen : Screen {
                                 Spacer(modifier = Modifier.padding(vertical = 2.dp))
 
                                 Text(
-                                    text = musicGame.value!!.name,
+                                    text = musicName.value!!,
                                     style = TextStyle(
                                         fontSize = 16.sp,
                                         lineHeight = 16.sp,
@@ -717,7 +732,9 @@ class GameScreen : Screen {
                         Box(modifier = Modifier.weight(0.7f)) {
 
                             ButtonExitGame("Выйти") {
-
+                                navigator.push(MainMenuScreen(
+                                    userEntityCreate, bodyUserCreate, 0
+                                ))
                             }
 
                         }
@@ -743,6 +760,7 @@ class GameScreen : Screen {
     suspend fun getMusicGame(){
         val body = apiRepo.getMusicGame()
         musicGame.value = body
+        musicName.value = body.name
     }
 
 }

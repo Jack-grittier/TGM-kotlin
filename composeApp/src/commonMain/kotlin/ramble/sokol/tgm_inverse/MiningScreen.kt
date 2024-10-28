@@ -505,7 +505,7 @@ class MiningScreen (
                                                             scope.launch {
                                                                 patchEarnings()
                                                                 balance += rewardMining.value!!.toLong()
-                                                                navigator.parent?.push(MainMenuScreen(userEntityCreate, bodyUserCreate))
+                                                                navigator.parent?.push(MainMenuScreen(userEntityCreate, bodyUserCreate, 1))
                                                             }
                                                          },
                                                         indication = null,
@@ -711,7 +711,8 @@ class MiningScreen (
                                             navigator.parent?.push(
                                                 MainMenuScreen(
                                                     userEntityCreate,
-                                                    bodyUserCreate
+                                                    bodyUserCreate,
+                                                    1
                                                 )
                                             )
                                         }else{

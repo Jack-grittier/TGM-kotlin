@@ -268,7 +268,7 @@ class SplashScreen : Screen {
                     photoURL = null,
                     referralCode = 0
                 )
-            navigator?.push(MainMenuScreen(userEntityCreate, UserEntityCreateResponse()))
+            navigator?.push(MainMenuScreen(userEntityCreate, UserEntityCreateResponse(), 1))
 
 //            scope.launch {
 //                initData.value = webApp.initData

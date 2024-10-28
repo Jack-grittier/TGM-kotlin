@@ -116,7 +116,8 @@ import tgminverse.composeapp.generated.resources.test_photo
 
 class MainMenuScreen(
     val userEntityCreate: UserEntityCreate,
-    val bodyUserCreate: UserEntityCreateResponse
+    val bodyUserCreate: UserEntityCreateResponse,
+    val selItem: Int
 ) : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
@@ -160,7 +161,7 @@ class MainMenuScreen(
         }
 
         var selectedItem by rememberSaveable {
-            mutableIntStateOf(1)
+            mutableIntStateOf(selItem)
         }
 
         if (clickSheet.value == 1) {

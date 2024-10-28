@@ -341,7 +341,9 @@ class MusicalityScreen(
                                 .clickable(
                                     onClick = {
                                         if (miniGameTextVisible.value == false) {
-                                            navigator.parent?.push(GameScreen())
+                                            navigator.parent?.push(GameScreen(
+                                                userEntityCreate, bodyUserCreate
+                                            ))
                                         }
                                     },
                                     indication = null,

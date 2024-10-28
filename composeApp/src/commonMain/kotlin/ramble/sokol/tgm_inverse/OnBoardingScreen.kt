@@ -212,7 +212,7 @@ class OnBoardingScreen(
                                     .height(44.dp)
                                     .width(44.dp)
                                     .clickable {
-                                        navigator?.push(MainMenuScreen(userEntityCreate, bodyUserCreate))
+                                        navigator?.push(MainMenuScreen(userEntityCreate, bodyUserCreate, 1))
                                     },
                                 painter = painterResource(Res.drawable.icon_home_onboarding),
                                 contentDescription = "imageLine",
@@ -251,7 +251,7 @@ class OnBoardingScreen(
                                 modifier = Modifier
                                     .height(44.dp)
                                     .clickable {
-                                        navigator?.push(MainMenuScreen(userEntityCreate, bodyUserCreate))
+                                        navigator?.push(MainMenuScreen(userEntityCreate, bodyUserCreate, 1))
                                     },
                                 painter = painterResource(Res.drawable.icon_button_finish),
                                 contentDescription = "imageLine",
