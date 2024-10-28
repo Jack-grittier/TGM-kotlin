@@ -62,6 +62,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.stack.popUntil
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.inmo.micro_utils.common.toByteArray
 import dev.inmo.tgbotapi.webapps.webApp
 import io.ktor.client.HttpClient
@@ -122,7 +123,7 @@ class MiningScreen (
     val modifier: Modifier,
     val userEntityCreate: UserEntityCreate,
     val airDropDate: String,
-    val balance: Long,
+    var balance: Long,
     val bodyUserCreate: UserEntityCreateResponse,
     val viewModel: MusicViewModel,
     val appState: MutableState<AppState>
@@ -260,7 +261,7 @@ class MiningScreen (
 
         tessText.value = viewModel.isMusicPlaying().toString()
 
-        navigator = LocalNavigator.current!!
+        navigator = LocalNavigator.currentOrThrow
 
         getCurrentUtcDateTime()
 
@@ -485,8 +486,8 @@ class MiningScreen (
                                                         onClick = {
                                                             scope.launch {
                                                                 patchEarnings()
-//                                                                appState.value = AppState.Updated(appState.value.som + currentReward.value)
-                                                                //navigator.replace(LoadingScreen(userEntityCreate, bodyUserCreate))
+                                                                balance += rewardMining.value!!.toLong()
+                                                                navigator.parent?.push(MainMenuScreen(userEntityCreate, bodyUserCreate))
                                                             }
                                                          },
                                                         indication = null,
