@@ -93,7 +93,9 @@ import ramble.sokol.tgm_inverse.components.TasksPerform
 import ramble.sokol.tgm_inverse.components.TasksPerformProgress
 import ramble.sokol.tgm_inverse.components.TextAirdrop
 import ramble.sokol.tgm_inverse.components.TextReward
+import ramble.sokol.tgm_inverse.components.TextToast
 import ramble.sokol.tgm_inverse.model.data.GetEarningsEntity
+import ramble.sokol.tgm_inverse.model.data.ListensMusicEntityEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.TasksMeEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
@@ -154,7 +156,8 @@ class MiningScreen (
     private lateinit var comparisonResult: MutableState<Int>
     private lateinit var audioElement: MutableState<HTMLAudioElement?>
     private lateinit var currentTimeMusic: MutableState<Double>
-
+    private lateinit var finishAlreadyMusic: MutableState<Boolean>
+    private lateinit var statusCodeFinish: MutableState<Int?>
 
     @Composable
     override fun Content() {
@@ -170,6 +173,14 @@ class MiningScreen (
 
 
         audioElement = remember {
+            mutableStateOf(null)
+        }
+
+        finishAlreadyMusic = remember {
+            mutableStateOf(false)
+        }
+
+        statusCodeFinish = remember {
             mutableStateOf(null)
         }
 
@@ -271,6 +282,13 @@ class MiningScreen (
             getAd()
             getMusic("1", "25")
             finish.value = true
+        }
+
+        if (finishAlreadyMusic.value) {
+            LaunchedEffect(Unit) {
+                delay(3000)
+                finishAlreadyMusic.value = false
+            }
         }
 
 //        if (!viewModel.isMusicPlaying()) {
@@ -681,7 +699,25 @@ class MiningScreen (
                                 }
 
                                 audioElement.value!!.onended = {
-                                    // Действия при окончании песни (например, переход к следующей)
+                                    scope.launch {
+                                        postListensMusic(
+                                            (currentSong.value!!.duration).toLong(),
+                                            currentSong.value!!.id!!
+                                        )
+                                        playMusic.value = false
+                                        pauseMusic.value = false
+                                        if (statusCodeFinish.value == null) {
+                                            balance += currentSong.value!!.reward
+                                            navigator.parent?.push(
+                                                MainMenuScreen(
+                                                    userEntityCreate,
+                                                    bodyUserCreate
+                                                )
+                                            )
+                                        }else{
+                                            finishAlreadyMusic.value = true
+                                        }
+                                    }
                                 }
 
                                 if (pauseMusic.value) {
@@ -713,6 +749,20 @@ class MiningScreen (
                             pauseMusic.value = !pauseMusic.value
                         }
                     }
+                }
+
+                if (finishAlreadyMusic.value) {
+
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                            .padding(bottom = 24.dp, start = 16.dp, end = 16.dp),
+                        contentAlignment = Alignment.BottomCenter
+                    ) {
+
+                        TextToast("The award has already been received for this song")
+
+                    }
+
                 }
 
             }
@@ -752,6 +802,15 @@ class MiningScreen (
     private suspend fun postEarnings(){
         val body = apiRepo.postEarnings(initData = userEntityCreate.initData)
         getEarnings()
+    }
+
+    private suspend fun postListensMusic(
+        duration: Long,
+        id: Long
+    ){
+        val listensMusicEntityEntity = ListensMusicEntityEntity(musicId = id, listeningTime = duration)
+        val body = apiRepo.postListensMusic(initData = userEntityCreate.initData, listensMusicEntityEntity = listensMusicEntityEntity)
+        statusCodeFinish.value = body.statusCode
     }
 
     suspend fun patchEarnings(){

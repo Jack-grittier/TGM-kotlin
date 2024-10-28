@@ -82,7 +82,7 @@ fun TextToast(
             modifier = Modifier.fillMaxWidth(),
             text = text,
             style = TextStyle(
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 lineHeight = 18.sp,
                 fontFamily = FontFamily(Font(Res.font.mont_bold)),
                 fontWeight = FontWeight(700),

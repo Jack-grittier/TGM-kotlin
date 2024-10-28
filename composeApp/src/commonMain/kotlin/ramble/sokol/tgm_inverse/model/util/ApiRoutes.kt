@@ -17,4 +17,5 @@ object ApiRoutes {
     var GET_LEADERBOARD_MY_POSITION = "$BASE_URL/leaderboards/@me/position"
     var GET_SETTINGS = "$BASE_URL/settings"
     var GET_RANDOM_MUSIC_GAME = "$BASE_URL/music/game/random"
+    var POST_LISTENS_MUSIC = "$BASE_URL/music/listens/@me"
 }

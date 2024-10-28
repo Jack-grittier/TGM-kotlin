@@ -504,7 +504,7 @@ class MusicalityScreen(
                     contentAlignment = Alignment.BottomCenter
                 ) {
 
-                    TextToast("Ссылка успешно скопирована")
+                    TextToast("The link has been copied successfully")
 
                 }
 
