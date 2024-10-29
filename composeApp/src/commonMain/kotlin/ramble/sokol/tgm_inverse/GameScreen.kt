@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -53,6 +54,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.w3c.dom.HTMLAudioElement
 import ramble.sokol.tgm_inverse.components.ButtonExitGame
 import ramble.sokol.tgm_inverse.components.GameBlockActive
+import ramble.sokol.tgm_inverse.components.ProgressBarGameDemo
 import ramble.sokol.tgm_inverse.components.ProgressGame
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
@@ -103,6 +105,15 @@ class GameScreen(
     private lateinit var finishRequests: MutableState<Boolean>
     private lateinit var navigator: Navigator
     private lateinit var musicName: MutableState<String?>
+    private lateinit var durationMusicSecond: MutableState<Long?>
+    private lateinit var testText: MutableState<String>
+    private lateinit var clickStart: MutableState<Int>
+    private lateinit var finishBox1: MutableState<Boolean>
+    private lateinit var finishBox2: MutableState<Boolean>
+    private lateinit var finishBox3: MutableState<Boolean>
+    private lateinit var finishBox4: MutableState<Boolean>
+    private lateinit var count: MutableState<Int>
+    private lateinit var starCcount: MutableState<Int>
 
     @Composable
     override fun Content() {
@@ -114,6 +125,38 @@ class GameScreen(
 
         finishRequests = remember {
             mutableStateOf(false)
+        }
+
+        count = remember {
+            mutableStateOf(0)
+        }
+
+        starCcount = remember {
+            mutableStateOf(0)
+        }
+
+        testText = remember {
+            mutableStateOf("")
+        }
+
+        finishBox1 = remember {
+            mutableStateOf(false)
+        }
+
+        finishBox2 = remember {
+            mutableStateOf(false)
+        }
+
+        finishBox3 = remember {
+            mutableStateOf(false)
+        }
+
+        finishBox4 = remember {
+            mutableStateOf(false)
+        }
+
+        clickStart = remember {
+            mutableStateOf(0)
         }
 
         musicName = remember {
@@ -140,18 +183,24 @@ class GameScreen(
             mutableStateOf(0.0)
         }
 
-        scope.launch {
-            getMusicGame()
-            finishRequests.value = true
+        durationMusicSecond = remember {
+            mutableStateOf(0L)
         }
 
-        var speed = mutableStateOf(0.1f)
+        if (finishRequests.value == false) {
+            scope.launch {
+                getMusicGame()
+                finishRequests.value = true
+            }
+        }
+
+        var speed by remember { mutableStateOf(0.1f) }
 
         var offsetY by remember { mutableStateOf(0.dp) }
 
         val animatedOffsetY by animateDpAsState(
             targetValue = offsetY,
-            animationSpec = tween(durationMillis = (1000 / speed.value).toInt())
+            animationSpec = tween(durationMillis = (1000 / speed).toInt())
         )
 
         var isBoxVisible by remember { mutableStateOf(true) }
@@ -160,8 +209,11 @@ class GameScreen(
         val transition = updateTransition(targetState = isBoxVisible, label = "Box Transition")
 
         // Определяем начальную и конечную позиции для анимации
-        val boxOffsetY by transition.animateDp(
-            transitionSpec = { tween(durationMillis = (1000 / speed.value).toInt()) },
+        var boxOffsetY = transition.animateDp(
+            transitionSpec = { tween(durationMillis =
+            if (isBoxVisible) 1
+            else (1000 / speed).toInt()
+            ) },
             label = "Box Offset Y"
         ) { state ->
             if (state) -200.dp else (1000.dp) // Начальная позиция за верхней границей
@@ -173,8 +225,11 @@ class GameScreen(
         val transition2 = updateTransition(targetState = isBoxVisible2, label = "Box Transition")
 
         // Определяем начальную и конечную позиции для анимации
-        val boxOffsetY2 by transition2.animateDp(
-            transitionSpec = { tween(durationMillis = (1000 / speed.value).toInt()) },
+        var boxOffsetY2 = transition2.animateDp(
+            transitionSpec = { tween(durationMillis =
+            if (isBoxVisible2) 1
+            else (1000 / speed).toInt()
+            ) },
             label = "Box Offset Y"
         ) { state ->
             if (state) -200.dp else (1000.dp) // Начальная позиция за верхней границей
@@ -186,8 +241,11 @@ class GameScreen(
         val transition3 = updateTransition(targetState = isBoxVisible3, label = "Box Transition")
 
         // Определяем начальную и конечную позиции для анимации
-        val boxOffsetY3 by transition3.animateDp(
-            transitionSpec = { tween(durationMillis = (1000 / speed.value).toInt()) },
+        var boxOffsetY3 = transition3.animateDp(
+            transitionSpec = { tween(durationMillis =
+            if (isBoxVisible3) 1
+            else (1000 / speed).toInt()
+            ) },
             label = "Box Offset Y"
         ) { state ->
             if (state) -200.dp else (1000.dp) // Начальная позиция за верхней границей
@@ -199,24 +257,44 @@ class GameScreen(
         val transition4 = updateTransition(targetState = isBoxVisible4, label = "Box Transition")
 
         // Определяем начальную и конечную позиции для анимации
-        val boxOffsetY4 by transition4.animateDp(
-            transitionSpec = { tween(durationMillis = (1000 / speed.value).toInt()) },
+        var boxOffsetY4 = transition4.animateDp(
+            transitionSpec = { tween(durationMillis =
+            if (isBoxVisible4) 1
+            else (1000 / speed).toInt()
+            ) },
             label = "Box Offset Y"
         ) { state ->
             if (state) -200.dp else (1000.dp) // Начальная позиция за верхней границей
         }
 
+        if (boxOffsetY4.value  >= 900.dp){
+            finishBox4.value = true
+            isBoxVisible4 = true
+        }
+        if (boxOffsetY3.value  >= 900.dp){
+            finishBox3.value = true
+            isBoxVisible3 = true
+        }
+        if (boxOffsetY2.value  >= 900.dp){
+            finishBox2.value = true
+            isBoxVisible2 = true
+        }
+        if (boxOffsetY.value >= 900.dp){
+            finishBox1.value = true
+            isBoxVisible = true
+        }
 
         var progress by remember { mutableStateOf(0f) }
 
-        LaunchedEffect(Unit) {
-            // Пример анимации заполнения прогресс-бара
-            while (progress < 1f) {
-                progress += 0.01f
-                delay(100) // Задержка для анимации
-            }
+        if (progress >= 0.32f){
+            starCcount.value = 1
         }
-
+        if(progress >= 0.63f) {
+            starCcount.value = 2
+        }
+        if (progress >= 0.99f){
+            starCcount.value = 3
+        }
         if (musicPlay.value == true) {
 
             LaunchedEffect(musicGame) {
@@ -228,6 +306,12 @@ class GameScreen(
                     audioElement.value = document.createElement("audio") as HTMLAudioElement
                     audioElement.value!!.src = musicGame.value!!.url
 
+                    audioElement.value!!.onloadedmetadata = {
+                        // Получаем полную длительность песни
+                        audioElement.value!!.duration.toLong().also { durationMusicSecond.value = it }
+                    }
+
+
                     audioElement.value!!.ontimeupdate = {
                         audioElement.value!!.currentTime?.let {
                             currentTimeMusic.value = it
@@ -235,7 +319,10 @@ class GameScreen(
                     }
 
                     audioElement.value!!.onended = {
-                        // Действия при окончании песни (например, переход к следующей)
+                        audioElement.value?.pause()
+                        navigator.push(FinishGameScreen(
+                            userEntityCreate, bodyUserCreate, musicName.value!!, count.value, starCcount.value
+                        ))
                     }
 
                     if (musicPlay.value) {
@@ -255,7 +342,19 @@ class GameScreen(
                 }
             }
 
+            if (durationMusicSecond.value!! > 0){
+                val secondPlus = (durationMusicSecond.value!!/10)*1000
+                LaunchedEffect(Unit) {
+                    while (speed < 0.2f) {
+                        delay(secondPlus) // Задержка для анимации
+                        speed += 0.01f
+                    }
+                }
+            }
+
         }
+
+        testText.value = count.value.toString()
 
         if (finishRequests.value == true) {
 
@@ -296,11 +395,13 @@ class GameScreen(
                                     modifier = Modifier.offset(y = animatedOffsetY)
                                 ) {
                                     GameBlockActive(
-                                        startActive = if (lastPosition.value == 1 && nextPosition.value != 1) false else true,
-                                        backgroundClick = if (lastPosition.value == 1 && nextPosition.value != 1) true else false
+                                        startActive = if (clickStart.value == 1) false else true,
+                                        backgroundClick = if (clickStart.value == 1) true else false
                                     ) {
+                                        count.value+=1
                                         musicPlay.value = true
                                         offsetY = 1000.dp
+                                        clickStart.value = 1
                                         lastPosition.value = startPosition.value
                                         nextPosition.value = getRandomNumber(lastPosition.value)
                                         when (nextPosition.value) {
@@ -314,18 +415,43 @@ class GameScreen(
 
                         }
 
-                        if (nextPosition.value == 1) {
+                        if (nextPosition.value == 1 || lastPosition.value == 1) {
 
                             Box(
-                                modifier = Modifier.offset(y = boxOffsetY)
+                                modifier = Modifier.offset(y = boxOffsetY.value)
                             ) {
                                 GameBlockActive(
-                                    startActive = if (lastPosition.value == 1) false else true,
+                                    startActive = false,
                                     backgroundClick = if (lastPosition.value == 1) true else false
                                 ) {
+                                    count.value+=1
+                                    when (lastPosition.value){
+                                        1-> {
+                                            finishBox1.value = true
+                                            isBoxVisible = true
+                                        }
+                                        2-> {
+                                            finishBox2.value = true
+                                            isBoxVisible2 = true
+                                        }
+                                        3-> {
+                                            finishBox3.value = true
+                                            isBoxVisible3 = true
+                                        }
+                                        4-> {
+                                            finishBox4.value = true
+                                            isBoxVisible4 = true
+                                        }
+                                    }
+                                    val lastik = lastPosition.value
                                     lastPosition.value = nextPosition.value
-                                    startPosition.value = 0
-                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                    nextPosition.value = getRandomNumber(lastPosition.value, lastik)
+                                    when (nextPosition.value) {
+                                        1 -> isBoxVisible = true
+                                        2 -> isBoxVisible2 = false
+                                        3 -> isBoxVisible3 = false
+                                        4 -> isBoxVisible4 = false
+                                    }
                                 }
                             }
 
@@ -358,11 +484,13 @@ class GameScreen(
                                     modifier = Modifier.offset(y = animatedOffsetY)
                                 ) {
                                     GameBlockActive(
-                                        startActive = if (lastPosition.value == 2 && nextPosition.value != 2) false else true,
-                                        backgroundClick = if (lastPosition.value == 2 && nextPosition.value != 2) true else false
+                                        startActive = if (clickStart.value == 2) false else true,
+                                        backgroundClick = if (clickStart.value == 2) true else false
                                     ) {
+                                        count.value+=1
                                         musicPlay.value = true
                                         offsetY = 1000.dp
+                                        clickStart.value = 2
                                         lastPosition.value = startPosition.value
                                         nextPosition.value = getRandomNumber(lastPosition.value)
                                         when (nextPosition.value) {
@@ -376,18 +504,43 @@ class GameScreen(
 
                         }
 
-                        if (nextPosition.value == 2) {
+                        if (nextPosition.value == 2 || lastPosition.value == 2) {
 
                             Box(
-                                modifier = Modifier.offset(y = boxOffsetY2)
+                                modifier = Modifier.offset(y = boxOffsetY2.value)
                             ) {
                                 GameBlockActive(
-                                    startActive = if (lastPosition.value == 2) false else true,
+                                    startActive = false,
                                     backgroundClick = if (lastPosition.value == 2) true else false
                                 ) {
+                                    count.value+=1
+                                    when (lastPosition.value){
+                                        1-> {
+                                            finishBox1.value = true
+                                            isBoxVisible = true
+                                        }
+                                        2-> {
+                                            finishBox2.value = true
+                                            isBoxVisible2 = true
+                                        }
+                                        3-> {
+                                            finishBox3.value = true
+                                            isBoxVisible3 = true
+                                        }
+                                        4-> {
+                                            finishBox4.value = true
+                                            isBoxVisible4 = true
+                                        }
+                                    }
+                                    val lastik = lastPosition.value
                                     lastPosition.value = nextPosition.value
-                                    startPosition.value = 0
-                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                    nextPosition.value = getRandomNumber(lastPosition.value, lastik)
+                                    when (nextPosition.value) {
+                                        1 -> isBoxVisible = false
+                                        2 -> isBoxVisible2 = true
+                                        3 -> isBoxVisible3 = false
+                                        4 -> isBoxVisible4 = false
+                                    }
                                 }
                             }
 
@@ -420,11 +573,13 @@ class GameScreen(
                                     modifier = Modifier.offset(y = animatedOffsetY)
                                 ) {
                                     GameBlockActive(
-                                        startActive = if (lastPosition.value == 3 && nextPosition.value != 3) false else true,
-                                        backgroundClick = if (lastPosition.value == 3 && nextPosition.value != 3) true else false
+                                        startActive = if (clickStart.value == 3) false else true,
+                                        backgroundClick = if (clickStart.value == 3) true else false
                                     ) {
+                                        count.value+=1
                                         musicPlay.value = true
                                         offsetY = 1000.dp
+                                        clickStart.value = 3
                                         lastPosition.value = startPosition.value
                                         nextPosition.value = getRandomNumber(lastPosition.value)
                                         when (nextPosition.value) {
@@ -438,18 +593,43 @@ class GameScreen(
 
                         }
 
-                        if (nextPosition.value == 3) {
+                        if (nextPosition.value == 3 || lastPosition.value == 3) {
 
                             Box(
-                                modifier = Modifier.offset(y = boxOffsetY3)
+                                modifier = Modifier.offset(y = boxOffsetY3.value)
                             ) {
                                 GameBlockActive(
-                                    startActive = if (lastPosition.value == 3) false else true,
+                                    startActive = false,
                                     backgroundClick = if (lastPosition.value == 3) true else false
                                 ) {
+                                    count.value+=1
+                                    when (lastPosition.value){
+                                        1-> {
+                                            finishBox1.value = true
+                                            isBoxVisible = true
+                                        }
+                                        2-> {
+                                            finishBox2.value = true
+                                            isBoxVisible2 = true
+                                        }
+                                        3-> {
+                                            finishBox3.value = true
+                                            isBoxVisible3 = true
+                                        }
+                                        4-> {
+                                            finishBox4.value = true
+                                            isBoxVisible4 = true
+                                        }
+                                    }
+                                    val lastik = lastPosition.value
                                     lastPosition.value = nextPosition.value
-                                    startPosition.value = 0
-                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                    nextPosition.value = getRandomNumber(lastPosition.value, lastik)
+                                    when (nextPosition.value) {
+                                        1 -> isBoxVisible = false
+                                        2 -> isBoxVisible2 = false
+                                        3 -> isBoxVisible3 = true
+                                        4 -> isBoxVisible4 = false
+                                    }
                                 }
                             }
 
@@ -482,11 +662,13 @@ class GameScreen(
                                     modifier = Modifier.offset(y = animatedOffsetY)
                                 ) {
                                     GameBlockActive(
-                                        startActive = if (lastPosition.value == 4 && nextPosition.value != 4) false else true,
-                                        backgroundClick = if (lastPosition.value == 4 && nextPosition.value != 4) true else false
+                                        startActive = if (clickStart.value == 4) false else true,
+                                        backgroundClick = if (clickStart.value == 4) true else false
                                     ) {
+                                        count.value+=1
                                         musicPlay.value = true
                                         offsetY = 1000.dp
+                                        clickStart.value = 4
                                         lastPosition.value = startPosition.value
                                         nextPosition.value = getRandomNumber(lastPosition.value)
                                         when (nextPosition.value) {
@@ -500,18 +682,43 @@ class GameScreen(
 
                         }
 
-                        if (nextPosition.value == 4) {
+                        if (nextPosition.value == 4 || lastPosition.value == 4) {
 
                             Box(
-                                modifier = Modifier.offset(y = boxOffsetY4)
+                                modifier = Modifier.offset(y = boxOffsetY4.value)
                             ) {
                                 GameBlockActive(
-                                    startActive = if (lastPosition.value == 4) false else true,
+                                    startActive = false,
                                     backgroundClick = if (lastPosition.value == 4) true else false
                                 ) {
+                                    count.value+=1
+                                    when (lastPosition.value){
+                                        1-> {
+                                            finishBox1.value = true
+                                            isBoxVisible = true
+                                        }
+                                        2-> {
+                                            finishBox2.value = true
+                                            isBoxVisible2 = true
+                                        }
+                                        3-> {
+                                            finishBox3.value = true
+                                            isBoxVisible3 = true
+                                        }
+                                        4-> {
+                                            finishBox4.value = true
+                                            isBoxVisible4 = true
+                                        }
+                                    }
+                                    val lastik = lastPosition.value
                                     lastPosition.value = nextPosition.value
-                                    startPosition.value = 0
-                                    nextPosition.value = getRandomNumber(lastPosition.value)
+                                    nextPosition.value = getRandomNumber(lastPosition.value, lastik)
+                                    when (nextPosition.value) {
+                                        1 -> isBoxVisible = false
+                                        2 -> isBoxVisible2 = false
+                                        3 -> isBoxVisible3 = false
+                                        4 -> isBoxVisible4 = true
+                                    }
                                 }
                             }
 
@@ -568,7 +775,7 @@ class GameScreen(
                                 ) {
 
                                     Text(
-                                        text = "500",
+                                        text = testText.value,
                                         style = TextStyle(
                                             fontSize = 12.sp,
                                             lineHeight = 12.sp,
@@ -599,7 +806,10 @@ class GameScreen(
 
                                 Box(modifier = Modifier.padding(horizontal = 42.dp)) {
 
-                                    ProgressGame(progress)
+                                    if (musicPlay.value == true && durationMusicSecond.value!! != 0L){
+                                        //testText.value = durationMusicSecond.value!!.toString()
+                                        progress = ProgressBarGameDemo(durationMusicSecond.value!!)
+                                    }
 
                                 }
 
@@ -732,6 +942,7 @@ class GameScreen(
                         Box(modifier = Modifier.weight(0.7f)) {
 
                             ButtonExitGame("Выйти") {
+                                audioElement.value?.pause()
                                 navigator.push(MainMenuScreen(
                                     userEntityCreate, bodyUserCreate, 0
                                 ))
@@ -755,6 +966,11 @@ class GameScreen(
     fun getRandomNumber(excludedNumber: Int): Int {
         val numbers = (1..4).filter { it != excludedNumber }
         return numbers[Random.nextInt(numbers.size)]
+    }
+
+    fun getRandomNumber(exclude1: Int, exclude2: Int): Int {
+        val possibleNumbers = (1..4).filter { it != exclude1 && it != exclude2 }
+        return possibleNumbers.random()
     }
 
     suspend fun getMusicGame(){
