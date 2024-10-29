@@ -270,18 +270,42 @@ class GameScreen(
         if (boxOffsetY4.value  >= 900.dp){
             finishBox4.value = true
             isBoxVisible4 = true
+            if (nextPosition.value == 4){
+                audioElement.value?.pause()
+                navigator.push(FinishGameScreen(
+                    userEntityCreate, bodyUserCreate, musicName.value!!, count.value, starCcount.value
+                ))
+            }
         }
         if (boxOffsetY3.value  >= 900.dp){
             finishBox3.value = true
             isBoxVisible3 = true
+            if (nextPosition.value == 3){
+                audioElement.value?.pause()
+                navigator.push(FinishGameScreen(
+                    userEntityCreate, bodyUserCreate, musicName.value!!, count.value, starCcount.value
+                ))
+            }
         }
         if (boxOffsetY2.value  >= 900.dp){
             finishBox2.value = true
             isBoxVisible2 = true
+            if (nextPosition.value == 2){
+                audioElement.value?.pause()
+                navigator.push(FinishGameScreen(
+                    userEntityCreate, bodyUserCreate, musicName.value!!, count.value, starCcount.value
+                ))
+            }
         }
         if (boxOffsetY.value >= 900.dp){
             finishBox1.value = true
             isBoxVisible = true
+            if (nextPosition.value == 1){
+                audioElement.value?.pause()
+                navigator.push(FinishGameScreen(
+                    userEntityCreate, bodyUserCreate, musicName.value!!, count.value, starCcount.value
+                ))
+            }
         }
 
         var progress by remember { mutableStateOf(0f) }
