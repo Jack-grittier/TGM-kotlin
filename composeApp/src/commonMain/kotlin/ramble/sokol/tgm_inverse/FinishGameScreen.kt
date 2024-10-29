@@ -196,8 +196,12 @@ class FinishGameScreen(
 
                 }
 
-                ButtonClose("Close"){
-                    navigator.push(MainMenuScreen(userEntityCreate, bodyUserCreate, 0))
+                Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+
+                    ButtonClose("Close") {
+                        navigator.push(MainMenuScreen(userEntityCreate, bodyUserCreate, 0))
+                    }
+
                 }
 
             }
