@@ -314,6 +314,7 @@ class SplashScreen : Screen {
     }
 
     private suspend fun getIcon() {
+
         val body = apiRepo.getSplashIcon()
         splashIocns.value = body
 

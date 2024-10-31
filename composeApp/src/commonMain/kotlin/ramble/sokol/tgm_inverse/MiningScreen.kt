@@ -424,16 +424,7 @@ class MiningScreen (
                                         )
 
 
-                                        Surface(
-                                            modifier = Modifier.size(68.dp),
-                                            shape = CircleShape
-                                        ) {
-                                            Box(
-                                                modifier = Modifier
-                                                    .height(68.dp)
-                                                    .background(center_circle_playlist)
-                                            )
-                                        }
+
                                     }
 
                                     if (statusCode.value == 404) {

@@ -80,6 +80,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.web.dom.Main
 import org.w3c.dom.HTMLAudioElement
 import ramble.sokol.tgm_inverse.components.ButtonClose
 import ramble.sokol.tgm_inverse.components.ButtonDisconnect
@@ -285,9 +286,7 @@ class MainMenuScreen(
                                                 playMusic.value = false
                                                 pauseMusic.value = true
                                                 if (statusCodeFinish.value == null) {
-                                                    balance.value =
-                                                        balance.value!! + musicPlay!!.reward
-
+                                                    navigator.push(MainMenuScreen(userEntityCreate, bodyUserCreate, selItem, null))
                                                 } else {
                                                     finishAlreadyMusic.value = true
                                                 }
@@ -505,6 +504,7 @@ class MainMenuScreen(
                             bodyUserCreate,
                         )
                     )
+
 
                     2 -> Navigator(
                         TasksScreen(
