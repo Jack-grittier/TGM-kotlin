@@ -276,12 +276,14 @@ class MiningScreen (
 
         getCurrentUtcDateTime()
 
-        scope.launch{
-            getEarnings()
-            getMusicAd()
-            getAd()
-            getMusic("1", "25")
-            finish.value = true
+        if (finish.value == false) {
+            scope.launch {
+                getEarnings()
+                getMusicAd()
+                getAd()
+                getMusic("1", "25")
+                finish.value = true
+            }
         }
 
         if (finishAlreadyMusic.value) {
@@ -333,7 +335,7 @@ class MiningScreen (
 
                         if (statusCode.value == 404){
                             Text(
-                                modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
+                                modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
                                 text = balance.toString(),
                                 style = TextStyle(
                                     fontSize = 32.sp,
@@ -346,7 +348,7 @@ class MiningScreen (
                             )
                         }else if (finishMining.value == true){
                             Text(
-                                modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
+                                modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
                                 text = rewardMining.value.toString(),
                                 style = TextStyle(
                                     fontSize = 32.sp,
