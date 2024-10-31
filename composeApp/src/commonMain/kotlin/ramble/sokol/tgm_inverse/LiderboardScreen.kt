@@ -173,7 +173,7 @@ class LiderboardScreen(
 
                 item {
 
-                    Spacer(modifier = Modifier.padding(vertical = 45.dp))
+                    Spacer(modifier = Modifier.padding(vertical = 100.dp))
 
                 }
             }

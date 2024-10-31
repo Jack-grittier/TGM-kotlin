@@ -349,6 +349,7 @@ class MusicalityScreen(
                                 .clickable(
                                     onClick = {
                                         if (miniGameTextVisible.value == false) {
+                                            navigator.parent?.push(MainMenuScreen(userEntityCreate, bodyUserCreate, 0, null))
                                             navigator.parent?.push(GameScreen(
                                                 userEntityCreate, bodyUserCreate
                                             ))
@@ -501,7 +502,7 @@ class MusicalityScreen(
                 }
 
                 item {
-                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                    Spacer(modifier = Modifier.padding(vertical = 100.dp))
                 }
 
             }

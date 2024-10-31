@@ -8,6 +8,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -33,6 +34,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -72,11 +75,17 @@ import dev.inmo.tgbotapi.webapps.WebAppUser
 import dev.inmo.tgbotapi.webapps.webApp
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import kotlinx.browser.document
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.w3c.dom.HTMLAudioElement
 import ramble.sokol.tgm_inverse.components.ButtonClose
 import ramble.sokol.tgm_inverse.components.ButtonDisconnect
+import ramble.sokol.tgm_inverse.components.CurrentMusic
+import ramble.sokol.tgm_inverse.components.TextToast
+import ramble.sokol.tgm_inverse.model.data.ListensMusicEntityEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreateResponse
@@ -119,7 +128,7 @@ class MainMenuScreen(
     val userEntityCreate: UserEntityCreate,
     val bodyUserCreate: UserEntityCreateResponse,
     val selItem: Int,
-    val musicPlay: MusicResponse?
+    var musicPlay: MusicResponse?
 ) : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
@@ -130,17 +139,39 @@ class MainMenuScreen(
     private lateinit var statisticLock: MutableState<Boolean?>
     private lateinit var dateAirDrop: MutableState<String?>
     private lateinit var dateMiniGame: MutableState<String?>
-    private lateinit var testText: MutableState<String>
+    private lateinit var audioElement: MutableState<HTMLAudioElement?>
+    private lateinit var currentTimeMusic: MutableState<Double>
+    private lateinit var playMusic: MutableState<Boolean>
+    private lateinit var finishAlreadyMusic: MutableState<Boolean>
+    private lateinit var statusCodeFinish: MutableState<Int?>
+    private lateinit var pauseMusic: MutableState<Boolean>
+
 
     @Composable
     override fun Content() {
 
         apiRepo = ApiRepository()
         val scope  = rememberCoroutineScope()
-        val appState = remember { mutableStateOf<AppState>(AppState.Initial) }
 
         balance = remember {
             mutableStateOf(0)
+        }
+
+        pauseMusic = remember {
+            mutableStateOf(true)
+        }
+
+
+        playMusic = remember {
+            mutableStateOf(false)
+        }
+
+        finishAlreadyMusic = remember {
+            mutableStateOf(false)
+        }
+
+        statusCodeFinish = remember {
+            mutableStateOf(null)
         }
 
         statisticLock = remember {
@@ -155,11 +186,16 @@ class MainMenuScreen(
             mutableStateOf(null)
         }
 
-        dateMiniGame = remember {
+        currentTimeMusic = remember {
+            mutableStateOf(0.0)
+        }
+
+        audioElement = remember {
             mutableStateOf(null)
         }
-        testText = remember {
-            mutableStateOf("")
+
+        dateMiniGame = remember {
+            mutableStateOf(null)
         }
 
         var selectedItem by rememberSaveable {
@@ -170,19 +206,37 @@ class MainMenuScreen(
             bottomSheet()
         }
 
-        val viewModel = MusicViewModel()
-
-        testText.value = viewModel.isMusicPlaying().toString()
-
         navigator = LocalNavigator.current!!
+
+        if (musicPlay == null){
+            audioElement.value = null
+        }
+
+        if (musicPlay != null){
+            playMusic.value = true
+        }
 
         scope.launch{
             getBalance()
             getSettings()
         }
 
+        DisposableEffect(Unit) {
+            // Код, который выполнится при закрытии экрана
+            onDispose {
+                audioElement.value?.pause()
+            }
+        }
 
-        if (dateAirDrop.value != null && dateMiniGame.value != null) {
+        if (finishAlreadyMusic.value) {
+            LaunchedEffect(Unit) {
+                delay(3000)
+                finishAlreadyMusic.value = false
+            }
+        }
+
+
+            if (dateAirDrop.value != null && dateMiniGame.value != null) {
 
             Scaffold(
                 modifier = Modifier.background(background_screens),
@@ -190,146 +244,243 @@ class MainMenuScreen(
                     topBar()
                 },
                 bottomBar = {
-                    NavigationBar(
-                        modifier = Modifier
-                            .background(background_screens)
-                            .clip(RoundedCornerShape(topStart = 60.dp, topEnd = 60.dp))
-                            .fillMaxWidth()
-                            .height(87.dp),
-                        containerColor = background_navbar
+
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.Bottom,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        NavigationBarItem(
-                            //modifier = Modifier.padding(start = 20.dp),
-                            selected = selectedItem == 0,
-                            onClick = {
-                                selectedItem = 0
-                            },
-                            icon = {
-                                Icon(
-                                    modifier = Modifier
-                                        .width(20.dp)
-                                        .height(20.dp),
-                                    painter = painterResource(Res.drawable.icon_musicality),
-                                    contentDescription = "Musicality",
-                                    tint = if (selectedItem == 0) Color.White else icon_navbar
-                                )
-                            },
-                            label = {
-                                Text(
-                                    text = stringResource(Res.string.musicality_navbar),
-                                    color = if (selectedItem == 0) Color.White else text_navbar,
-                                    style = TextStyle(
-                                        fontSize = 12.sp,
-                                        lineHeight = 16.sp,
-                                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                                        fontWeight = FontWeight(700)
-                                    )
-                                )
-                            },
-                            colors = androidx.compose.material3.NavigationBarItemDefaults
-                                .colors(
-                                    indicatorColor = Color.Transparent
-                                )
-                        )
 
-                        NavigationBarItem(
-                            selected = selectedItem == 1,
-                            onClick = {
-                                selectedItem = 1
-                            },
-                            icon = {
-                                Icon(
-                                    modifier = Modifier
-                                        .width(33.dp),
-                                    painter = painterResource(Res.drawable.icon_mining),
-                                    contentDescription = "Mining",
-                                    tint = if (selectedItem == 1) Color.White else icon_navbar
-                                )
-                            },
-                            label = {
-                                Text(
-                                    text = stringResource(Res.string.mining_navbar),
-                                    color = if (selectedItem == 1) Color.White else text_navbar,
-                                    style = TextStyle(
-                                        fontSize = 12.sp,
-                                        lineHeight = 16.sp,
-                                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                                        fontWeight = FontWeight(700)
-                                    )
-                                )
-                            },
-                            colors = androidx.compose.material3.NavigationBarItemDefaults
-                                .colors(
-                                    indicatorColor = Color.Transparent
-                                )
-                        )
+                        if (musicPlay != null) {
+                            Box(
+                                modifier = Modifier.fillMaxWidth()
+                                    .padding(bottom = 24.dp, start = 8.dp, end = 8.dp),
+                                contentAlignment = Alignment.BottomCenter
+                            ) {
 
-                        NavigationBarItem(
-                            selected = selectedItem == 2,
-                            onClick = {
-                                selectedItem = 2
-                            },
-                            icon = {
-                                Icon(
-                                    modifier = Modifier
-                                        .width(20.dp)
-                                        .height(20.dp),
-                                    painter = painterResource(Res.drawable.icon_tasks),
-                                    contentDescription = "Tasks",
-                                    tint = if (selectedItem == 2) Color.White else icon_navbar
-                                )
-                            },
-                            label = {
-                                Text(
-                                    text = stringResource(Res.string.tasks_navbar),
-                                    color = if (selectedItem == 2) Color.White else text_navbar,
-                                    style = TextStyle(
-                                        fontSize = 12.sp,
-                                        lineHeight = 16.sp,
-                                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                                        fontWeight = FontWeight(700)
-                                    )
-                                )
-                            },
-                            colors = androidx.compose.material3.NavigationBarItemDefaults
-                                .colors(
-                                    indicatorColor = Color.Transparent
-                                )
-                        )
+                                LaunchedEffect(musicPlay) {
+                                    if (musicPlay != null) {
+                                        // Останавливаем текущую песню, если она есть
+                                        audioElement.value?.pause()
+                                        audioElement.value?.currentTime = 0.0
 
-                        NavigationBarItem(
-                            //modifier = Modifier.padding(end = 20.dp),
-                            selected = selectedItem == 3,
-                            onClick = {
-                                selectedItem = 3
-                            },
-                            icon = {
-                                Icon(
-                                    modifier = Modifier
-                                        .height(20.dp),
-                                    painter = painterResource(Res.drawable.icon_liderboard),
-                                    contentDescription = "Liderboard",
-                                    tint = if (selectedItem == 3) Color.White else icon_navbar
-                                )
-                            },
-                            label = {
-                                Text(
-                                    text = stringResource(Res.string.liderboard),
-                                    color = if (selectedItem == 3) Color.White else text_navbar,
-                                    style = TextStyle(
-                                        fontSize = 12.sp,
-                                        lineHeight = 16.sp,
-                                        fontFamily = FontFamily(Font(Res.font.mont_regular)),
-                                        fontWeight = FontWeight(700)
+                                        audioElement.value =
+                                            document.createElement("audio") as HTMLAudioElement
+                                        audioElement.value!!.src = musicPlay!!.url
+
+                                        audioElement.value!!.ontimeupdate = {
+                                            audioElement.value!!.currentTime?.let {
+                                                currentTimeMusic.value = it
+                                            }
+                                        }
+
+                                        audioElement.value!!.onended = {
+                                            scope.launch {
+                                                postListensMusic(
+                                                    (musicPlay!!.duration).toLong(),
+                                                    musicPlay!!.id!!
+                                                )
+                                                musicPlay = null
+                                                playMusic.value = false
+                                                pauseMusic.value = true
+                                                if (statusCodeFinish.value == null) {
+                                                    balance.value =
+                                                        balance.value!! + musicPlay!!.reward
+
+                                                } else {
+                                                    finishAlreadyMusic.value = true
+                                                }
+                                            }
+                                        }
+
+                                        if (pauseMusic.value) {
+                                            audioElement.value!!.play()
+                                        }
+                                    }
+                                }
+
+
+                                LaunchedEffect(pauseMusic.value) {
+                                    if (audioElement != null) {
+                                        if (pauseMusic.value) {
+                                            audioElement.value!!.play()
+                                        } else {
+                                            audioElement.value!!.pause()
+                                        }
+                                    }
+                                }
+
+
+                                CurrentMusic(
+                                    url = musicPlay!!.coverURL,
+                                    name = musicPlay!!.name,
+                                    author = musicPlay!!.group,
+                                    play = pauseMusic.value,
+                                    duration = musicPlay!!.duration
+                                ) {
+                                    pauseMusic.value = !pauseMusic.value
+                                }
+                            }
+
+                        }
+
+                        if (finishAlreadyMusic.value) {
+
+                            Box(
+                                modifier = Modifier.fillMaxWidth()
+                                    .padding(bottom = 24.dp, start = 16.dp, end = 16.dp),
+                                contentAlignment = Alignment.BottomCenter
+                            ) {
+
+                                TextToast("The award has already been received for this song")
+
+                            }
+
+                        }
+
+                        NavigationBar(
+                            modifier = Modifier
+                                .background(background_screens)
+                                .clip(RoundedCornerShape(topStart = 60.dp, topEnd = 60.dp))
+                                .fillMaxWidth()
+                                .height(87.dp),
+                            containerColor = background_navbar
+                        ) {
+
+                            NavigationBarItem(
+                                //modifier = Modifier.padding(start = 20.dp),
+                                selected = selectedItem == 0,
+                                onClick = {
+                                    selectedItem = 0
+                                },
+                                icon = {
+                                    Icon(
+                                        modifier = Modifier
+                                            .width(20.dp)
+                                            .height(20.dp),
+                                        painter = painterResource(Res.drawable.icon_musicality),
+                                        contentDescription = "Musicality",
+                                        tint = if (selectedItem == 0) Color.White else icon_navbar
                                     )
-                                )
-                            },
-                            colors = androidx.compose.material3.NavigationBarItemDefaults
-                                .colors(
-                                    indicatorColor = Color.Transparent
-                                )
-                        )
+                                },
+                                label = {
+                                    Text(
+                                        text = stringResource(Res.string.musicality_navbar),
+                                        color = if (selectedItem == 0) Color.White else text_navbar,
+                                        style = TextStyle(
+                                            fontSize = 12.sp,
+                                            lineHeight = 16.sp,
+                                            fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                            fontWeight = FontWeight(700)
+                                        )
+                                    )
+                                },
+                                colors = androidx.compose.material3.NavigationBarItemDefaults
+                                    .colors(
+                                        indicatorColor = Color.Transparent
+                                    )
+                            )
+
+                            NavigationBarItem(
+                                selected = selectedItem == 1,
+                                onClick = {
+                                    selectedItem = 1
+                                },
+                                icon = {
+                                    Icon(
+                                        modifier = Modifier
+                                            .width(33.dp),
+                                        painter = painterResource(Res.drawable.icon_mining),
+                                        contentDescription = "Mining",
+                                        tint = if (selectedItem == 1) Color.White else icon_navbar
+                                    )
+                                },
+                                label = {
+                                    Text(
+                                        text = stringResource(Res.string.mining_navbar),
+                                        color = if (selectedItem == 1) Color.White else text_navbar,
+                                        style = TextStyle(
+                                            fontSize = 12.sp,
+                                            lineHeight = 16.sp,
+                                            fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                            fontWeight = FontWeight(700)
+                                        )
+                                    )
+                                },
+                                colors = androidx.compose.material3.NavigationBarItemDefaults
+                                    .colors(
+                                        indicatorColor = Color.Transparent
+                                    )
+                            )
+
+                            NavigationBarItem(
+                                selected = selectedItem == 2,
+                                onClick = {
+                                    selectedItem = 2
+                                },
+                                icon = {
+                                    Icon(
+                                        modifier = Modifier
+                                            .width(20.dp)
+                                            .height(20.dp),
+                                        painter = painterResource(Res.drawable.icon_tasks),
+                                        contentDescription = "Tasks",
+                                        tint = if (selectedItem == 2) Color.White else icon_navbar
+                                    )
+                                },
+                                label = {
+                                    Text(
+                                        text = stringResource(Res.string.tasks_navbar),
+                                        color = if (selectedItem == 2) Color.White else text_navbar,
+                                        style = TextStyle(
+                                            fontSize = 12.sp,
+                                            lineHeight = 16.sp,
+                                            fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                            fontWeight = FontWeight(700)
+                                        )
+                                    )
+                                },
+                                colors = androidx.compose.material3.NavigationBarItemDefaults
+                                    .colors(
+                                        indicatorColor = Color.Transparent
+                                    )
+                            )
+
+                            NavigationBarItem(
+                                //modifier = Modifier.padding(end = 20.dp),
+                                selected = selectedItem == 3,
+                                onClick = {
+                                    selectedItem = 3
+                                },
+                                icon = {
+                                    Icon(
+                                        modifier = Modifier
+                                            .height(20.dp),
+                                        painter = painterResource(Res.drawable.icon_liderboard),
+                                        contentDescription = "Liderboard",
+                                        tint = if (selectedItem == 3) Color.White else icon_navbar
+                                    )
+                                },
+                                label = {
+                                    Text(
+                                        text = stringResource(Res.string.liderboard),
+                                        color = if (selectedItem == 3) Color.White else text_navbar,
+                                        style = TextStyle(
+                                            fontSize = 12.sp,
+                                            lineHeight = 16.sp,
+                                            fontFamily = FontFamily(Font(Res.font.mont_regular)),
+                                            fontWeight = FontWeight(700)
+                                        )
+                                    )
+                                },
+                                colors = androidx.compose.material3.NavigationBarItemDefaults
+                                    .colors(
+                                        indicatorColor = Color.Transparent
+                                    )
+                            )
+
+                        }
 
                     }
                 }
@@ -338,7 +489,7 @@ class MainMenuScreen(
 
                     0 -> Navigator(
                         MusicalityScreen(
-                            modifier = Modifier.padding(innerPadding),
+                            modifier = Modifier.padding(PaddingValues(top = innerPadding.calculateTopPadding())),
                             userEntityCreate,
                             dateMiniGame.value!!,
                             bodyUserCreate
@@ -347,25 +498,24 @@ class MainMenuScreen(
 
                     1 -> Navigator(
                         MiningScreen(
-                            modifier = Modifier.padding(innerPadding),
+                            modifier = Modifier.padding(PaddingValues(top = innerPadding.calculateTopPadding())),
                             userEntityCreate,
                             dateAirDrop.value!!,
                             balance.value!!,
                             bodyUserCreate,
-                            viewModel
                         )
                     )
 
                     2 -> Navigator(
                         TasksScreen(
-                            modifier = Modifier.padding(innerPadding),
+                            modifier = Modifier.padding(PaddingValues(top = innerPadding.calculateTopPadding())),
                             userEntityCreate
                         )
                     )
 
                     3 -> Navigator(
                         LiderboardScreen(
-                            modifier = Modifier.padding(innerPadding),
+                            modifier = Modifier.padding(PaddingValues(top = innerPadding.calculateTopPadding())),
                             userEntityCreate
                         )
                     )
@@ -594,6 +744,7 @@ class MainMenuScreen(
                         .clickable(
                             onClick = {
                                 if (statisticLock.value == true) {
+                                    audioElement.value?.pause()
                                     navigator?.push(OnBoardingScreen(userEntityCreate, bodyUserCreate))
                                 }
                             },
@@ -716,6 +867,15 @@ class MainMenuScreen(
             }
 
         }
+    }
+
+    private suspend fun postListensMusic(
+        duration: Long,
+        id: Long
+    ){
+        val listensMusicEntityEntity = ListensMusicEntityEntity(musicId = id, listeningTime = duration)
+        val body = apiRepo.postListensMusic(initData = userEntityCreate.initData, listensMusicEntityEntity = listensMusicEntityEntity)
+        statusCodeFinish.value = body.statusCode
     }
 
 }

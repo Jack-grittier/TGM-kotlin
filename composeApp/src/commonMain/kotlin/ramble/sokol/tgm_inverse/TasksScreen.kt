@@ -177,7 +177,7 @@ class TasksScreen(
 
             item {
 
-                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                Spacer(modifier = Modifier.padding(vertical = 100.dp))
             }
         }
 

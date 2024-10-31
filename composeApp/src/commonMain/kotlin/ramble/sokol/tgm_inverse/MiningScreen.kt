@@ -127,7 +127,6 @@ class MiningScreen (
     val airDropDate: String,
     var balance: Long,
     val bodyUserCreate: UserEntityCreateResponse,
-    val viewModel: MusicViewModel
 ) : Screen {
 
     private lateinit var startedEarning: MutableState<Boolean>
@@ -140,7 +139,6 @@ class MiningScreen (
     private lateinit var currentSong: MutableState<MusicResponse?>
     private lateinit var musicAdUrl: MutableState<String?>
     private lateinit var adUrl: MutableState<String?>
-    private lateinit var tessText: MutableState<String?>
     private lateinit var finishMining: MutableState<Boolean?>
     private lateinit var currentTime: MutableState<String>
     private lateinit var airDropVisible: MutableState<Boolean?>
@@ -243,10 +241,6 @@ class MiningScreen (
             mutableStateOf(false)
         }
 
-        tessText= remember {
-            mutableStateOf("")
-        }
-
         airDropVisible = remember {
             mutableStateOf(false)
         }
@@ -268,8 +262,6 @@ class MiningScreen (
         }
 
         //playMusic.value = viewModel.isMusicPlaying()
-
-        tessText.value = viewModel.isMusicPlaying().toString()
 
         navigator = LocalNavigator.currentOrThrow
 
@@ -629,8 +621,18 @@ class MiningScreen (
 
                                     PlaylistItem(items) {
                                         currentSong.value = items
-                                        playMusic.value = true
-                                        pauseMusic.value = true
+
+                                        navigator.parent?.push(
+                                            MainMenuScreen(
+                                                userEntityCreate,
+                                                bodyUserCreate,
+                                                1,
+                                                currentSong.value!!
+                                            )
+                                        )
+
+//                                        playMusic.value = true
+//                                        pauseMusic.value = true
                                     }
 
                                     Spacer(modifier = Modifier.padding(horizontal = 4.dp))
@@ -643,103 +645,100 @@ class MiningScreen (
                     }
 
 
-                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                    Spacer(modifier = Modifier.padding(vertical = 100.dp))
 
                 }
 
-                if (playMusic.value == true) {
-
-                    viewModel.playMusic()
-
-                    Box(
-                        modifier = Modifier.fillMaxSize()
-                            .padding(bottom = 24.dp, start = 8.dp, end = 8.dp),
-                        contentAlignment = Alignment.BottomCenter
-                    ) {
-
-                        LaunchedEffect(currentSong.value) {
-                            if (currentSong.value != null) {
-                                // Останавливаем текущую песню, если она есть
-                                audioElement.value?.pause()
-                                audioElement.value?.currentTime = 0.0
-
-                                audioElement.value = document.createElement("audio") as HTMLAudioElement
-                                audioElement.value!!.src = currentSong.value!!.url
-
-                                audioElement.value!!.ontimeupdate = {
-                                    audioElement.value!!.currentTime?.let {
-                                        currentTimeMusic.value = it
-                                    }
-                                }
-
-                                audioElement.value!!.onended = {
-                                    scope.launch {
-                                        postListensMusic(
-                                            (currentSong.value!!.duration).toLong(),
-                                            currentSong.value!!.id!!
-                                        )
-                                        playMusic.value = false
-                                        pauseMusic.value = false
-                                        if (statusCodeFinish.value == null) {
-                                            balance += currentSong.value!!.reward
-                                            navigator.parent?.push(
-                                                MainMenuScreen(
-                                                    userEntityCreate,
-                                                    bodyUserCreate,
-                                                    1,
-                                                    null
-                                                )
-                                            )
-                                        }else{
-                                            finishAlreadyMusic.value = true
-                                        }
-                                    }
-                                }
-
-                                if (pauseMusic.value) {
-                                    audioElement.value!!.play()
-                                }
-                            }
-                        }
-
-
-                        LaunchedEffect(pauseMusic.value) {
-                            if (audioElement != null) {
-                                if (pauseMusic.value) {
-                                    audioElement.value!!.play()
-                                } else {
-                                    audioElement.value!!.pause()
-                                }
-                            }
-                        }
-
-
-                        CurrentMusic(
-                            url = currentSong.value!!.coverURL,
-                            name = currentSong.value!!.name,
-                            author = currentSong.value!!.group,
-                            play = pauseMusic.value,
-                            duration = currentSong.value!!.duration
-                        ) {
-                            viewModel.isMusicPlaying()
-                            pauseMusic.value = !pauseMusic.value
-                        }
-                    }
-                }
-
-                if (finishAlreadyMusic.value) {
-
-                    Box(
-                        modifier = Modifier.fillMaxSize()
-                            .padding(bottom = 24.dp, start = 16.dp, end = 16.dp),
-                        contentAlignment = Alignment.BottomCenter
-                    ) {
-
-                        TextToast("The award has already been received for this song")
-
-                    }
-
-                }
+//                if (playMusic.value == true) {
+//
+//                    Box(
+//                        modifier = Modifier.fillMaxSize()
+//                            .padding(bottom = 24.dp, start = 8.dp, end = 8.dp),
+//                        contentAlignment = Alignment.BottomCenter
+//                    ) {
+//
+//                        LaunchedEffect(currentSong.value) {
+//                            if (currentSong.value != null) {
+//                                // Останавливаем текущую песню, если она есть
+//                                audioElement.value?.pause()
+//                                audioElement.value?.currentTime = 0.0
+//
+//                                audioElement.value = document.createElement("audio") as HTMLAudioElement
+//                                audioElement.value!!.src = currentSong.value!!.url
+//
+//                                audioElement.value!!.ontimeupdate = {
+//                                    audioElement.value!!.currentTime?.let {
+//                                        currentTimeMusic.value = it
+//                                    }
+//                                }
+//
+//                                audioElement.value!!.onended = {
+//                                    scope.launch {
+//                                        postListensMusic(
+//                                            (currentSong.value!!.duration).toLong(),
+//                                            currentSong.value!!.id!!
+//                                        )
+//                                        playMusic.value = false
+//                                        pauseMusic.value = false
+//                                        if (statusCodeFinish.value == null) {
+//                                            balance += currentSong.value!!.reward
+//                                            navigator.parent?.push(
+//                                                MainMenuScreen(
+//                                                    userEntityCreate,
+//                                                    bodyUserCreate,
+//                                                    1,
+//                                                    null
+//                                                )
+//                                            )
+//                                        }else{
+//                                            finishAlreadyMusic.value = true
+//                                        }
+//                                    }
+//                                }
+//
+//                                if (pauseMusic.value) {
+//                                    audioElement.value!!.play()
+//                                }
+//                            }
+//                        }
+//
+//
+//                        LaunchedEffect(pauseMusic.value) {
+//                            if (audioElement != null) {
+//                                if (pauseMusic.value) {
+//                                    audioElement.value!!.play()
+//                                } else {
+//                                    audioElement.value!!.pause()
+//                                }
+//                            }
+//                        }
+//
+//
+//                        CurrentMusic(
+//                            url = currentSong.value!!.coverURL,
+//                            name = currentSong.value!!.name,
+//                            author = currentSong.value!!.group,
+//                            play = pauseMusic.value,
+//                            duration = currentSong.value!!.duration
+//                        ) {
+//                            pauseMusic.value = !pauseMusic.value
+//                        }
+//                    }
+//                }
+//
+//                if (finishAlreadyMusic.value) {
+//
+//                    Box(
+//                        modifier = Modifier.fillMaxSize()
+//                            .padding(bottom = 24.dp, start = 16.dp, end = 16.dp),
+//                        contentAlignment = Alignment.BottomCenter
+//                    ) {
+//
+//                        TextToast("The award has already been received for this song")
+//
+//                    }
+//
+//                }
 
             }
 
