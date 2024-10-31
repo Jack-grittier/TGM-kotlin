@@ -118,6 +118,7 @@ class GameScreen(
     private lateinit var rewardMusic: MutableState<Long>
     private lateinit var rewardMusicCurrent: MutableState<Long>
     private lateinit var musicId: MutableState<Long?>
+    private lateinit var rareFinish: MutableState<Boolean>
 
     @Composable
     override fun Content() {
@@ -131,7 +132,9 @@ class GameScreen(
             mutableStateOf(false)
         }
 
-
+        rareFinish = remember {
+            mutableStateOf(false)
+        }
 
         rewardMusic = remember {
             mutableStateOf(0L)
@@ -282,9 +285,12 @@ class GameScreen(
         }
 
         if (boxOffsetY4.value  >= 900.dp){
+            lastPosition.value = 0
             finishBox4.value = true
             isBoxVisible4 = true
             if (nextPosition.value == 4){
+                nextPosition.value = 0
+                rareFinish.value = true
                 audioElement.value?.pause()
                 scope.launch {
                     postRewardGame(musicId.value!!, currentTimeMusic.value.toLong())
@@ -295,9 +301,12 @@ class GameScreen(
             }
         }
         if (boxOffsetY3.value  >= 900.dp){
+            lastPosition.value = 0
             finishBox3.value = true
             isBoxVisible3 = true
             if (nextPosition.value == 3){
+                nextPosition.value = 0
+                rareFinish.value = true
                 audioElement.value?.pause()
                 scope.launch {
                     postRewardGame(musicId.value!!, currentTimeMusic.value.toLong())
@@ -308,9 +317,12 @@ class GameScreen(
             }
         }
         if (boxOffsetY2.value  >= 900.dp){
+            lastPosition.value = 0
             finishBox2.value = true
             isBoxVisible2 = true
             if (nextPosition.value == 2){
+                nextPosition.value = 0
+                rareFinish.value = true
                 audioElement.value?.pause()
                 scope.launch {
                     postRewardGame(musicId.value!!, currentTimeMusic.value.toLong())
@@ -321,9 +333,12 @@ class GameScreen(
             }
         }
         if (boxOffsetY.value >= 900.dp){
+            lastPosition.value = 0
             finishBox1.value = true
             isBoxVisible = true
             if (nextPosition.value == 1){
+                nextPosition.value = 0
+                rareFinish.value = true
                 audioElement.value?.pause()
                 scope.launch {
                     postRewardGame(musicId.value!!, currentTimeMusic.value.toLong())
@@ -373,11 +388,19 @@ class GameScreen(
 
                     audioElement.value!!.onended = {
                         audioElement.value?.pause()
-                        scope.launch {
-                            postRewardGame(musicId.value!!, musicGame.value!!.duration.toLong())
-                            navigator.push(FinishGameScreen(
-                                userEntityCreate, bodyUserCreate, musicName.value!!, rewardMusicCurrent.value, starCcount.value
-                            ))
+                        if (rareFinish.value == false) {
+                            scope.launch {
+                                postRewardGame(musicId.value!!, musicGame.value!!.duration.toLong())
+                                navigator.push(
+                                    FinishGameScreen(
+                                        userEntityCreate,
+                                        bodyUserCreate,
+                                        musicName.value!!,
+                                        rewardMusicCurrent.value,
+                                        starCcount.value
+                                    )
+                                )
+                            }
                         }
                     }
 

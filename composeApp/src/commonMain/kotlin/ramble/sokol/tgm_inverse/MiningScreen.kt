@@ -333,7 +333,7 @@ class MiningScreen (
 
                         if (statusCode.value == 404){
                             Text(
-                                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+                                modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
                                 text = balance.toString(),
                                 style = TextStyle(
                                     fontSize = 32.sp,
@@ -346,7 +346,7 @@ class MiningScreen (
                             )
                         }else if (finishMining.value == true){
                             Text(
-                                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+                                modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
                                 text = rewardMining.value.toString(),
                                 style = TextStyle(
                                     fontSize = 32.sp,
@@ -358,19 +358,6 @@ class MiningScreen (
                                 )
                             )
                         }else {
-
-//                            Text(
-//                                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
-//                                text = currentReward.value.toString(),
-//                                style = TextStyle(
-//                                    fontSize = 32.sp,
-//                                    lineHeight = 32.sp,
-//                                    fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-//                                    fontWeight = FontWeight(400),
-//                                    color = Color.White,
-//                                    textAlign = TextAlign.Center,
-//                                )
-//                            )
 
                             finishMining.value = TextReward(
                                 start = startedTimeMining.value,
