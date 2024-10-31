@@ -600,8 +600,8 @@ class MainMenuScreen(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
                         ),
-                    //text = "@${userEntityCreate.username.toString()}",
-                    text = testText.value,
+                    text = "@${userEntityCreate.username.toString()}",
+                    //text = testText.value,
                     style = TextStyle(
                         fontSize = 16.sp,
                         lineHeight = 21.sp,
