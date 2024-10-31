@@ -211,7 +211,7 @@ class GameScreen(
             }
         }
 
-        var speed by remember { mutableStateOf(0.1f) }
+        var speed by remember { mutableStateOf(0.2f) }
 
         var offsetY by remember { mutableStateOf(0.dp) }
 
@@ -424,7 +424,7 @@ class GameScreen(
             if (durationMusicSecond.value!! > 0){
                 val secondPlus = (durationMusicSecond.value!!/20)*1000
                 LaunchedEffect(Unit) {
-                    while (speed < 0.3f) {
+                    while (speed < 0.4f) {
                         delay(secondPlus) // Задержка для анимации
                         speed += 0.01f
                     }

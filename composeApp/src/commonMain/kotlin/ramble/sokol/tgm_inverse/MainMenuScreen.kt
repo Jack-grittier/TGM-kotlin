@@ -636,10 +636,19 @@ class MainMenuScreen(
                     horizontalArrangement = Arrangement.Center
                 ){
 
+
+
                     Text(
-                        text = "500000",
+                        text = balance.value.toString(),
                         style = TextStyle(
-                            fontSize = 16.sp,
+                            fontSize =
+                            if (balance.value.toString().length <= 7) 16.sp
+                            else if (balance.value.toString().length > 15) 15.sp
+                            else if (balance.value.toString().length > 13) 14.sp
+                            else if (balance.value.toString().length >11) 13.sp
+                            else if (balance.value.toString().length > 9) 12.sp
+                            else if (balance.value.toString().length > 7) 11.sp
+                            else 10.sp,
                             lineHeight = 16.sp,
                             fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
                             fontWeight = FontWeight(400),
