@@ -114,6 +114,7 @@ class MusicalityScreen(
     private lateinit var differenceInMillis: MutableState<Long>
     private lateinit var testText: MutableState<String>
     private lateinit var clickCopy: MutableState<Boolean>
+    private lateinit var finishRequests: MutableState<Boolean>
 
     @OptIn(InternalVoyagerApi::class)
     @Composable
@@ -127,6 +128,10 @@ class MusicalityScreen(
         }
 
         clickCopy = remember {
+            mutableStateOf(false)
+        }
+
+        finishRequests = remember {
             mutableStateOf(false)
         }
 
@@ -146,8 +151,11 @@ class MusicalityScreen(
             mutableStateOf(getCurrentUtcDateTime())
         }
 
-        scope.launch {
-            getLeader("1", "25")
+        if (finishRequests.value == false) {
+            scope.launch {
+                getLeader("1", "25")
+                finishRequests.value = true
+            }
         }
         if (clickCopy.value) {
             LaunchedEffect(Unit) {

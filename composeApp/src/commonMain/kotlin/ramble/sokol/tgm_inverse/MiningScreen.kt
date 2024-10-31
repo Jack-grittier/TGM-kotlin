@@ -335,7 +335,7 @@ class MiningScreen (
 
                         if (statusCode.value == 404){
                             Text(
-                                modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                                modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
                                 text = balance.toString(),
                                 style = TextStyle(
                                     fontSize = 32.sp,
@@ -348,7 +348,7 @@ class MiningScreen (
                             )
                         }else if (finishMining.value == true){
                             Text(
-                                modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                                modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
                                 text = rewardMining.value.toString(),
                                 style = TextStyle(
                                     fontSize = 32.sp,

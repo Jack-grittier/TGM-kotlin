@@ -637,7 +637,7 @@ class MainMenuScreen(
                 ){
 
                     Text(
-                        text = balance.value.toString(),
+                        text = "500000",
                         style = TextStyle(
                             fontSize = 16.sp,
                             lineHeight = 16.sp,
