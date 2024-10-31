@@ -19,6 +19,7 @@ import ramble.sokol.tgm_inverse.model.data.ListensMusicEntityEntity
 import ramble.sokol.tgm_inverse.model.data.ListensMusicEntityResponse
 import ramble.sokol.tgm_inverse.model.data.MusicAdEntity
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
+import ramble.sokol.tgm_inverse.model.data.RewardGameEntity
 import ramble.sokol.tgm_inverse.model.data.SettingsEntity
 import ramble.sokol.tgm_inverse.model.data.SplashIconEntity
 import ramble.sokol.tgm_inverse.model.data.StatisticsEntity
@@ -170,6 +171,15 @@ class ApiRepository {
     ) : ListensMusicEntityResponse =
         client.post(ApiRoutes.POST_LISTENS_MUSIC){
             setBody(listensMusicEntityEntity)
+            header(HttpHeaders.Authorization, "Bearer ${initData}")
+        }.body()
+
+    suspend fun postReawardGame(
+        rewardGameEntity: RewardGameEntity,
+        initData: String
+    ) : Long =
+        client.post(ApiRoutes.POST_REWARD_GAME){
+            setBody(rewardGameEntity)
             header(HttpHeaders.Authorization, "Bearer ${initData}")
         }.body()
 

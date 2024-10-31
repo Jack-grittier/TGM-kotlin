@@ -56,7 +56,9 @@ import ramble.sokol.tgm_inverse.components.ButtonExitGame
 import ramble.sokol.tgm_inverse.components.GameBlockActive
 import ramble.sokol.tgm_inverse.components.ProgressBarGameDemo
 import ramble.sokol.tgm_inverse.components.ProgressGame
+import ramble.sokol.tgm_inverse.components.TextRewardGame
 import ramble.sokol.tgm_inverse.model.data.MusicResponse
+import ramble.sokol.tgm_inverse.model.data.RewardGameEntity
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreateResponse
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
@@ -112,8 +114,10 @@ class GameScreen(
     private lateinit var finishBox2: MutableState<Boolean>
     private lateinit var finishBox3: MutableState<Boolean>
     private lateinit var finishBox4: MutableState<Boolean>
-    private lateinit var count: MutableState<Int>
     private lateinit var starCcount: MutableState<Int>
+    private lateinit var rewardMusic: MutableState<Long>
+    private lateinit var rewardMusicCurrent: MutableState<Long>
+    private lateinit var musicId: MutableState<Long?>
 
     @Composable
     override fun Content() {
@@ -127,8 +131,14 @@ class GameScreen(
             mutableStateOf(false)
         }
 
-        count = remember {
-            mutableStateOf(0)
+
+
+        rewardMusic = remember {
+            mutableStateOf(0L)
+        }
+
+        rewardMusicCurrent = remember {
+            mutableStateOf(0L)
         }
 
         starCcount = remember {
@@ -149,6 +159,10 @@ class GameScreen(
 
         finishBox3 = remember {
             mutableStateOf(false)
+        }
+
+        musicId = remember {
+            mutableStateOf(null)
         }
 
         finishBox4 = remember {
@@ -194,7 +208,7 @@ class GameScreen(
             }
         }
 
-        var speed by remember { mutableStateOf(0.15f) }
+        var speed by remember { mutableStateOf(0.1f) }
 
         var offsetY by remember { mutableStateOf(0.dp) }
 
@@ -272,9 +286,12 @@ class GameScreen(
             isBoxVisible4 = true
             if (nextPosition.value == 4){
                 audioElement.value?.pause()
-                navigator.push(FinishGameScreen(
-                    userEntityCreate, bodyUserCreate, musicName.value!!, count.value, starCcount.value
-                ))
+                scope.launch {
+                    postRewardGame(musicId.value!!, currentTimeMusic.value.toLong())
+                    navigator.push(FinishGameScreen(
+                        userEntityCreate, bodyUserCreate, musicName.value!!, rewardMusicCurrent.value, starCcount.value
+                    ))
+                }
             }
         }
         if (boxOffsetY3.value  >= 900.dp){
@@ -282,9 +299,12 @@ class GameScreen(
             isBoxVisible3 = true
             if (nextPosition.value == 3){
                 audioElement.value?.pause()
-                navigator.push(FinishGameScreen(
-                    userEntityCreate, bodyUserCreate, musicName.value!!, count.value, starCcount.value
-                ))
+                scope.launch {
+                    postRewardGame(musicId.value!!, currentTimeMusic.value.toLong())
+                    navigator.push(FinishGameScreen(
+                        userEntityCreate, bodyUserCreate, musicName.value!!, rewardMusicCurrent.value, starCcount.value
+                    ))
+                }
             }
         }
         if (boxOffsetY2.value  >= 900.dp){
@@ -292,9 +312,12 @@ class GameScreen(
             isBoxVisible2 = true
             if (nextPosition.value == 2){
                 audioElement.value?.pause()
-                navigator.push(FinishGameScreen(
-                    userEntityCreate, bodyUserCreate, musicName.value!!, count.value, starCcount.value
-                ))
+                scope.launch {
+                    postRewardGame(musicId.value!!, currentTimeMusic.value.toLong())
+                    navigator.push(FinishGameScreen(
+                        userEntityCreate, bodyUserCreate, musicName.value!!, rewardMusicCurrent.value, starCcount.value
+                    ))
+                }
             }
         }
         if (boxOffsetY.value >= 900.dp){
@@ -302,9 +325,12 @@ class GameScreen(
             isBoxVisible = true
             if (nextPosition.value == 1){
                 audioElement.value?.pause()
-                navigator.push(FinishGameScreen(
-                    userEntityCreate, bodyUserCreate, musicName.value!!, count.value, starCcount.value
-                ))
+                scope.launch {
+                    postRewardGame(musicId.value!!, currentTimeMusic.value.toLong())
+                    navigator.push(FinishGameScreen(
+                        userEntityCreate, bodyUserCreate, musicName.value!!, rewardMusicCurrent.value, starCcount.value
+                    ))
+                }
             }
         }
 
@@ -322,6 +348,9 @@ class GameScreen(
         if (musicPlay.value == true) {
 
             LaunchedEffect(musicGame) {
+
+
+
                 if (musicGame != null) {
                     // Останавливаем текущую песню, если она есть
                     audioElement.value?.pause()
@@ -344,9 +373,12 @@ class GameScreen(
 
                     audioElement.value!!.onended = {
                         audioElement.value?.pause()
-                        navigator.push(FinishGameScreen(
-                            userEntityCreate, bodyUserCreate, musicName.value!!, count.value, starCcount.value
-                        ))
+                        scope.launch {
+                            postRewardGame(musicId.value!!, musicGame.value!!.duration.toLong())
+                            navigator.push(FinishGameScreen(
+                                userEntityCreate, bodyUserCreate, musicName.value!!, rewardMusicCurrent.value, starCcount.value
+                            ))
+                        }
                     }
 
                     if (musicPlay.value) {
@@ -369,7 +401,7 @@ class GameScreen(
             if (durationMusicSecond.value!! > 0){
                 val secondPlus = (durationMusicSecond.value!!/20)*1000
                 LaunchedEffect(Unit) {
-                    while (speed < 0.35f) {
+                    while (speed < 0.3f) {
                         delay(secondPlus) // Задержка для анимации
                         speed += 0.01f
                     }
@@ -377,8 +409,6 @@ class GameScreen(
             }
 
         }
-
-        testText.value = count.value.toString()
 
         if (finishRequests.value == true) {
 
@@ -422,7 +452,6 @@ class GameScreen(
                                         startActive = if (clickStart.value == 1) false else true,
                                         backgroundClick = if (clickStart.value == 1) true else false
                                     ) {
-                                        count.value+=1
                                         musicPlay.value = true
                                         offsetY = 1000.dp
                                         clickStart.value = 1
@@ -448,7 +477,6 @@ class GameScreen(
                                     startActive = false,
                                     backgroundClick = if (lastPosition.value == 1) true else false
                                 ) {
-                                    count.value+=1
                                     when (lastPosition.value){
                                         1-> {
                                             finishBox1.value = true
@@ -511,7 +539,6 @@ class GameScreen(
                                         startActive = if (clickStart.value == 2) false else true,
                                         backgroundClick = if (clickStart.value == 2) true else false
                                     ) {
-                                        count.value+=1
                                         musicPlay.value = true
                                         offsetY = 1000.dp
                                         clickStart.value = 2
@@ -537,7 +564,6 @@ class GameScreen(
                                     startActive = false,
                                     backgroundClick = if (lastPosition.value == 2) true else false
                                 ) {
-                                    count.value+=1
                                     when (lastPosition.value){
                                         1-> {
                                             finishBox1.value = true
@@ -600,7 +626,6 @@ class GameScreen(
                                         startActive = if (clickStart.value == 3) false else true,
                                         backgroundClick = if (clickStart.value == 3) true else false
                                     ) {
-                                        count.value+=1
                                         musicPlay.value = true
                                         offsetY = 1000.dp
                                         clickStart.value = 3
@@ -626,7 +651,6 @@ class GameScreen(
                                     startActive = false,
                                     backgroundClick = if (lastPosition.value == 3) true else false
                                 ) {
-                                    count.value+=1
                                     when (lastPosition.value){
                                         1-> {
                                             finishBox1.value = true
@@ -689,7 +713,6 @@ class GameScreen(
                                         startActive = if (clickStart.value == 4) false else true,
                                         backgroundClick = if (clickStart.value == 4) true else false
                                     ) {
-                                        count.value+=1
                                         musicPlay.value = true
                                         offsetY = 1000.dp
                                         clickStart.value = 4
@@ -715,7 +738,6 @@ class GameScreen(
                                     startActive = false,
                                     backgroundClick = if (lastPosition.value == 4) true else false
                                 ) {
-                                    count.value+=1
                                     when (lastPosition.value){
                                         1-> {
                                             finishBox1.value = true
@@ -798,17 +820,10 @@ class GameScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
 
-                                    Text(
-                                        text = testText.value,
-                                        style = TextStyle(
-                                            fontSize = 12.sp,
-                                            lineHeight = 12.sp,
-                                            fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
-                                            fontWeight = FontWeight(400),
-                                            color = Color.White,
-                                            textAlign = TextAlign.Center,
-                                        )
-                                    )
+                                    if (musicPlay.value == true && durationMusicSecond.value!! != 0L && rewardMusic.value != 0L){
+                                        //testText.value = durationMusicSecond.value!!.toString()
+                                        rewardMusicCurrent.value = TextRewardGame(rewardMusic.value, durationMusicSecond.value!!)
+                                    }
 
                                     Spacer(modifier = Modifier.padding(horizontal = 2.dp))
 
@@ -971,13 +986,9 @@ class GameScreen(
                                     userEntityCreate, bodyUserCreate, 0
                                 ))
                             }
-
                         }
-
                     }
-
                 }
-
             }
         }
     }
@@ -1001,6 +1012,19 @@ class GameScreen(
         val body = apiRepo.getMusicGame()
         musicGame.value = body
         musicName.value = body.name
+        rewardMusic.value = body.reward
+        musicId.value = body.id
+    }
+
+    suspend fun postRewardGame(musicId: Long, second: Long){
+        val body = apiRepo.postReawardGame(
+            rewardGameEntity = RewardGameEntity(
+                musicId = musicId,
+                seconds = second
+            ),
+            initData = userEntityCreate.initData
+        )
+        rewardMusicCurrent.value = body
     }
 
 }

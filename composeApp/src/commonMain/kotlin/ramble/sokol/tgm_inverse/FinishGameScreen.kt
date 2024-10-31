@@ -49,7 +49,7 @@ class FinishGameScreen(
     val userEntityCreate: UserEntityCreate,
     val bodyUserCreate: UserEntityCreateResponse,
     val nameSong: String,
-    val reward: Int,
+    val reward: Long,
     val countStar: Int
 ) : Screen {
 

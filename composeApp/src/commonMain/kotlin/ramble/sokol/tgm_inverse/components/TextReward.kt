@@ -66,7 +66,7 @@ fun TextReward(
         )
     )
 
-    if (currentProgress < 1000){
+    if (currentProgress < rewardMining){
         return false
     }else{
         return true
