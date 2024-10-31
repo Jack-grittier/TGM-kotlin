@@ -29,19 +29,19 @@ fun TextRewardGame(
     duration: Long
 ) : Long{
 
-    val result = rewardMusic.toFloat() / duration.toFloat()
+    val second = ((duration.toFloat() / rewardMusic.toFloat()) * 1000).toLong()
 
 
-    val divide = if (result < 1) 1L else result.toLong()
+    //val divide = if (result < 1) 1L else result.toLong()
 
     var currentReward by remember { mutableStateOf(0L) }
-    var currentSecond by remember { mutableStateOf(0) }
+    var currentSecond by remember { mutableStateOf(0L) }
 
     LaunchedEffect(Unit) {
         while (currentSecond < duration*1000) {
-            delay(1000) // Задержка для анимации
-            currentReward += divide // Увеличиваем прогресс
-            currentSecond += 1000
+            delay(second) // Задержка для анимации
+            currentReward += 1 // Увеличиваем прогресс
+            currentSecond += second
         }
     }
 

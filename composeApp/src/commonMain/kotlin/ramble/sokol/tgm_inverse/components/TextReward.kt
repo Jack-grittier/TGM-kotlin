@@ -54,7 +54,7 @@ fun TextReward(
     }
 
     Text(
-        modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
+        modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
         text = currentReward.toString(),
         style = TextStyle(
             fontSize = 32.sp,

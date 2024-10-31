@@ -127,8 +127,7 @@ class MiningScreen (
     val airDropDate: String,
     var balance: Long,
     val bodyUserCreate: UserEntityCreateResponse,
-    val viewModel: MusicViewModel,
-    val appState: MutableState<AppState>
+    val viewModel: MusicViewModel
 ) : Screen {
 
     private lateinit var startedEarning: MutableState<Boolean>
@@ -335,7 +334,7 @@ class MiningScreen (
 
                         if (statusCode.value == 404){
                             Text(
-                                modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
+                                modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
                                 text = balance.toString(),
                                 style = TextStyle(
                                     fontSize = 32.sp,
@@ -348,7 +347,7 @@ class MiningScreen (
                             )
                         }else if (finishMining.value == true){
                             Text(
-                                modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
+                                modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
                                 text = rewardMining.value.toString(),
                                 style = TextStyle(
                                     fontSize = 32.sp,
@@ -494,7 +493,7 @@ class MiningScreen (
                                                             scope.launch {
                                                                 patchEarnings()
                                                                 balance += rewardMining.value!!.toLong()
-                                                                navigator.parent?.push(MainMenuScreen(userEntityCreate, bodyUserCreate, 1))
+                                                                navigator.parent?.push(MainMenuScreen(userEntityCreate, bodyUserCreate, 1, null))
                                                             }
                                                          },
                                                         indication = null,
@@ -701,7 +700,8 @@ class MiningScreen (
                                                 MainMenuScreen(
                                                     userEntityCreate,
                                                     bodyUserCreate,
-                                                    1
+                                                    1,
+                                                    null
                                                 )
                                             )
                                         }else{

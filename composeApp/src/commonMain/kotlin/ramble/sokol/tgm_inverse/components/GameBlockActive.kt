@@ -69,7 +69,7 @@ fun GameBlockActive(
                     modifier = Modifier.fillMaxWidth(),
                     text = "Start",
                     style = TextStyle(
-                        fontSize = 12.sp,
+                        fontSize = 10.sp,
                         lineHeight = 12.sp,
                         fontFamily = FontFamily(Font(Res.font.PressStart2P_Regular)),
                         fontWeight = FontWeight(400),

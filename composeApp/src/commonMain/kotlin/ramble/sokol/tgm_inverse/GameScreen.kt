@@ -422,9 +422,9 @@ class GameScreen(
             }
 
             if (durationMusicSecond.value!! > 0){
-                val secondPlus = (durationMusicSecond.value!!/20)*1000
+                val secondPlus = (durationMusicSecond.value!!/15)*1000
                 LaunchedEffect(Unit) {
-                    while (speed < 0.4f) {
+                    while (speed < 0.35f) {
                         delay(secondPlus) // Задержка для анимации
                         speed += 0.01f
                     }
@@ -1006,7 +1006,7 @@ class GameScreen(
                             ButtonExitGame("Выйти") {
                                 audioElement.value?.pause()
                                 navigator.push(MainMenuScreen(
-                                    userEntityCreate, bodyUserCreate, 0
+                                    userEntityCreate, bodyUserCreate, 0, null
                                 ))
                             }
                         }

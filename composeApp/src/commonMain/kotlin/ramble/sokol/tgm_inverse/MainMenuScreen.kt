@@ -77,6 +77,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import ramble.sokol.tgm_inverse.components.ButtonClose
 import ramble.sokol.tgm_inverse.components.ButtonDisconnect
+import ramble.sokol.tgm_inverse.model.data.MusicResponse
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreate
 import ramble.sokol.tgm_inverse.model.data.UserEntityCreateResponse
 import ramble.sokol.tgm_inverse.model.util.ApiRepository
@@ -117,7 +118,8 @@ import tgminverse.composeapp.generated.resources.test_photo
 class MainMenuScreen(
     val userEntityCreate: UserEntityCreate,
     val bodyUserCreate: UserEntityCreateResponse,
-    val selItem: Int
+    val selItem: Int,
+    val musicPlay: MusicResponse?
 ) : Screen {
 
     private var clickSheet: MutableState<Int> = mutableIntStateOf(0)
@@ -350,8 +352,7 @@ class MainMenuScreen(
                             dateAirDrop.value!!,
                             balance.value!!,
                             bodyUserCreate,
-                            viewModel,
-                            appState
+                            viewModel
                         )
                     )
 
