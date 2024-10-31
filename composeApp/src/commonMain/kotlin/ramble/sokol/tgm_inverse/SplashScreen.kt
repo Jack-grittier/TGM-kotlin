@@ -257,57 +257,57 @@ class SplashScreen : Screen {
             key1 = true
         ) {
             delay(3000L)
-//            val userEntityCreate = UserEntityCreate(
-//                    initData = "query_id=AAEXG48VAwAAABcbjxWiXQe1&user=%7B%22id%22%3A6804151063%2C%22first_name%22%3A%22%D0%90%D1%80%D1%82%D1%91%D0%BC%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22RambleNeTOT%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1724088134&hash=a87fd616ea66d7832f5ace4da0be88ae3e7538d63ad3459a559da2fc191028e6",
-//                    id = 1234457,
-//                    username = "RambleNeTot",
-//                    firstName = "Артём",
-//                    lastName = "",
-//                    languageCode = "ru",
-//                    isPremium = false,
-//                    photoURL = null,
-//                    referralCode = 0
-//                )
-//            navigator?.push(MainMenuScreen(userEntityCreate, UserEntityCreateResponse(), 1, null))
-
-            scope.launch {
-                initData.value = webApp.initData
-                userUrl.value = webApp.initDataUnsafe.user!!.photoUrl
-                userName.value = webApp.initDataUnsafe.user!!.username
-                id.value = webApp.initDataUnsafe.user!!.id.toString()
-                firstname.value = webApp.initDataUnsafe.user!!.firstName
-                lastname.value = webApp.initDataUnsafe.user!!.lastName
-                languageCode.value = webApp.initDataUnsafe.user!!.languageCode.toString()
-                isPremium.value = webApp.initDataUnsafe.user!!.is_premium
-                val ref = webApp.initDataUnsafe.startParam
-                if (ref != null){
-                    referalCode.value = ref.toString().toLong()
-                }
-                if (isPremium.value == null){
-                    isPremium.value = false
-                }
-                val userEntityCreate = UserEntityCreate(
-                    initData = initData.value,
-                    id = id.value.toString().toLong(),
-                    username = userName.value.toString(),
-                    firstName = firstname.value.toString(),
-                    lastName = lastname.value.toString(),
-                    languageCode = languageCode.value.toString(),
-                    isPremium = isPremium.value!!,
-                    photoURL = userUrl.value,
-                    referralCode = referalCode.value
+            val userEntityCreate = UserEntityCreate(
+                    initData = "query_id=AAEXG48VAwAAABcbjxWiXQe1&user=%7B%22id%22%3A6804151063%2C%22first_name%22%3A%22%D0%90%D1%80%D1%82%D1%91%D0%BC%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22RambleNeTOT%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1724088134&hash=a87fd616ea66d7832f5ace4da0be88ae3e7538d63ad3459a559da2fc191028e6",
+                    id = 1234457,
+                    username = "RambleNeTot",
+                    firstName = "Артём",
+                    lastName = "",
+                    languageCode = "ru",
+                    isPremium = false,
+                    photoURL = null,
+                    referralCode = 0
                 )
-                body.value = apiRepo.createUser(userEntityCreate)
-                loading.value = true
-                if (body.value!!.error == null) {
-                    navigator?.push(MainMenuScreen(userEntityCreate, body.value!!,1,null))
-                    //navigator.push(MiningScreen(Modifier, userEntityCreate))
-                    //navigator.push(OnBoardingScreen(userEntityCreate, body.value!!))
-                }else {
+            navigator?.push(MainMenuScreen(userEntityCreate, UserEntityCreateResponse(), 1, null))
 
-                }
-                //navigator?.push(MainMenuScreen())
-            }
+//            scope.launch {
+//                initData.value = webApp.initData
+//                userUrl.value = webApp.initDataUnsafe.user!!.photoUrl
+//                userName.value = webApp.initDataUnsafe.user!!.username
+//                id.value = webApp.initDataUnsafe.user!!.id.toString()
+//                firstname.value = webApp.initDataUnsafe.user!!.firstName
+//                lastname.value = webApp.initDataUnsafe.user!!.lastName
+//                languageCode.value = webApp.initDataUnsafe.user!!.languageCode.toString()
+//                isPremium.value = webApp.initDataUnsafe.user!!.is_premium
+//                val ref = webApp.initDataUnsafe.startParam
+//                if (ref != null){
+//                    referalCode.value = ref.toString().toLong()
+//                }
+//                if (isPremium.value == null){
+//                    isPremium.value = false
+//                }
+//                val userEntityCreate = UserEntityCreate(
+//                    initData = initData.value,
+//                    id = id.value.toString().toLong(),
+//                    username = userName.value.toString(),
+//                    firstName = firstname.value.toString(),
+//                    lastName = lastname.value.toString(),
+//                    languageCode = languageCode.value.toString(),
+//                    isPremium = isPremium.value!!,
+//                    photoURL = userUrl.value,
+//                    referralCode = referalCode.value
+//                )
+//                body.value = apiRepo.createUser(userEntityCreate)
+//                loading.value = true
+//                if (body.value!!.error == null) {
+//                    navigator?.push(MainMenuScreen(userEntityCreate, body.value!!,1,null))
+//                    //navigator.push(MiningScreen(Modifier, userEntityCreate))
+//                    //navigator.push(OnBoardingScreen(userEntityCreate, body.value!!))
+//                }else {
+//
+//                }
+//                //navigator?.push(MainMenuScreen())
+//            }
 
         }
 

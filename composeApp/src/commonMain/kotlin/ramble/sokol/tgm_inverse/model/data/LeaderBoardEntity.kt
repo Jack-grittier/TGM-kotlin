@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LeaderBoardEntity(
-    val position: Long? = null,
-    val username: String? = null,
-    val amount: Long? = null,
+    val position: Long,
+    val username: String,
+    val amount: Long,
 )
