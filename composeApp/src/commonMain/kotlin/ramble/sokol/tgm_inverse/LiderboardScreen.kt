@@ -140,15 +140,15 @@ class LiderboardScreen(
                     ) {
                         if (listLeader.value.size >= 2) {
                             val second = listLeader.value[1]
-                            PhotoOtherRating(2, second.username, second.amount.toString())
+                            PhotoOtherRating(2, second.username!!, second.amount.toString())
                         }
                         if (listLeader.value.size >= 1) {
                             val first = listLeader.value[0]
-                            PhotoFirstRating(first.username, first.amount.toString())
+                            PhotoFirstRating(first.username!!, first.amount.toString())
                         }
                         if (listLeader.value.size >= 3) {
                             val third = listLeader.value[2]
-                            PhotoOtherRating(3, third.username, third.amount.toString())
+                            PhotoOtherRating(3, third.username!!, third.amount.toString())
                         }
 
                     }
@@ -165,7 +165,7 @@ class LiderboardScreen(
                         RatingPersonLiderboard(
                             leader.position.toString(),
                             leader.amount.toString(),
-                            leader.username
+                            leader.username!!
                         )
                         Spacer(modifier = Modifier.padding(vertical = 4.dp))
                     }
@@ -178,7 +178,7 @@ class LiderboardScreen(
                 }
             }
 
-            if (myPosition.value != null) {
+            if (myPosition.value!!.position != null) {
 
                 Box(
                     modifier = Modifier.fillMaxSize().padding(bottom = 12.dp),
@@ -188,7 +188,7 @@ class LiderboardScreen(
                     MyRatingLeaderBoard(
                         //myPosition.value!!.amount.toString(),
                         myPosition.value!!.amount.toString(),
-                        myPosition.value!!.username,
+                        myPosition.value!!.username!!,
                         myPosition.value!!.position.toString())
 
                 }
